@@ -163,8 +163,9 @@ class SnippetGenerator
         $resultVar = AST::var('result');
         $exceptionVar = AST::var('ex');
         $resumedUploadVar = AST::var('resumedUpload');
+        $uploadOptionsVar = AST::var('resumableUploadOptions');
 
-        $callOptions = AST::array([
+        $uploadOptions = AST::array([
             'chunkSize' => AST::literal('8 * 1024 * 1024 /* 8MB */'),
             'progressCallback' => AST::fn('')
                 ->withoutNewlineAfterDeclaration()
@@ -186,7 +187,7 @@ class SnippetGenerator
         return $this->buildSnippetFunctions(
             $snippetDetails,
             [
-                $this->buildClientMethodCall($snippetDetails, $uploaderVar, $snippetDetails->rpcArguments->append($callOptions)),
+                $this->buildClientMethodCall($snippetDetails, $uploaderVar),
                 PHP_EOL,
                 AST::assign(
                     $streamVar,
@@ -195,8 +196,9 @@ class SnippetGenerator
                         AST::method('streamFor')
                     )(AST::call("\0fopen")('/path/to/file.txt', 'r'))
                 ),
+                AST::assign($uploadOptionsVar, $uploadOptions),
                 AST::try(
-                    AST::assign($resultVar, AST::call($uploaderVar, AST::method('startUpload'))($streamVar))
+                    AST::assign($resultVar, AST::call($uploaderVar, AST::method('startUpload'))($streamVar, $uploadOptionsVar))
                 )->catch(
                     $snippetDetails->context->type(Type::fromName(\Exception::class)),
                     $exceptionVar
@@ -204,7 +206,7 @@ class SnippetGenerator
                     '// Resuming directly on the existing $uploader object after an interruption',
                     '// in the same process: calling `startUpload()` queries the server for the',
                     '// current byte offset and resumes transmitting remaining chunks.',
-                    AST::assign($resultVar, AST::call($uploaderVar, AST::method('startUpload'))($streamVar))
+                    AST::assign($resultVar, AST::call($uploaderVar, AST::method('startUpload'))($streamVar, $uploadOptionsVar))
                 ),
                 PHP_EOL,
                 $this->buildPrintFCall(
@@ -480,8 +482,12 @@ class SnippetGenerator
                     ) : null,
                     $snippetDetails->sampleAssignments,
                     PHP_EOL,
-                    '// Call the API and handle any network failures.',
-                    $this->buildTryCatchStatement($tryStatements, $snippetDetails)
+                    ...($snippetDetails->methodDetails->methodType === MethodDetails::RESUMABLE_UPLOAD
+                        ? $tryStatements
+                        : [
+                            '// Call the API and handle any network failures.',
+                            $this->buildTryCatchStatement($tryStatements, $snippetDetails)
+                        ])
                 )
             );
 

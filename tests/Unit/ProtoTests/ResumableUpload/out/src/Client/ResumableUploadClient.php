@@ -174,36 +174,22 @@ final class ResumableUploadClient
      *
      * @example samples/ResumableUploadClient/create_you_tube_video_upload.php
      *
-     * @param CreateYouTubeVideoUploadRequest $request                A request to house fields associated with the call.
-     * @param array                           $resumableUploadOptions {
+     * @param CreateYouTubeVideoUploadRequest $request     A request to house fields associated with the call.
+     * @param array                           $callOptions {
      *     Optional.
      *
-     *     @type int $chunkSize
-     *           Optional. The size of each chunk to upload in bytes. Must be a multiple of
-     *           262144 (256 KB). Values smaller than the server's chunk granularity (typically
-     *           256 KB) will be rounded up to match the granularity. Defaults to 8388608 (8 MB).
-     *     @type callable $progressCallback
-     *           Optional. A callback function executed after every chunk upload or query. The
-     *           callback should accept two arguments: (int $bytesUploaded,
-     *           {@see ResumableUpload} $upload).
-     *     @type array $headers
-     *           Optional. Key-value array of custom HTTP headers to include with upload
-     *           requests.
-     *     @type int $timeoutMillis
-     *           Optional. The timeout in milliseconds for the initial start call.
-     *     @type int $totalTimeoutMillis
-     *           Optional. The total timeout in milliseconds for the entire resumable upload
-     *           operation. Defaults to 600000 (10 minutes).
      *     @type RetrySettings|array $retrySettings
-     *           Optional. Retry settings to use for the initial start call.
+     *           Retry settings to use for this call. Can be a {@see RetrySettings} object, or an
+     *           associative array of retry settings parameters. See the documentation on
+     *           {@see RetrySettings} for example usage.
      * }
      *
      * @return ResumableUpload
      *
      * @throws ApiException Thrown if the API call fails.
      */
-    public function createYouTubeVideoUpload(CreateYouTubeVideoUploadRequest $request, array $resumableUploadOptions = []): ResumableUpload
+    public function createYouTubeVideoUpload(CreateYouTubeVideoUploadRequest $request, array $callOptions = []): ResumableUpload
     {
-        return $this->startApiCall('CreateYouTubeVideoUpload', $request, $resumableUploadOptions);
+        return $this->startApiCall('CreateYouTubeVideoUpload', $request, $callOptions);
     }
 }

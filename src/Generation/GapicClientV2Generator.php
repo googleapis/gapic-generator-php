@@ -809,12 +809,9 @@ class GapicClientV2Generator
             $this->ctx->type($method->requestType),
             $request
         );
-        $optionsVarName = $method->methodType === MethodDetails::RESUMABLE_UPLOAD
-            ? 'resumableUploadOptions'
-            : self::CALL_OPTIONS_VAR;
         $callOptions = AST::param(
             ResolvedType::array(),
-            AST::var($optionsVarName),
+            AST::var(self::CALL_OPTIONS_VAR),
             AST::array([])
         );
         $retrySettingsType = Type::fromName(RetrySettings::class);
@@ -882,50 +879,7 @@ class GapicClientV2Generator
                         : null,
                     PhpDoc::param(
                         $callOptions,
-                        $method->methodType === MethodDetails::RESUMABLE_UPLOAD
-                        ? PhpDoc::block(
-                            PhpDoc::text('Optional.'),
-                            PhpDoc::type(
-                                Vector::new([$this->ctx->type(Type::int())]),
-                                'chunkSize',
-                                PhpDoc::text(
-                                    "Optional. The size of each chunk to upload in bytes. Must be a multiple of 262144 (256 KB). " .
-                                    "Values smaller than the server's chunk granularity (typically 256 KB) " .
-                                    "will be rounded up to match the granularity. Defaults to 8388608 (8 MB)."
-                                )
-                            ),
-                            PhpDoc::type(
-                                Vector::new([$this->ctx->type(Type::callable())]),
-                                'progressCallback',
-                                PhpDoc::text(
-                                    'Optional. A callback function executed after every chunk upload or query. ' .
-                                    'The callback should accept two arguments: (int $bytesUploaded, ',
-                                    $this->ctx->type(Type::fromName(\Google\ApiCore\ResumableUpload\ResumableUpload::class)),
-                                    ' $upload).'
-                                )
-                            ),
-                            PhpDoc::type(
-                                Vector::new([ResolvedType::array()]),
-                                'headers',
-                                PhpDoc::text('Optional. Key-value array of custom HTTP headers to include with upload requests.')
-                            ),
-                            PhpDoc::type(
-                                Vector::new([$this->ctx->type(Type::int())]),
-                                'timeoutMillis',
-                                PhpDoc::text('Optional. The timeout in milliseconds for the initial start call.')
-                            ),
-                            PhpDoc::type(
-                                Vector::new([$this->ctx->type(Type::int())]),
-                                'totalTimeoutMillis',
-                                PhpDoc::text('Optional. The total timeout in milliseconds for the entire resumable upload operation. Defaults to 600000 (10 minutes).')
-                            ),
-                            PhpDoc::type(
-                                Vector::new([$this->ctx->type($retrySettingsType), ResolvedType::array()]),
-                                'retrySettings',
-                                PhpDoc::text('Optional. Retry settings to use for the initial start call.')
-                            )
-                        )
-                        : PhpDoc::block(
+                        PhpDoc::block(
                             PhpDoc::Text('Optional.'),
                             $method->isStreaming()
                             ? PhpDoc::type(

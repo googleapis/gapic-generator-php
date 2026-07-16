@@ -23,7 +23,6 @@
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START resumableupload_generated_ResumableUpload_CreateYouTubeVideoUpload_sync]
-use Google\ApiCore\ApiException;
 use Google\ApiCore\ResumableUpload\ResumableUpload;
 use GuzzleHttp\Psr7\Utils;
 use Testing\Resumableupload\Client\ResumableUploadClient;
@@ -46,38 +45,34 @@ function create_you_tube_video_upload_sample(): void
     // Prepare the request message.
     $request = new CreateYouTubeVideoUploadRequest();
 
-    // Call the API and handle any network failures.
+    /** @var ResumableUpload $uploader */
+    $uploader = $resumableUploadClient->createYouTubeVideoUpload($request);
+
+    $stream = Utils::streamFor(fopen('/path/to/file.txt', 'r'));
+    $resumableUploadOptions = [
+        'chunkSize' => 8 * 1024 * 1024 /* 8MB */,
+        'progressCallback' => function (int $bytesUploaded, ResumableUpload $upload) {
+            printf('Committed %d bytes to session: %s' . PHP_EOL, $bytesUploaded, $upload->getUploadUrl());
+        },
+    ];
     try {
-        /** @var ResumableUpload $uploader */
-        $uploader = $resumableUploadClient->createYouTubeVideoUpload($request, [
-            'chunkSize' => 8 * 1024 * 1024 /* 8MB */,
-            'progressCallback' => function (int $bytesUploaded, ResumableUpload $upload) {
-                printf('Committed %d bytes to session: %s' . PHP_EOL, $bytesUploaded, $upload->getUploadUrl());
-            },
-        ]);
+        $result = $uploader->startUpload($stream, $resumableUploadOptions);
+    } catch (Exception $ex) {
+        // Resuming directly on the existing $uploader object after an interruption
+        // in the same process: calling `startUpload()` queries the server for the
+        // current byte offset and resumes transmitting remaining chunks.
+        $result = $uploader->startUpload($stream, $resumableUploadOptions);
+    }
 
-        $stream = Utils::streamFor(fopen('/path/to/file.txt', 'r'));
-        try {
-            $result = $uploader->startUpload($stream);
-        } catch (Exception $ex) {
-            // Resuming directly on the existing $uploader object after an interruption
-            // in the same process: calling `startUpload()` queries the server for the
-            // current byte offset and resumes transmitting remaining chunks.
-            $result = $uploader->startUpload($stream);
-        }
+    printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
 
-        printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
-
-        // Resuming across separate processes or restarts (where the original
-        // $uploader object in memory is lost): the session URL obtained via
-        // `$uploader->getUploadUrl()` can be persisted and loaded later.
-        // $resumedUpload = $resumableUploadClient->resumeUpload(
+    // Resuming across separate processes or restarts (where the original
+    // $uploader object in memory is lost): the session URL obtained via
+    // `$uploader->getUploadUrl()` can be persisted and loaded later.
+    // $resumedUpload = $resumableUploadClient->resumeUpload(
         //     'createYouTubeVideoUpload',
         //     'https://upload.url/session123'
-        // );
-        // $resumedUpload->startUpload($stream);
-    } catch (ApiException $ex) {
-        printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
-    }
+    // );
+    // $resumedUpload->startUpload($stream);
 }
 // [END resumableupload_generated_ResumableUpload_CreateYouTubeVideoUpload_sync]
