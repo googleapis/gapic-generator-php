@@ -87,7 +87,7 @@ abstract class MethodDetails
         $isMediaUpload = false;
         if (method_exists($httpRule, 'getMediaUpload')) {
             $isMediaUpload = (bool) $httpRule->getMediaUpload()?->getEnabled();
-        } elseif ($desc->getName() === 'CreateYouTubeVideoUpload') {
+        } elseif ($desc->getName() === 'CreateYouTubeVideoUpload' || $desc->getName() === 'UploadMedia') {
             // @TODO: Remove hardcoded CreateYouTubeVideoUpload method once getMediaUpload annotation is available in common-protos
             $isMediaUpload = true;
         }
