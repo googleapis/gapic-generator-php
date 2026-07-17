@@ -62,12 +62,15 @@ final class BuildMethodFragmentGeneratorTest extends TestCase
         $this->assertTrue(isset($fragments[$requestClassName]));
 
         $buildMethods = $fragments[$requestClassName];
-        $this->assertEquals(2, $buildMethods->count());
+        $this->assertEquals(3, $buildMethods->count());
 
         // First builder method should be 'build'
         $this->assertEquals('build', $buildMethods[0]->name);
 
         // Second builder method should be 'buildFromNameNumber' (spaces stripped and camel-cased)
         $this->assertEquals('buildFromNameNumber', $buildMethods[1]->name);
+
+        // Third builder method should be 'buildFromNameUserDisplayName' (dots replaced and camel-cased)
+        $this->assertEquals('buildFromNameUserDisplayName', $buildMethods[2]->name);
     }
 }
