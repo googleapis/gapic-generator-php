@@ -40,6 +40,7 @@ service Example {
   rpc ExampleMethodWithSignatures(Request) returns(Response) {
     option (google.api.method_signature) = "name";
     option (google.api.method_signature) = "name, number";
+    option (google.api.method_signature) = "name, user.display_name";
   }
 }
 
@@ -48,6 +49,10 @@ option (google.api.resource_definition) = {
   pattern: "items/{item}"
 };
 
+message User {
+  string display_name = 1;
+}
+
 message Request {
   string name = 1 [(google.api.resource_reference).type = "example.com/AResource"];
   optional int32 number = 2;
@@ -55,6 +60,7 @@ message Request {
   // Required. Percentage of selected conversation to analyze, between
   // [0, 100].
   float analysis_percentage = 3;
+  User user = 4;
 }
 
 message Response {

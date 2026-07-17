@@ -172,7 +172,7 @@ abstract class MethodDetails
                 && $resourceByNumber[0] === $resourceByPosition[0];
         }
 
-        if (is_null($pageSize) || is_null($pageToken) || is_null($nextPageToken) || is_null($resources)) {
+        if (is_null($pageSize) || is_null($pageToken) || is_null($nextPageToken) || is_null($resources) || !$resourceFieldValid) {
             return null;
         }
 
