@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.22.0](https://github.com/googleapis/gapic-generator-php/compare/v1.21.2...v1.22.0) (2026-07-17)
+
+
+### Features
+
+* Support method signatures with a dotted notation. ([#838](https://github.com/googleapis/gapic-generator-php/issues/838)) ([eeca5ca](https://github.com/googleapis/gapic-generator-php/commit/eeca5cabbb148c86adcdcd73e58a4d35d2facfba))
+
 ## [1.21.2](https://github.com/googleapis/gapic-generator-php/compare/v1.21.1...v1.21.2) (2026-06-08)
 
 
