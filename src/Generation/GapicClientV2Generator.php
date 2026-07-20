@@ -231,7 +231,10 @@ class GapicClientV2Generator
     {
         return AST::property('serviceScopes')
             ->withAccess(Access::PUBLIC, Access::STATIC)
-            ->withPhpDocText('The default scopes required by the service.')
+            ->withPhpDoc(PhpDoc::block(
+                PhpDoc::text('The default scopes required by the service.'),
+                PhpDoc::internal()
+            ))
             ->withValue(AST::array($this->serviceDetails->defaultScopes->toArray()));
     }
 

@@ -70,7 +70,11 @@ final class BasicClient
     /** The api version of the service */
     private string $apiVersion = 'v1_20240418';
 
-    /** The default scopes required by the service. */
+    /**
+     * The default scopes required by the service.
+     *
+     * @internal
+     */
     public static $serviceScopes = [
         'scope1',
         'scope2',
