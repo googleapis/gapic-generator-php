@@ -595,12 +595,12 @@ php_proto_library(
 # Spanner - Emulator support.
 php_proto_library(
     name = "spanner_php_proto",
-    deps = ["@com_google_googleapis//google/spanner/admin/database/v1:spanner_database_admin_proto"],
+    deps = ["@com_google_googleapis//google/spanner/admin/database/v1:database_proto"],
 )
 
 php_grpc_library(
     name = "spanner_php_grpc",
-    srcs = ["@com_google_googleapis//google/spanner/admin/database/v1:spanner_database_admin_proto"],
+    srcs = ["@com_google_googleapis//google/spanner/admin/database/v1:database_proto"],
     deps = [":spanner_php_proto"],
 )
 
