@@ -114,6 +114,18 @@ class UnitTestsGenerator
 
     private function generateClass(): PhpClass
     {
+        $testMethods = $this->serviceDetails->methods->flatMap(fn ($x) => Vector::new($this->testCases($x)));
+        if (count($testMethods) === 0) {
+            $testMethods = $testMethods->append(
+                AST::method('testClientTestCase')
+                    ->withAccess(Access::PUBLIC)
+                    ->withBody(AST::block(
+                        // Add a dummy assertion to silence PHPUnit warning
+                        ($this->assertTrue)(AST::literal('true'))
+                    ))
+            );
+        }
+
         return AST::class($this->serviceDetails->unitTestsType, $this->ctx->type(Type::fromName(GeneratedTest::class)))
             ->withPhpDoc(PhpDoc::block(
                 is_null($this->serviceDetails->unitTestGroupName) ? null : PhpDoc::group($this->serviceDetails->unitTestGroupName),
@@ -122,7 +134,7 @@ class UnitTestsGenerator
             ->withMember($this->createTransport())
             ->withMember($this->createCredentials())
             ->withMember($this->createClient())
-            ->withMembers($this->serviceDetails->methods->flatMap(fn ($x) => Vector::new($this->testCases($x))));
+            ->withMembers($testMethods);
     }
 
     private function createTransport(): PhpClassMember
