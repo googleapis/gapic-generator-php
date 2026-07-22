@@ -79,4 +79,13 @@ final class ProtoHelpersTest extends TestCase
         $f = $catalog->filesByService[$svc];
         $this->assertStringContainsString('catalog.proto', $f->GetName());
     }
+
+    public function testProtoCatalogWithUnmatchedParentPattern(): void
+    {
+        $file = ProtoLoader::loadDescriptor('Utils/example.proto');
+        $files = Vector::new([$file]);
+        ProtoAugmenter::Augment($files);
+        $catalog = new ProtoCatalog($files);
+        $this->assertNotNull($catalog->parentResourceByChildType['example.com/ChildResource']);
+    }
 }
