@@ -27,7 +27,8 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
 use Google\Rpc\Status;
 use Testing\BasicDiregapic\BookResponse;
-use Testing\BasicDiregapic\LibraryClient;
+use Testing\BasicDiregapic\Client\LibraryClient;
+use Testing\BasicDiregapic\GetBookRequest;
 
 /**
  * Test long-running operations
@@ -39,11 +40,14 @@ function get_big_book_sample(string $formattedName): void
 {
     // Create a client.
     $libraryClient = new LibraryClient();
+    
+    $request = (new GetBookRequest())
+        ->setName($formattedName);
 
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $libraryClient->getBigBook($formattedName);
+        $response = $libraryClient->getBigBook($request);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

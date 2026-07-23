@@ -24,7 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START example_generated_Library_UpdateBookIndex_sync]
 use Google\ApiCore\ApiException;
-use Testing\BasicDiregapic\LibraryClient;
+use Testing\BasicDiregapic\Client\LibraryClient;
+use Testing\BasicDiregapic\UpdateBookIndexRequest;
 
 /**
  * Updates the index of a book.
@@ -37,13 +38,16 @@ function update_book_index_sample(string $formattedName, string $indexName): voi
 {
     // Create a client.
     $libraryClient = new LibraryClient();
-
-    // Prepare any non-scalar elements to be passed along with the request.
+    
     $indexMap = [];
+    $request = (new UpdateBookIndexRequest())
+        ->setName($formattedName)
+        ->setIndexName($indexName)
+        ->setIndexMap($indexMap);
 
     // Call the API and handle any network failures.
     try {
-        $libraryClient->updateBookIndex($formattedName, $indexName, $indexMap);
+        $libraryClient->updateBookIndex($request);
         printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

@@ -48,7 +48,7 @@ class EmulatorSupportGenerator
 
     public static function generateEmulatorSupport(ServiceDetails $serviceDetails, SourceFileContext $ctx)
     {
-        $fullClassName = $serviceDetails->gapicClientV2Type->getFullName();
+        $fullClassName = $serviceDetails->gapicClientType->getFullName();
         $emulatorHostVar = AST::var('emulatorHost');
         $phpUrlSchemeConst = AST::constant('PHP_URL_SCHEME');
         $schemeVar = AST::var('scheme');
@@ -100,7 +100,7 @@ class EmulatorSupportGenerator
     {
         $setDefaultEmulatorConfig = AST::method(self::DEFAULT_EMULATOR_CONFIG_FN);
 
-        if (!array_key_exists($serviceDetails->gapicClientV2Type->getFullName(), self::$emulatorSupportClients)) {
+        if (!array_key_exists($serviceDetails->gapicClientType->getFullName(), self::$emulatorSupportClients)) {
             return null;
         }
 
@@ -109,10 +109,10 @@ class EmulatorSupportGenerator
 
     public static function generateEmulatorPhpDoc(ServiceDetails $serviceDetails)
     {
-        return array_key_exists($serviceDetails->gapicClientV2Type->getFullName(), self::$emulatorSupportClients) ?
+        return array_key_exists($serviceDetails->gapicClientType->getFullName(), self::$emulatorSupportClients) ?
             PhpDoc::text(sprintf('Setting the "%s" environment variable will automatically set the API Endpoint to ' .
             'the value specified in the variable, as well as ensure that empty credentials are used in ' .
-            'the transport layer.', self::$emulatorSupportClients[$serviceDetails->gapicClientV2Type->getFullName()])) :
+            'the transport layer.', self::$emulatorSupportClients[$serviceDetails->gapicClientType->getFullName()])) :
             null;
     }
 }

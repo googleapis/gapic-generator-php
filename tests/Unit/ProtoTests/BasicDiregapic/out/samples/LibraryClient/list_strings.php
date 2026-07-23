@@ -25,7 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START example_generated_Library_ListStrings_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Testing\BasicDiregapic\LibraryClient;
+use Testing\BasicDiregapic\Client\LibraryClient;
+use Testing\BasicDiregapic\ListStringsRequest;
 
 /**
  * Lists a primitive resource. To test go page streaming.
@@ -40,11 +41,13 @@ function list_strings_sample(): void
 {
     // Create a client.
     $libraryClient = new LibraryClient();
+    
+    $request = new ListStringsRequest();
 
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $libraryClient->listStrings();
+        $response = $libraryClient->listStrings($request);
 
         foreach ($response as $element) {
             printf('Element data: %s' . PHP_EOL, $element);

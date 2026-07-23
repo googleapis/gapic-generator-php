@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2020 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,9 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
-use Exception;
 use Google\ApiCore\ApiException;
-use Google\ApiCore\Call;
 use Google\ApiCore\CredentialsWrapper;
-use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
-use Google\ApiCore\PathTemplate;
 use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\GrpcTransport;
@@ -34,43 +30,48 @@ use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
 use Google\Generator\Ast\Access;
 use Google\Generator\Ast\AST;
-use Google\Generator\Ast\Expression;
 use Google\Generator\Ast\PhpClass;
 use Google\Generator\Ast\PhpClassMember;
 use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Ast\PhpFile;
-use Google\Generator\Ast\PhpParam;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Helpers;
-use Google\Generator\Utils\MigrationMode;
 use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Transport;
 use Google\Generator\Utils\Type;
+use Google\LongRunning\Client\OperationsClient;
+use GuzzleHttp\Promise\PromiseInterface;
+use Psr\Log\LoggerInterface;
 
 class GapicClientGenerator
 {
-    public static function generate(SourceFileContext $ctx, ServiceDetails $serviceDetails): PhpFile
+    private const CALL_OPTIONS_VAR = 'callOptions';
+
+    public static function generate(SourceFileContext $ctx, ServiceDetails $serviceDetails, bool $generateSnippets): PhpFile
     {
-        return (new GapicClientGenerator($ctx, $serviceDetails))->generateImpl();
+        return (new GapicClientGenerator($ctx, $serviceDetails, $generateSnippets))->generateImpl();
     }
 
     private SourceFileContext $ctx;
     private ServiceDetails $serviceDetails;
+    // TODO(v2): This can be cleaned up after the v2 migration is complete.
+    private bool $generateSnippets;
 
-    private function __construct(SourceFileContext $ctx, ServiceDetails $serviceDetails)
+    private function __construct(SourceFileContext $ctx, ServiceDetails $serviceDetails, bool $generateSnippets)
     {
         $this->ctx = $ctx;
         $this->serviceDetails = $serviceDetails;
+        $this->generateSnippets = $generateSnippets;
     }
 
     private function generateImpl(): PhpFile
     {
         // TODO(vNext): Remove the forced addition of these `use` clauses.
         $this->ctx->type(Type::fromName(\Google\ApiCore\PathTemplate::class));
+        $this->ctx->type(Type::fromName(\Google\ApiCore\Options\ClientOptions::class));
         $this->ctx->type(Type::fromName(RequestParamsHeaderDescriptor::class));
         $this->ctx->type(Type::fromName(RetrySettings::class));
-        $this->ctx->type($this->serviceDetails->grpcClientType);
         if ($this->serviceDetails->hasLro) {
             $this->ctx->type(Type::fromName(\Google\LongRunning\Operation::class));
             foreach ($this->serviceDetails->methods as $method) {
@@ -92,66 +93,91 @@ class GapicClientGenerator
         $file = AST::file($this->generateClass())
             ->withApacheLicense($this->ctx->licenseYear)
             // TODO(vNext): Consider if this header is sensible, as it ties this generator to Google cloud.
-            ->withGeneratedFromProtoCodeWarning($this->serviceDetails->filePath, $this->serviceDetails->isGa());
+            ->withGeneratedFromProtoCodeWarning(
+                $this->serviceDetails->filePath,
+                $this->serviceDetails->isGa()
+            );
         // Finalize as required by the source-context; e.g. add top-level 'use' statements.
         return $this->ctx->finalize($file);
     }
 
-    private function examples(): GapicClientExamplesGenerator
-    {
-        return new GapicClientExamplesGenerator($this->serviceDetails);
-    }
-
     private function generateClass(): PhpClass
     {
-        return AST::class($this->serviceDetails->gapicClientType)
+        return AST::class(
+            $this->serviceDetails->gapicClientType,
+            final: true)
             ->withPhpDoc(PhpDoc::block(
-                PhpDoc::preFormattedText($this->serviceDetails->docLines->skip(1)
-                    ->prepend('Service Description: ' . ($this->serviceDetails->docLines->firstOrNull() ?? ''))),
-                PhpDoc::preFormattedText(Vector::new([
-                    'This class provides the ability to make remote calls to the backing service through method',
-                    'calls that map to API methods. Sample code to get started:'
-                ])),
-                count($this->serviceDetails->methods) === 0 ? null :
-                    PhpDoc::example($this->examples()->rpcMethodExample($this->serviceDetails->methods[0])),
-                count($this->serviceDetails->resourceParts) === 0 ? null :
-                     PhpDoc::text(
-                         'Many parameters require resource names to be formatted in a particular way. To assist ' .
+                PhpDoc::preFormattedText(
+                    $this->serviceDetails->docLines->skip(1)
+                        ->prepend(
+                            'Service Description: ' . ($this->serviceDetails->docLines->firstOrNull() ?? '')
+                        )
+                ),
+                !is_null($this->serviceDetails->apiVersion)
+                    ? PhpDoc::text(
+                        'This client uses ' . $this->serviceDetails->shortName . ' version ' . $this->serviceDetails->apiVersion . '.'
+                    )
+                    : null,
+                PhpDoc::preFormattedText(
+                    Vector::new([
+                        'This class provides the ability to make remote calls to the backing service through method',
+                        'calls that map to API methods.'
+                    ])
+                ),
+                !$this->serviceDetails->hasResources
+                    ? null
+                    : PhpDoc::text(
+                        'Many parameters require resource names to be formatted in a particular way. To assist ' .
                         'with these names, this class includes a format method for each type of name, and additionally ' .
                         'a parseName method to extract the individual identifiers contained within formatted names ' .
                         'that are returned by the API.'
-                     ),
+                    ),
                 $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
-                PhpDoc::deprecated(
-                    // If this service contains both client surfaces, link to the new surface.
-                    in_array($this->serviceDetails->migrationMode, [MigrationMode::MIGRATING, MigrationMode::MIGRATION_MODE_UNSPECIFIED])
-                        ? 'Please use the new service client {@see ' . $this->serviceDetails->gapicClientV2Type->getFullname() . '}.'
-                        : ServiceDetails::DEPRECATED_MSG
-                )
+                !$this->serviceDetails->isDeprecated ? null : PhpDoc::deprecated(ServiceDetails::DEPRECATED_MSG),
+                $this->serviceDetails->streamingOnly ? null : $this->magicAsyncDocs(),
             ))
             ->withTrait($this->ctx->type(Type::fromName(\Google\ApiCore\GapicClientTrait::class)))
+            ->withTrait(
+                $this->serviceDetails->hasResources ? $this->ctx->type(Type::fromName(\Google\ApiCore\ResourceHelperTrait::class)): null
+            )
             ->withMember($this->serviceName())
             ->withMember($this->serviceAddress())
             ->withMember($this->hasServiceAddressTemplate() ? $this->serviceAddressTemplate() : null)
             ->withMember($this->servicePort())
             ->withMember($this->codegenName())
+            ->withMember($this->apiVersion())
             ->withMember($this->serviceScopes())
-            ->withMembers($this->resourceProperties())
             ->withMember($this->operationsClient())
             ->withMember($this->getClientDefaults())
             ->withMember($this->defaultTransport())
             ->withMember($this->supportedTransports())
-            ->withMembers($this->resourceMethods())
             ->withMembers($this->operationMethods())
+            ->withMembers($this->resourceMethods())
             ->withMember($this->construct())
-            ->withMembers($this->serviceDetails->methods->map(fn ($x) => $this->rpcMethod($x)));
+            ->withMember($this->magicMethod())
+            ->withMembers($this->serviceDetails->methods->map(fn ($x) => $this->rpcMethod($x)))
+            ->withMember(EmulatorSupportGenerator::generateEmulatorSupport($this->serviceDetails, $this->ctx));
     }
 
     private function serviceName(): PhpClassMember
     {
         return AST::constant('SERVICE_NAME')
             ->withPhpDocText('The name of the service.')
+            ->withAccess(Access::PRIVATE)
             ->withValue($this->serviceDetails->serviceName);
+    }
+
+    private function apiVersion()
+    {
+        if (is_null($this->serviceDetails->apiVersion)) {
+            return;
+        }
+
+        return AST::property('apiVersion')
+            ->withPhpDocText('The api version of the service')
+            ->withAccess(Access::PRIVATE)
+            ->withType(ResolvedType::string())
+            ->withValue(AST::literal("'" . $this->serviceDetails->apiVersion . "'"));
     }
 
     private function serviceAddress(): PhpClassMember
@@ -163,6 +189,7 @@ class GapicClientGenerator
                     ? PhpDoc::deprecated('SERVICE_ADDRESS_TEMPLATE should be used instead.')
                     : null
             ))
+            ->withAccess(Access::PRIVATE)
             ->withValue($this->serviceDetails->defaultHost);
     }
 
@@ -186,6 +213,7 @@ class GapicClientGenerator
     {
         return AST::constant('DEFAULT_SERVICE_PORT')
             ->withPhpDocText('The default port of the service.')
+            ->withAccess(Access::PRIVATE)
             ->withValue($this->serviceDetails->defaultPort);
     }
 
@@ -193,6 +221,7 @@ class GapicClientGenerator
     {
         return AST::constant('CODEGEN_NAME')
             ->withPhpDocText('The name of the code generator, to be included in the agent header.')
+            ->withAccess(Access::PRIVATE)
             ->withValue('gapic');
     }
 
@@ -207,125 +236,47 @@ class GapicClientGenerator
             ->withValue(AST::array($this->serviceDetails->defaultScopes->toArray()));
     }
 
-    private function resourceProperties(): Vector
+    private function magicAsyncDocs(): PhpDoc
     {
-        if (count($this->serviceDetails->resourceParts) > 0) {
-            // Prevent duplicate properties. Vector's toMap currently does not support cloberring keys.
-            // Sorts these properties alphabetically as a nice side effect.
-            $templateMap = [];
-            foreach ($this->serviceDetails->resourceParts as $r) {
-                $templateMap[$r->nameCamelCase] =
-                  $r->getTemplateProperty()->withAccess(Access::PRIVATE, Access::STATIC);
-            }
-            $templates = Vector::new(array_values($templateMap));
-            $pathTemplateMap = AST::property('pathTemplateMap')
-                ->withAccess(Access::PRIVATE, Access::STATIC);
-            return Vector::new($templates->append($pathTemplateMap));
-        } else {
-            return Vector::new([]);
-        }
+        $methodDocs = $this->serviceDetails->methods
+            ->filter(fn ($m) => !$m->isStreaming())
+            ->map(fn ($m) => PhpDoc::method(
+                $m->methodName . 'Async',
+                $this->asyncReturnType($m),
+                $m->requestType->name, // the request type will already be imported for the sync variants
+            ));
+        return PhpDoc::block($methodDocs);
     }
 
-    private function resourceMethods(): Vector
+    private function magicMethod(): ?PhpClassMember
     {
-        $resourceParts = $this->serviceDetails->resourceParts;
-        if (count($resourceParts) > 0) {
-            $templateGetters = $resourceParts
-                ->map(fn ($x) => $x->getTemplateGetterMethod()
-                    ->withAccess(Access::PRIVATE, Access::STATIC)
-                    ->withBody(AST::block(
-                        AST::if(AST::binaryOp(AST::access(AST::SELF, $x->getTemplateProperty()), '==', AST::NULL))->then(
-                            AST::assign(
-                                AST::access(AST::SELF, $x->getTemplateProperty()),
-                                AST::new($this->ctx->type(Type::fromName(PathTemplate::class)))($x->getPattern())
-                            )
-                        ),
-                        AST::return(AST::access(AST::SELF, $x->getTemplateProperty()))
-                    )));
-            $pathTemplateMap = AST::property('pathTemplateMap');
-            $getPathTemplateMap = AST::method('getPathTemplateMap')
-                ->withAccess(Access::PRIVATE, Access::STATIC)
-                ->withBody(AST::block(
-                    AST::if(AST::binaryOp(AST::access(AST::SELF, $pathTemplateMap), '==', AST::NULL))->then(
-                        AST::assign(
-                            AST::access(AST::SELF, $pathTemplateMap),
-                            AST::array($resourceParts
-                            ->toArray(fn ($x) => $x->getNameCamelCase(), fn ($x) => AST::call(AST::SELF, $x->getTemplateGetterMethod())()))
-                        )
-                    ),
-                    AST::return(AST::access(AST::SELF, $pathTemplateMap))
-                ));
-            $formatMethods = $resourceParts
-                ->map(fn ($x) => $x->getFormatMethod()
-                    ->withAccess(Access::PUBLIC, Access::STATIC)
-                    ->withParams($x->getParams()->map(fn ($x) => $x[1]))
-                    ->withBody(AST::block(
-                        AST::return(AST::call(AST::SELF, $x->getTemplateGetterMethod())()->render(
-                            AST::array($x->getParams()->toArray(fn ($x) => $x[0], fn ($x) => $x[1]))
-                        ))
-                    ))
-                    ->withPhpDoc(PhpDoc::block(
-                        PhpDoc::text(
-                            'Formats a string containing the fully-qualified path to represent a',
-                            $x->getNameSnakeCase(),
-                            'resource.'
-                        ),
-                        $x->getParams()->map(fn ($x) => PhpDoc::param($x[1], PhpDoc::text(), $this->ctx->type(Type::string()))),
-                        PhpDoc::return($this->ctx->type(Type::string()), PhpDoc::text('The formatted', $x->getNameSnakeCase(), 'resource.')),
-                        $this->serviceDetails->isGa() ? null : PhpDoc::experimental()
-                    )));
-            $formattedName = AST::param(null, AST::var('formattedName'));
-            $template = AST::param(null, AST::var('template'), AST::NULL);
-            $templateMap = AST::var('templateMap');
-            $templateName = AST::var('templateName');
-            $pathTemplate = AST::var('pathTemplate');
-            $ex = AST::var('ex');
-            $parseMethod = AST::method('parseName')
-                ->withAccess(Access::PUBLIC, Access::STATIC)
-                ->withParams($formattedName, $template)
-                ->withBody(AST::block(
-                    AST::assign($templateMap, AST::call(AST::SELF, $getPathTemplateMap)()),
-                    AST::if($template->var)->then(
-                        AST::if(AST::not(AST::call(AST::ISSET)($templateMap[$template->var])))->then(
-                            AST::throw(AST::new($this->ctx->type(Type::fromName(ValidationException::class)))(
-                                AST::interpolatedString('Template name $template does not exist')
-                            ))
-                        ),
-                        AST::return($templateMap[$template->var]->match($formattedName->var))
-                    ),
-                    AST::foreach($templateMap, $pathTemplate, $templateName)(
-                        AST::try(
-                            AST::return($pathTemplate->match($formattedName))
-                        )->catch($this->ctx->type(Type::fromName(ValidationException::class)), $ex)(
-                            '// Swallow the exception to continue trying other path templates'
-                        )
-                    ),
-                    AST::throw(AST::new($this->ctx->type(Type::fromName(ValidationException::class)))(
-                        AST::interpolatedString('Input did not match any known format. Input: $formattedName')
-                    ))
-                ))
-                ->withPhpDoc(PhpDoc::block(
-                    PhpDoc::preFormattedText(Vector::new([
-                        'Parses a formatted name string and returns an associative array of the components in the name.',
-                        'The following name formats are supported:',
-                        'Template: Pattern',
-                    ])->concat($resourceParts->map(fn ($x) => "- {$x->getNameCamelCase()}: {$x->getPattern()}"))),
-                    PhpDoc::text(
-                        'The optional $template argument can be supplied to specify a particular pattern, and must',
-                        'match one of the templates listed above. If no $template argument is provided, or if the',
-                        '$template argument does not match one of the templates listed, then parseName will check',
-                        'each of the supported templates, and return the first match.'
-                    ),
-                    PhpDoc::param($formattedName, PhpDoc::text('The formatted name string'), $this->ctx->type(Type::string())),
-                    PhpDoc::param($template, PhpDoc::text('Optional name of template to match'), $this->ctx->type(Type::string())),
-                    PhpDoc::return($this->ctx->type(Type::array()), PhpDoc::text('An associative array from name component IDs to component values.')),
-                    PhpDoc::throws($this->ctx->type(Type::fromName(ValidationException::class)), PhpDoc::text('If $formattedName could not be matched.')),
-                    $this->serviceDetails->isGa() ? null : PhpDoc::experimental()
-                ));
-            return $templateGetters->append($getPathTemplateMap)->concat($formatMethods)->append($parseMethod);
-        } else {
-            return Vector::new([]);
+        // Only has streaming RPCs, so exclude __call from implementation, since
+        // the magic method is only for async support at the moment.
+        if ($this->serviceDetails->streamingOnly) {
+            return null;
         }
+
+        // params
+        $methodVar = AST::var('method');
+        $methodParam = AST::param(null, $methodVar);
+        $argsVar = AST::var('args');
+        $argsParam = AST::param(null, $argsVar);
+        $triggerError = AST::call(AST::TRIGGER_ERROR)(AST::concat('Call to undefined method ', AST::__CLASS__, AST::interpolatedString('::$method()')), AST::E_USER_ERROR);
+
+        return AST::method('__call')
+            ->withAccess(Access::PUBLIC)
+            ->withParams($methodParam, $argsParam)
+            ->withBody(AST::block(
+                AST::if(AST::binaryOp(AST::call(AST::SUBSTR)($methodVar, AST::literal('-5')), '!==', AST::literal("'Async'")))
+                    ->then($triggerError),
+                AST::call(AST::ARRAY_UNSHIFT)($argsVar, AST::call(AST::SUBSTR)($methodVar, AST::literal('0'), AST::literal('-5'))),
+                AST::return(
+                    AST::call(AST::CALL_USER_FUNC_ARRAY)(AST::array([AST::THIS, 'startAsyncCall'], true), $argsVar)
+                )
+            ))
+            ->withPhpDoc(PhpDoc::block(
+                PhpDoc::text('Handles execution of the async variants for each documented method.'),
+            ));
     }
 
     private function operationsClient(): ?PhpClassMember
@@ -344,10 +295,9 @@ class GapicClientGenerator
         if (!$this->serviceDetails->hasLro && !$this->serviceDetails->hasCustomOp) {
             return Vector::new([]);
         }
-
-        $ctype = $this->serviceDetails->hasCustomOp ?
-            $this->serviceDetails->customOperationServiceClientType :
-            Type::fromName(OperationsClient::class);
+        $ctype = $this->serviceDetails->hasCustomOp
+            ? $this->serviceDetails->customOperationServiceClientType
+            : Type::fromName(OperationsClient::class);
         $methods = Vector::new([]);
 
         // getOperationsClient returns the operation client instance.
@@ -393,8 +343,7 @@ class GapicClientGenerator
             ->withAccess(Access::PUBLIC)
             ->withParams(AST::param(null, $operationName), AST::param(null, $methodName, AST::NULL))
             ->withBody(AST::block(
-                AST::assign($options, AST::ternary(
-                    AST::call(AST::ISSET)(AST::access(AST::THIS, AST::property('descriptors'))[$methodName]['longRunning']),
+                AST::assign($options, AST::nullCoalescing(
                     AST::access(AST::THIS, AST::property('descriptors'))[$methodName]['longRunning'],
                     $default
                 )),
@@ -415,11 +364,11 @@ class GapicClientGenerator
                     'final response.'
                 ),
                 PhpDoc::param(
-                    AST::param($this->ctx->type(Type::string()), $operationName),
+                    AST::param(ResolvedType::string(), $operationName),
                     PhpDoc::text('The name of the long running operation')
                 ),
                 PhpDoc::param(
-                    AST::param($this->ctx->type(Type::string()), $methodName),
+                    AST::param(ResolvedType::string(), $methodName),
                     PhpDoc::text('The name of the method used to start the operation')
                 ),
                 PhpDoc::return($this->ctx->type(Type::fromName(OperationResponse::class))),
@@ -427,7 +376,100 @@ class GapicClientGenerator
             ));
         $methods = $methods->append($resumeOperation);
 
+        // write createOperationsClient method for new surface clients
+        // @TODO: Remove this once GAX V2 is released
+        $operationsClientType = $this->serviceDetails->hasCustomOp
+            ? $this->ctx->type($this->serviceDetails->customOperationServiceClientType)
+            : $this->ctx->type(Type::fromName(OperationsClient::class));
+        $createOperationsClient = AST::method('createOperationsClient')
+            ->withAccess(Access::PRIVATE)
+            ->withParams(AST::param(ResolvedType::array(), $options))
+            ->withBody(AST::block(
+                '// Unset client-specific configuration options',
+                AST::call(AST::method('unset'))(
+                    AST::index($options, 'serviceName'),
+                    AST::index($options, 'clientConfig'),
+                    AST::index($options, 'descriptorsConfigPath'),
+                ),
+                PHP_EOL,
+                AST::if(
+                    AST::call(AST::method('isset'))(AST::index($options, 'operationsClient'))
+                )->then(AST::return(AST::index($options, 'operationsClient'))),
+                PHP_EOL,
+                AST::return(AST::new($operationsClientType)($options))
+            ))
+            ->withPhpDoc(PhpDoc::block(
+                PhpDoc::text(
+                    'Create the default operation client for the service.',
+                ),
+                PhpDoc::param(
+                    AST::param(ResolvedType::array(), $options),
+                    PhpDoc::text('ClientOptions for the client.')
+                ),
+                PhpDoc::return($operationsClientType)
+            ));
+        $methods = $methods->append($createOperationsClient);
+
         return $methods;
+    }
+
+    private function resourceMethods(): Vector
+    {
+        if (!$this->serviceDetails->hasResources) {
+            return Vector::new();
+        }
+        $formattedName = AST::param(ResolvedType::string(), AST::var('formattedName'));
+        $template = AST::param(ResolvedType::string(true), AST::var('template'), AST::NULL);
+
+        return $this->serviceDetails->resourceParts
+            ->map(fn ($x) => $x->getFormatMethod()
+                ->withAccess(Access::PUBLIC, Access::STATIC)
+                // In order to avoid adding type hints to the v1 clients which has shared code for
+                // Resource helper generation, we lazily add the param types here.
+                ->withParams($x->getParams()->map(fn ($x) => AST::param(ResolvedType::string(), $x[1]->var)))
+                ->withReturnType(ResolvedType::string())
+                ->withBody(AST::block(
+                    AST::return(AST::call(AST::SELF, AST::method('getPathTemplate'))($x->nameCamelCase)->render(
+                        AST::array($x->getParams()->toArray(fn ($x) => $x[0], fn ($x) => $x[1]))
+                    ))
+                ))
+                ->withPhpDoc(PhpDoc::block(
+                    PhpDoc::text(
+                        'Formats a string containing the fully-qualified path to represent a',
+                        $x->getNameSnakeCase(),
+                        'resource.'
+                    ),
+                    $x->getParams()->map(fn ($x) => PhpDoc::param($x[1], PhpDoc::text(), ResolvedType::string())),
+                    PhpDoc::return(ResolvedType::string(), PhpDoc::text('The formatted', $x->getNameSnakeCase(), 'resource.')),
+                    $this->serviceDetails->isGa() ? null : PhpDoc::experimental()
+                )))
+            ->append(
+                AST::method('parseName')
+                ->withAccess(Access::PUBLIC, Access::STATIC)
+                ->withParams($formattedName, $template)
+                ->withReturnType(ResolvedType::array())
+                ->withBody(AST::block(
+                    AST::return(AST::call(AST::SELF, AST::method('parseFormattedName'))($formattedName->var, $template->var))
+                ))
+                ->withPhpDoc(PhpDoc::block(
+                    PhpDoc::preFormattedText(Vector::new([
+                        'Parses a formatted name string and returns an associative array of the components in the name.',
+                        'The following name formats are supported:',
+                        'Template: Pattern',
+                    ])->concat($this->serviceDetails->resourceParts->map(fn ($x) => "- {$x->getNameCamelCase()}: {$x->getPattern()}"))),
+                    PhpDoc::text(
+                        'The optional $template argument can be supplied to specify a particular pattern, and must',
+                        'match one of the templates listed above. If no $template argument is provided, or if the',
+                        '$template argument does not match one of the templates listed, then parseName will check',
+                        'each of the supported templates, and return the first match.'
+                    ),
+                    PhpDoc::param($formattedName, PhpDoc::text('The formatted name string')),
+                    PhpDoc::param($template, PhpDoc::text('Optional name of template to match')),
+                    PhpDoc::return(ResolvedType::array(), PhpDoc::text('An associative array from name component IDs to component values.')),
+                    PhpDoc::throws($this->ctx->type(Type::fromName(ValidationException::class)), PhpDoc::text('If $formattedName could not be matched.')),
+                    $this->serviceDetails->isGa() ? null : PhpDoc::experimental()
+                ))
+            );
     }
 
     private function getClientDefaults(): PhpClassMember
@@ -447,7 +489,7 @@ class GapicClientGenerator
 
         // TODO: Consolidate setting all the known array values together.
         // We do this here to maintain the existing sensible ordering.
-        if ($this->serviceDetails->transportType === Transport::GRPC_REST) {
+        if ($this->serviceDetails->transportType !== Transport::REST) {
             $clientDefaultValues['gcpApiConfigPath'] =
                 AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->grpcConfigFilename}");
         }
@@ -460,16 +502,13 @@ class GapicClientGenerator
             $credentialsConfig['useJwtAccessWithScope'] = false;
         }
         $clientDefaultValues['credentialsConfig'] = AST::array($credentialsConfig);
-        $clientDefaultValues['transportConfig'] = AST::array([
-            'rest' => AST::array([
-                'restClientConfigPath' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->restConfigFilename}"),
-            ])
-        ]);
-        if ($this->serviceDetails->hasCustomOp) {
-            $clientDefaultValues['operationsClientClass'] = AST::access(
-                $this->ctx->type($this->serviceDetails->customOperationServiceClientType),
-                AST::CLS
-            );
+
+        if ($this->serviceDetails->transportType !== Transport::GRPC) {
+            $clientDefaultValues['transportConfig'] = AST::array([
+                'rest' => AST::array([
+                    'restClientConfigPath' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->restConfigFilename}"),
+                ])
+            ]);
         }
 
         return AST::method('getClientDefaults')
@@ -494,16 +533,25 @@ class GapicClientGenerator
 
     private function supportedTransports()
     {
-        if ($this->serviceDetails->transportType !== Transport::REST) {
-            return null;
+        if ($this->serviceDetails->transportType === Transport::REST) {
+            return AST::method('supportedTransports')
+                ->withPhpDocText('Implements ClientOptionsTrait::supportedTransports.')
+                ->withAccess(Access::PRIVATE, Access::STATIC)
+                ->withBody(AST::block(
+                    AST::return(AST::array(['rest']))
+                ));
         }
-        return AST::method('supportedTransports')
-            ->withPhpDocText('Implements GapicClientTrait::supportedTransports.')
-            ->withAccess(Access::PRIVATE, Access::STATIC)
-            ->withBody(AST::block(
-                AST::return(AST::array(['rest']))
-            ));
+
+        if ($this->serviceDetails->transportType === Transport::GRPC) {
+            return AST::method('supportedTransports')
+                ->withPhpDocText('Implements ClientOptionsTrait::supportedTransports.')
+                ->withAccess(Access::PRIVATE, Access::STATIC)
+                ->withBody(AST::block(
+                    AST::return(AST::array(['grpc', 'grpc-fallback']))
+                ));
+        }
     }
+
     private function construct(): PhpClassMember
     {
         $ctx = $this->ctx;
@@ -511,18 +559,21 @@ class GapicClientGenerator
         $buildClientOptions = AST::method('buildClientOptions');
         $setClientOptions = AST::method('setClientOptions');
         $options = AST::var('options');
-        $optionsParam = AST::param($this->ctx->type(Type::array()), $options, AST::array([]));
+        $optionsParam = AST::param(
+            ResolvedType::union(
+                Type::array(),
+                Type::fromName(\Google\ApiCore\Options\ClientOptions::class)
+            ),
+            $options,
+            AST::array([])
+        );
         $clientOptions = AST::var('clientOptions');
+        $transportType = $this->serviceDetails->transportType;
 
-        // Assumes there are only two transport types.
-        $isGrpcRest = $this->serviceDetails->transportType === Transport::GRPC_REST;
-
-        $restTransportDocText = 'At the moment, supports only `rest`.';
-        $grpcTransportDocText = 'May be either the string `rest` or `grpc`. Defaults to `grpc` if gRPC support is detected on the system.';
         $transportDocText =
             PhpDoc::text(
                 'The transport used for executing network requests. ',
-                $isGrpcRest ? $grpcTransportDocText : $restTransportDocText,
+                $this->transportDocText($transportType),
                 '*Advanced usage*: Additionally, it is possible to pass in an already instantiated',
                 // TODO(vNext): Don't use a fully-qualified type here.
                 $ctx->type(Type::fromName(TransportInterface::class), true),
@@ -530,40 +581,61 @@ class GapicClientGenerator
                 'setting, will be ignored.'
             );
 
-        $transportConfigSampleValues = [];
-        if ($isGrpcRest) {
-            $transportConfigSampleValues['grpc'] = AST::arrayEllipsis();
+        $transportConfigSampleValues = [
+            'grpc' => AST::arrayEllipsis(),
+            'rest' => AST::arrayEllipsis()
+        ];
+
+        if (Transport::isGrpcOnly($transportType)) {
+            unset($transportConfigSampleValues['rest']);
+        } elseif (Transport::isRestOnly($transportType)) {
+            unset($transportConfigSampleValues['grpc']);
         }
-        // Set this value here, don't initialize it, so we can maintain alphabetical order
-        // for the resulting printed doc.
-        $transportConfigSampleValues['rest'] = AST::arrayEllipsis();
+
         $transportConfigDocText =
             PhpDoc::text(
                 'Configuration options that will be used to construct the transport. Options for',
                 'each supported transport type should be passed in a key for that transport. For example:',
-                PhpDoc::example(AST::block(
-                    AST::assign(AST::var('transportConfig'), AST::array($transportConfigSampleValues))
-                ), null, true),
+                PhpDoc::example(
+                    AST::block(
+                        AST::assign(
+                            AST::var('transportConfig'),
+                            AST::array($transportConfigSampleValues)
+                        )
+                    ),
+                    null,
+                    true
+                ),
                 'See the',
                 AST::call(
                     $ctx->type(
-                        Type::fromName($isGrpcRest ? GrpcTransport::class : RestTransport::class),
+                        Type::fromName(
+                            Transport::isRestOnly($transportType) ?
+                                RestTransport::class :
+                                GrpcTransport::class
+                        ),
                         true
                     ),
                     AST::method('build')
                 )(),
-                $isGrpcRest ? 'and' : '',
-                $isGrpcRest
-                    ? AST::call($ctx->type(Type::fromName(RestTransport::class), true), AST::method('build'))()
+                Transport::isGrpcRest($transportType) ? 'and' : '',
+                Transport::isGrpcRest($transportType) ?
+                    AST::call(
+                        $ctx->type(
+                            Type::fromName(RestTransport::class),
+                            true
+                        ),
+                        AST::method('build')
+                    )()
                     : '',
-                $isGrpcRest ? 'methods ' : 'method ',
+                Transport::isGrpcRest($transportType) ? 'methods ' : 'method ',
                 'for the supported options.'
             );
-
         return AST::method('__construct')
             ->withParams($optionsParam)
             ->withAccess(Access::PUBLIC)
             ->withBody(AST::block(
+                EmulatorSupportGenerator::generateEmulatorOptions($this->serviceDetails, $options),
                 AST::assign($clientOptions, AST::call(AST::THIS, $buildClientOptions)($options)),
                 AST::call(AST::THIS, $setClientOptions)($clientOptions),
                 $this->serviceDetails->hasLro || $this->serviceDetails->hasCustomOp
@@ -575,13 +647,9 @@ class GapicClientGenerator
             ))
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::text('Constructor.'),
+                EmulatorSupportGenerator::generateEmulatorPhpDoc($this->serviceDetails),
                 PhpDoc::param($optionsParam, PhpDoc::block(
                     PhpDoc::text('Optional. Options for configuring the service API wrapper.'),
-                    // TODO: Understand if this commented-out code is correct or not.
-                    // PhpDoc::type(Vector::new([$ctx->type(Type::string())]), 'serviceAddress',
-                    //     PhpDoc::text('**Deprecated**. This option will be removed in a future major release.',
-                    //         'Please utilize the `$apiEndpoint` option instead.')),
-                    // PhpDoc::type(Vector::new([$ctx->type(Type::string())]), 'apiEndpoint',
                     PhpDoc::type(
                         Vector::new([$ctx->type(Type::string())]),
                         'apiEndpoint',
@@ -592,23 +660,36 @@ class GapicClientGenerator
                     ),
                     PhpDoc::type(
                         Vector::new([
-                        $ctx->type(Type::string()),
-                        $ctx->type(Type::array()),
-                        $ctx->type(Type::fromName(FetchAuthTokenInterface::class)),
-                        $ctx->type(Type::fromName(CredentialsWrapper::class))
-                    ]),
+                            $ctx->type(Type::fromName(FetchAuthTokenInterface::class)),
+                            $ctx->type(Type::fromName(CredentialsWrapper::class))
+                        ]),
                         'credentials',
                         PhpDoc::text(
-                            'The credentials to be used by the client to authorize API calls. This option',
-                            'accepts either a path to a credentials file, or a decoded credentials file as a PHP array.',
+                            'This option should only be used with a pre-constructed',
+                            $ctx->type(Type::fromName(FetchAuthTokenInterface::class)),
+                            'or',
+                            $ctx->type(Type::fromName(CredentialsWrapper::class)),
+                            'object. Note that when one of these objects are provided, any settings in $credentialsConfig',
+                            'will be ignored.',
                             PhpDoc::newLine(),
-                            '*Advanced usage*: In addition, this option can also accept a pre-constructed',
-                            // TODO(vNext): Don't use a fully-qualified type here.
-                            $ctx->type(Type::fromName(FetchAuthTokenInterface::class), true),
-                            'object or',
-                            // TODO(vNext): Don't use a fully-qualified type here.
-                            $ctx->type(Type::fromName(CredentialsWrapper::class), true),
-                            'object. Note that when one of these objects are provided, any settings in $credentialsConfig will be ignored.'
+                            '**Important**: If you are providing a path to a credentials file, or a decoded credentials',
+                            'file as a PHP array, this usage is now DEPRECATED. Providing an unvalidated credential',
+                            'configuration to Google APIs can compromise the security of your systems and data. It is',
+                            'recommended to create the credentials explicitly',
+                            PhpDoc::newLine(),
+                            '```',
+                            PhpDoc::newLine(),
+                            'use Google\Auth\Credentials\ServiceAccountCredentials;',
+                            PhpDoc::newLine(),
+                            sprintf('use %s\\%s;', $this->serviceDetails->namespace, $this->serviceDetails->gapicClientType->name),
+                            PhpDoc::newLine(),
+                            '$creds = new ServiceAccountCredentials($scopes, $json);',
+                            PhpDoc::newLine(),
+                            sprintf('$options = new %s([\'credentials\' => $creds]);', $this->serviceDetails->gapicClientType->name),
+                            PhpDoc::newLine(),
+                            '```',
+                            PhpDoc::newLine(),
+                            '{@see https://cloud.google.com/docs/authentication/external/externally-sourced-credentials}'
                         )
                     ),
                     PhpDoc::type(
@@ -660,6 +741,26 @@ class GapicClientGenerator
                             'A callable which returns the client cert as a string. This can be used to provide',
                             'a certificate and private key to the transport layer for mTLS.'
                         )
+                    ),
+                    PhpDoc::type(
+                        Vector::new([
+                            $ctx->type(Type::false()),
+                            $ctx->type(Type::fromName(LoggerInterface::class))
+                        ]),
+                        'logger',
+                        PhpDoc::text(
+                            'A PSR-3 compliant logger. If set to false, logging is disabled,',
+                            'ignoring the \'GOOGLE_SDK_PHP_LOGGING\' environment flag'
+                        )
+                    ),
+                    PhpDoc::type(
+                        Vector::new([
+                            $ctx->type(Type::string()),
+                        ]),
+                        'universeDomain',
+                        PhpDoc::text(
+                            'The service domain for the client. Defaults to \'googleapis.com\'.'
+                        )
                     )
                 )),
                 PhpDoc::throws($this->ctx->type(Type::fromName(ValidationException::class))),
@@ -667,585 +768,173 @@ class GapicClientGenerator
             ));
     }
 
-    private function rpcMethod(MethodDetails $method): PhpClassMember
+    private function transportDocText(int $transportType): string
     {
-        $docType = function ($field): ResolvedType {
-            if ($field->desc->desc->isRepeated()) {
-                if ($field->isEnum) {
-                    // TODO(vNext): Remove this unnecessary import.
-                    $this->ctx->type($field->typeSingular);
-                    return $this->ctx->type(Type::arrayOf(Type::int()), false, true);
-                } elseif ($field->isMap) {
-                    return $this->ctx->type(Type::array());
-                } elseif ($field->isOneOf) {
-                    // Also adds a corresponding 'use' import.
-                    return $this->ctx->type($field->toOneofWrapperType($this->serviceDetails->namespace));
-                } else {
-                    return $this->ctx->type(Type::arrayOf(Type::fromField($this->serviceDetails->catalog, $field->desc->desc, false)), false, true);
-                }
-            } else {
-                // Affects type hinting for required oneofs.
-                // TODO(vNext) Handle optional oneofs here.
-                if ($field->isOneOf && $field->isRequired) {
-                    return $this->ctx->type($field->toOneofWrapperType($this->serviceDetails->namespace));
-                } elseif ($field->isEnum) {
-                    // TODO(vNext): Remove this unnecessary import.
-                    $this->ctx->type($field->type);
-                    return $this->ctx->type(Type::int());
-                } else {
-                    return $this->ctx->type($field->type);
-                }
-            }
-        };
-        $docExtra = function ($field): Vector {
-            if ($field->isEnum) {
-                // TODO(vNext): Don't use a fully-qualified name here; and import correctly.
-                $enumType = $field->typeSingular->getFullname();
-                return Vector::new([
-                    "For allowed values, use constants defined on {@see {$enumType}}"
-                ]);
-            } else {
-                return Vector::new([]);
-            }
-        };
-        $request = AST::var('request');
-        $requestParamHeaders = AST::var('requestParamHeaders');
-        $required = $method->requiredFields
-                           ->filter(fn ($f) => !$f->isOneOf || $f->isFirstFieldInOneof())
-                           ->map(fn ($f) => $this->toParam($f));
-        $optionalArgs = AST::param($this->ctx->type(Type::array()), AST::var('optionalArgs'), AST::array([]));
-        $retrySettingsType = Type::fromName(RetrySettings::class);
-        $requestParams = AST::var('requestParams');
-        $isStreamedRequest =
-            $method->methodType === MethodDetails::BIDI_STREAMING
-            || $method->methodType === MethodDetails::CLIENT_STREAMING;
-        // Request parameter handling.
-        $restRoutingHeaders =
-            is_null($method->restRoutingHeaders) || count($method->restRoutingHeaders) === 0
-            ? Map::new([])
-            : $method->restRoutingHeaders;
-        // The presence of google.api.routing explicit headers overrides google.api.http-based implicit headers.
-        $hasRoutingParams = !is_null($method->routingParameters);
-        if ($hasRoutingParams) {
-            $restRoutingHeaders = $method->routingParameters;
+        if (Transport::isRestOnly($transportType)) {
+            return 'At the moment, supports only `rest`.';
         }
 
-        // An associative array containing 'required' and 'optional' keys for statements that inject required
-        // and optional fields in request headers.
-        $requestHeaderAssignments = $hasRoutingParams
-            ? static::explicitRequestParams($method, $restRoutingHeaders, $requestParamHeaders)
-            : static::implicitRequestParams($method, $restRoutingHeaders, $requestParamHeaders);
+        if (Transport::isGrpcOnly($transportType)) {
+            return 'At the moment, supports only `grpc`.';
+        }
 
-        $hasRequestParams = count($restRoutingHeaders) > 0;
+        return 'May be either the string `rest` or `grpc`. Defaults to `grpc` if gRPC support is detected on the system.';
+    }
+
+    private function rpcMethod(MethodDetails $method): PhpClassMember
+    {
+        $request = AST::var('request');
+        $required = AST::param(
+            $this->ctx->type($method->requestType),
+            $request
+        );
+        $callOptions = AST::param(
+            ResolvedType::array(),
+            AST::var(self::CALL_OPTIONS_VAR),
+            AST::array([])
+        );
+        $retrySettingsType = Type::fromName(RetrySettings::class);
+        $usesRequest = !$method->isClientStreaming()
+            && !$method->isBidiStreaming();
+        $startCall = $this->startCall($method, $callOptions, $request);
+        $phpDocReturnType = null;
+        $returnType = $this->ctx->type(Type::void());
+        if (!$method->hasEmptyResponse) {
+            $returnType = $this->ctx->type($method->methodReturnType);
+            $phpDocReturnType = PhpDoc::return($returnType);
+            $startCall = AST::return($startCall);
+            $genericType = match ($method->methodType) {
+                MethodDetails::LRO => $method->hasEmptyLroResponse
+                    ? Type::null()
+                    : $method->lroResponseType,
+                MethodDetails::SERVER_STREAMING => $method->responseType,
+                default => null,
+            };
+            if ($genericType) {
+                // ensure generic type is imported
+                $this->ctx->type($genericType);
+                $phpDocReturnType = PhpDoc::return(ResolvedType::generic(
+                    $method->methodReturnType,
+                    $genericType
+                ));
+            }
+        }
+
         return AST::method($method->methodName)
             ->withAccess(Access::PUBLIC)
             ->withParams(
-                $isStreamedRequest ? null : $required,
-                $optionalArgs
+                $usesRequest ? $required : null,
+                $callOptions
             )
-            ->withBody(AST::block(
-                $isStreamedRequest ? null : Vector::new([
-                    AST::assign($request, AST::new($this->ctx->type($method->requestType))()),
-                    !$hasRequestParams ? null : AST::assign($requestParamHeaders, AST::array([])),
-                    Vector::zip(
-                        $method->requiredFields->filter(fn ($f) => !$f->isOneOf || $f->isFirstFieldInOneof()),
-                        $required,
-                        fn ($field, $param) => $this->toRequestFieldSetter($request, $field, $param)
-                    ),
-                    // Request header assignments for required fields.
-                    $requestHeaderAssignments['required'],
-                    $method->optionalFields->map(
-                        fn ($x) =>
-                        AST::if(AST::call(AST::ISSET)(AST::index($optionalArgs->var, $x->camelName)))
-                            ->then(
-                                AST::call($request, $x->setter)(AST::index($optionalArgs->var, $x->camelName)),
-                                // Request header assignment/parsing for optional fields.
-                                !is_null($requestHeaderAssignments['optional'])
-                                    ? $requestHeaderAssignments['optional']->get($x->name, null)
-                                    : null
-                            ),
-                    ),
-                    !$hasRequestParams ? null : AST::assign(
-                        $requestParams,
-                        AST::new($this->ctx->type(
-                            Type::fromName(RequestParamsHeaderDescriptor::class)
-                        ))($requestParamHeaders)
-                    ),
-                    !$hasRequestParams ? null : AST::assign(
-                        $optionalArgs->var['headers'],
-                        AST::ternary(
-                            AST::call(AST::ISSET)($optionalArgs->var['headers']),
-                            AST::call(AST::ARRAY_MERGE)($requestParams->getHeader(), $optionalArgs->var['headers']),
-                            $requestParams->getHeader()
+            ->withBody(AST::block($startCall))
+            ->withReturnType($returnType)
+            ->withPhpDoc(
+                PhpDoc::block(
+                    count($method->docLines) > 0
+                        ? PhpDoc::preFormattedText($method->docLines)
+                        : null,
+                    !$method->isStreaming()
+                        ? PhpDoc::text(
+                            'The async variant is',
+                            AST::staticCall( // use staticCall for PHP Doc :: syntax
+                                $this->ctx->type($this->serviceDetails->gapicClientType),
+                                AST::method($method->methodName . 'Async')
+                            )(),
+                            '.'
                         )
-                    )
-                ]),
-                AST::return($this->startCall($method, $optionalArgs, $request))
-            ))
-            ->withPhpDoc(PhpDoc::block(
-                PhpDoc::preFormattedText($method->docLines),
-                PhpDoc::example($this->examples()->rpcMethodExample($method), PhpDoc::text('Sample code:')),
-                $isStreamedRequest
-                    ? null
-                    : Vector::zip(
-                        $method->requiredFields->filter(fn ($f) => !$f->isOneOf || $f->isFirstFieldInOneof()),
-                        $required,
-                        fn ($field, $param) =>
-                        PhpDoc::param(
-                            $param,
-                            PhpDoc::preFormattedText(
-                                !$field->isOneOf
-                                    ? $field->docLines->concat($docExtra($field))
-                                    : Vector::new([
-                                        'An instance of the wrapper class for the required proto oneof '
-                                        . $field->getOneofDesc()->getName() . '.'
-                                      ])->concat($docExtra($field))
-                            ),
-                            $docType($field)
-                        )
-                    ),
-                $isStreamedRequest ?
-                    PhpDoc::param($optionalArgs, PhpDoc::block(
-                        PhpDoc::Text('Optional.'),
-                        PhpDoc::type(
-                            Vector::new([$this->ctx->type(Type::int())]),
-                            'timeoutMillis',
-                            PhpDoc::text('Timeout to use for this call.')
-                        )
-                    )) :
-                    PhpDoc::param($optionalArgs, PhpDoc::block(
-                        PhpDoc::Text('Optional.'),
-                        $method->optionalFields->map(
-                            fn ($field) =>
-                            PhpDoc::type(
-                                Vector::new([$docType($field)]),
-                                $field->camelName,
-                                PhpDoc::preFormattedText($field->docLines->concat($docExtra($field)))
-                            )
-                        ),
-                        $method->methodType === MethodDetails::SERVER_STREAMING ?
-                            PhpDoc::type(
+                        : null,
+                    PhpDoc::sample($this->snippetPathForMethod($method)),
+                    $usesRequest
+                        ? PhpDoc::param($required, PhpDoc::text('A request to house fields associated with the call.'))
+                        : null,
+                    PhpDoc::param(
+                        $callOptions,
+                        PhpDoc::block(
+                            PhpDoc::Text('Optional.'),
+                            $method->isStreaming()
+                            ? PhpDoc::type(
                                 Vector::new([$this->ctx->type(Type::int())]),
                                 'timeoutMillis',
                                 PhpDoc::text('Timeout to use for this call.')
-                            ) :
-                            PhpDoc::type(
-                                Vector::new([$this->ctx->type($retrySettingsType), $this->ctx->type(Type::array())]),
+                            )
+                            : PhpDoc::type(
+                                Vector::new([$this->ctx->type($retrySettingsType), ResolvedType::array()]),
                                 'retrySettings',
                                 PhpDoc::text(
-                                    // TODO(vNext): Don't use a fully-qualified type here.
                                     'Retry settings to use for this call. Can be a ',
-                                    $this->ctx->Type($retrySettingsType),
+                                    $this->ctx->type($retrySettingsType),
                                     ' object, or an associative array of retry settings parameters. See the documentation on ',
-                                    // TODO(vNext): Don't use a fully-qualified type here.
-                                    $this->ctx->Type($retrySettingsType),
+                                    $this->ctx->type($retrySettingsType),
                                     ' for example usage.'
                                 )
                             )
-                    )),
-                // TODO(vNext): Don't use a fully-qualified type here.
-                $method->hasEmptyResponse ? null : PhpDoc::return($this->ctx->type($method->methodReturnType, true)),
-                PhpDoc::throws(
-                    $this->ctx->type(Type::fromName(ApiException::class)),
-                    PhpDoc::text('if the remote call fails')
-                ),
-                $this->serviceDetails->isGa() ? null : PhpDoc::experimental(),
-                !$method->isDeprecated ? null : PhpDoc::deprecated(MethodDetails::DEPRECATED_MSG)
-            ));
+                        )
+                    ),
+                    $phpDocReturnType,
+                    PhpDoc::throws(
+                        $this->ctx->type(Type::fromName(ApiException::class)),
+                        PhpDoc::text('Thrown if the API call fails.')
+                    ),
+                    $this->serviceDetails->isGa()
+                        ? null
+                        : PhpDoc::experimental(),
+                    $method->isDeprecated
+                        ? PhpDoc::deprecated(MethodDetails::DEPRECATED_MSG)
+                        : null
+                )
+            );
     }
 
-    private function startCall($method, $optionalArgs, $request): AST
+    private function startCall($method, $callOptions, $request): AST
     {
-        $startCallArgs = [
-        $method->name,
-        AST::access($this->ctx->type($method->responseType), AST::CLS),
-        $optionalArgs->var
-      ];
+        $startApiCallArgs = Map::new([
+            'methodName' => $method->name,
+            'request' => $request,
+            self::CALL_OPTIONS_VAR => $callOptions->var
+        ]);
+        $wait = true;
         switch ($method->methodType) {
-            case MethodDetails::CUSTOM_OP:
-                $startCallArgs = [
-                    $method->name,
-                    $optionalArgs->var,
-                    $request,
-                    AST::call(AST::THIS, AST::method('getOperationsClient'))(),
-                    AST::NULL,
-                    AST::access($this->ctx->type($method->responseType), AST::CLS),
-                ];
-                return AST::call(AST::THIS, AST::method('startOperationsCall'))(...$startCallArgs)->wait();
-            case MethodDetails::NORMAL:
-                $startCallArgs[] = $request;
-                if ($method->isMixin()) {
-                    $startCallArgs[] =
-                        AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('UNARY_CALL'));
-                    $startCallArgs[] = $method->mixinServiceFullname;
-                }
-                return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs)->wait();
-            case MethodDetails::LRO:
-                $startCallArgs = [
-                  $method->name,
-                  $optionalArgs->var,
-                  $request,
-                  AST::call(AST::THIS, AST::method('getOperationsClient'))()
-                ];
-                if ($method->isMixin()) {
-                    $startCallArgs[] = $method->mixinServiceFullname;
-                }
-                return AST::call(AST::THIS, AST::method('startOperationsCall'))(...$startCallArgs)->wait();
-            case MethodDetails::PAGINATED:
-                $startCallArgs = [
-                  $method->name,
-                  $optionalArgs->var,
-                  AST::access($this->ctx->type($method->responseType), AST::CLS),
-                  $request
-                ];
-                if ($method->isMixin()) {
-                    $startCallArgs[] = $method->mixinServiceFullname;
-                }
-                return AST::call(AST::THIS, AST::method('getPagedListResponse'))(...$startCallArgs);
             case MethodDetails::BIDI_STREAMING:
-                $startCallArgs[] = AST::NULL;
-                $startCallArgs[] =
-                  AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('BIDI_STREAMING_CALL'));
-                if ($method->isMixin()) {
-                    $startCallArgs[] = $method->mixinServiceFullname;
-                }
-                return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs);
-            case MethodDetails::SERVER_STREAMING:
-                $startCallArgs[] = $request;
-                $startCallArgs[] =
-                  AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('SERVER_STREAMING_CALL'));
-                if ($method->isMixin()) {
-                    $startCallArgs[] = $method->mixinServiceFullname;
-                }
-                return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs);
+                // Fall through to CLIENT_STREAMING.
             case MethodDetails::CLIENT_STREAMING:
-                $startCallArgs[] = AST::NULL;
-                $startCallArgs[] =
-                  AST::access($this->ctx->type(Type::fromName(Call::class)), AST::constant('CLIENT_STREAMING_CALL'));
-                if ($method->isMixin()) {
-                    $startCallArgs[] = $method->mixinServiceFullname;
-                }
-                return AST::call(AST::THIS, AST::method('startCall'))(...$startCallArgs);
+                $startApiCallArgs = $startApiCallArgs->set('request', AST::NULL);
+                // Fall through to SERVER_STREAMING.
+                // no break
+            case MethodDetails::SERVER_STREAMING:
+                // Fall through to PAGINATED.
+            case MethodDetails::PAGINATED:
+                $wait = false;
+                break;
             default:
-                throw new Exception("Cannot handle method type: '{$method->methodType}'");
         }
+
+        $call = AST::call(AST::THIS, AST::method('startApiCall'))(...$startApiCallArgs->values());
+        if ($wait) {
+            $call = $call->wait();
+        }
+
+        return $call;
     }
 
-    /**
-     * Turns a field into a parameter for RPC methods.
-     *
-     * The caller will be responsible for preventing duplicates by ensuring that this method
-     * is called only on the first field in a oneof group.
-     */
-    private function toParam(FieldDetails $field): PhpParam
+    private function snippetPathForMethod(MethodDetails $method): string
     {
-        if (!$field->isOneOf) {
-            return AST::param(null, AST::var($field->camelName));
+        $methodName = Helpers::toSnakeCase($method->name);
+        $version = Helpers::nsVersionAndSuffixPath($this->serviceDetails->namespace);
+        if ($version !== '') {
+            $version .= '/';
         }
+        $emptyClientName = $this->serviceDetails->gapicClientType->name;
 
-        return AST::param(null, AST::var(Helpers::toCamelCase($field->getOneofDesc()->getName())));
+        return "samples/{$version}{$emptyClientName}/{$methodName}.php";
     }
 
-    /**
-     * Returns an expression that assigns a required field to a request.
-     * If this field is not part of a oneof, returns a plain assignment expression.
-     * If the field is a oneof, this method returns an if-else block that passes the chosen
-     * oneof field to the corresponding setter in the oneof.
-     *
-     * The caller will be responsible for preventing duplicates by ensuring that this method
-     * is called only on the first field in a oneof group.
-     *
-     *  @param $requestVarExpr The AST variable that represents the request.
-     *  @param $field A required proto field.
-     *  @param $param The input parameter into the RPC method that corresponnds to $field.
-     *    If $field is part of a oneof, $param should be a wrapper class generated by
-     *    OneofWrapperGenerator (and generated by $this->toParam()).
-     *  @returns An assignment Expression or an if-else block of type AST.
-     */
-    private function toRequestFieldSetter(Expression $requestVarExpr, FieldDetails $field, PhpParam $param)
+    private function asyncReturnType(MethodDetails $method): string
     {
-        if (!$field->isOneOf) {
-            return AST::call($requestVarExpr, $field->setter)($param);
-        }
+        $returnType = $this->ctx->type(Type::fromName(PromiseInterface::class))->type->name;
+        $nestedType = ($method->hasEmptyResponse)
+            ? 'void'
+            : $this->ctx->type($method->methodReturnType)->type->name;
 
-        if (!$field->isFirstFieldInOneof()) {
-            return null;
-        }
-
-        $containingMessage = $field->containingMessage;
-        $oneofFieldDescProtos = $containingMessage->getField();
-
-        $toMethodNameFn = function ($prefix, $fieldDescProto) {
-            return $prefix . Helpers::toUpperCamelCase($fieldDescProto->getName());
-        };
-
-        $ifBlock = null;
-        foreach ($containingMessage->getField() as $currFieldDescProto) {
-            if (!$currFieldDescProto->hasOneofIndex()
-                || $currFieldDescProto->getOneofIndex() !== $field->oneOfIndex) {
-                continue;
-            }
-
-            // Code: $fooOneof->isBar()
-            $condition = AST::call($param, AST::method($toMethodNameFn('is', $currFieldDescProto)))();
-            // Code: $request->setBar($fooOneof->getBar())
-            $then = AST::call(
-                $requestVarExpr,
-                AST::method($toMethodNameFn('set', $currFieldDescProto))
-            )(
-                AST::call($param, AST::method($toMethodNameFn('get', $currFieldDescProto)))()
-            );
-            // First field.
-            if ($ifBlock === null) {
-                $ifBlock = AST::if($condition)->then($then);
-            } else {
-                $ifBlock = $ifBlock->elseif($condition, $then);
-            }
-        }
-
-        // Add the throw-exception block, in case a oneof field is not set.
-        if ($ifBlock !== null) {
-            $ifBlock = $ifBlock->else(
-                AST::throw(AST::new($this->ctx->type(Type::fromName(ValidationException::class)))(
-                    AST::interpolatedString('A field for the oneof ' . $field->getOneofDesc()->getName()
-                    . ' must be set in param ' . $param->toCode())
-                ))
-            );
-        }
-
-        return AST::block($ifBlock);
-    }
-
-    /**
-     * Assembles the code for matching and injecting the explicitly configured request routing headers.
-     * A Vector containing code for required fields is keyed to 'required'. A Map containing code
-     * for each optional field is keyed to 'optional'. If there are no headers configured to be set, both
-     * are set to null.
-     *
-     * @param MethodDetails $method The method with the RoutingRule.
-     * @param Map $routingHeaders A mapping of RoutingParameter.field to all of the processed versions of it.
-     * @param Expression $paramsVar The PHP variable used to collect the header key-value-pairs.
-     *
-     * @return array Associative array with two keys: 'required' (Vector value) and 'optional' (Map value).
-     */
-    private static function explicitRequestParams(MethodDetails $method, Map $routingHeaders, Expression $paramsVar)
-    {
-        // Has no request parameter headers.
-        if (count($routingHeaders) === 0) {
-            return ['required' => null, 'optional' => null];
-        }
-
-        // Map those root fields that are required by name to the routing header config.
-        $requiredRoutingHeadersByRoot = $routingHeaders
-            ->filter(fn ($k, $v) => $method->requiredFields->any(fn ($f) => $f->name === $v[0]['root']))
-            ->values()
-            ->toMap(fn ($v) => $v[0]['root']);
-        // Map those required fields that appear as routing headers by name to their own FieldDetails.
-        $requiredFieldsInHeaders = $method->requiredFields
-            ->filter(fn ($f) => isset($requiredRoutingHeadersByRoot[$f->name]))
-            ->toMap(fn ($f) => $f->name);
-        $requiredAssignments = static::explicitRequestParamsForFields(
-            $requiredRoutingHeadersByRoot,
-            $requiredFieldsInHeaders,
-            $paramsVar
-        );
-
-        // Map those root fields that are optional by name to the routing header config.
-        $optionalRoutingHeadersByRoot = $routingHeaders
-            ->filter(fn ($k, $v) => $method->optionalFields->any(fn ($f) => $f->name === $v[0]['root']))
-            ->values()
-            ->toMap(fn ($v) => $v[0]['root']);
-        // Map those optional fields that appear as routing headers by name to their own FieldDetails.
-        $optionalFieldsInHeaders = $method->optionalFields
-            ->filter(fn ($f) => isset($optionalRoutingHeadersByRoot[$f->name]))
-            ->toMap(fn ($f) => $f->name);
-        $optionalAssignments = static::explicitRequestParamsForFields(
-            $optionalRoutingHeadersByRoot,
-            $optionalFieldsInHeaders,
-            $paramsVar
-        );
-
-        return [
-            'required' => $requiredAssignments->values(),
-            'optional' => $optionalAssignments
-        ];
-    }
-
-    /**
-     * Given the header-to-field mappings, compiles the code for the value matching and/or header injection.
-     *
-     * @param Map $headersByRootField Mapping of routing parameter configs keyed by the root field name.
-     * @param Map $fieldDetailsByRootField Mapping of FieldDetails keyed by the root field name.
-     * @param Expression $paramsVar The PHP variable used to collect the header key-value-pairs.
-     *
-     * @return Map The mapping of root field to header parsing/injection code related to it.
-     */
-    private static function explicitRequestParamsForFields(Map $headersByRootField, Map $fieldDetailsByRootField, Expression $paramsVar)
-    {
-        // $assignments maps a Vector of AST statements to the root field name.
-        $assignments = Map::new([]);
-        foreach ($headersByRootField as [$root, $routingConfigs]) {
-            // $keyToMatcher maps the field key strings to the matching chain that might set it.
-            $keyToMatcher = Map::new([]);
-            // Collect all of the statements for a $root field, including
-            // any regex matcher conditionals.
-            foreach ($routingConfigs as $routing) {
-                $field = $fieldDetailsByRootField[$root];
-                $param = $field->isRequired
-                    ? AST::param(null, AST::var($field->camelName))
-                    : AST::index(AST::var('optionalArgs'), $field->camelName);
-                $assignValue = $param;
-
-                // Construct the getter chain if the routing header uses a nested field.
-                $chain = $routing['getter'];
-                if (count($chain) > 1) {
-                    $assignValue = $chain->skip(1)->reduce($param, fn ($acc, $g) => AST::call($acc, AST::method($g))());
-                }
-                // Basic case, no regex matcher, just assign the required param to the header key.
-                if (is_null($routing['regex'])) {
-                    $assignments = $assignments->set($root, $assignments->get($root, Vector::new([]))->append(AST::assign(
-                        AST::index($paramsVar, $routing['key']),
-                        $assignValue
-                    )));
-                    continue;
-                }
-
-                // Construct the preg_match expression using the routing header config's capture group regular expression.
-                $key = $routing['key'];
-                $matchesName = Helpers::toCamelCase($key) . 'Matches';
-                $matches = AST::var($matchesName);
-                $matcher = null;
-
-                // Extend the if-elseif chain.
-                if (isset($keyToMatcher[$key])) {
-                    $if = $keyToMatcher[$key];
-                    $if = $if->elseif(
-                        /* condition */
-                        AST::call(AST::PREG_MATCH)($routing['regex'], $assignValue, $matches),
-                        /* then */
-                        AST::assign(
-                            AST::index($paramsVar, $routing['key']),
-                            AST::index($matches, $routing['key'])
-                        )
-                    );
-                    $matcher = $if;
-                } else {
-                    // Create the conditional chain that sets the header key-value pair using the capture group if
-                    // the preg_match finds a match.
-                    $matcher = AST::if(AST::call(AST::PREG_MATCH)($routing['regex'], $assignValue, $matches))->then(
-                        AST::assign(
-                            AST::index($paramsVar, $routing['key']),
-                            AST::index($matches, $routing['key'])
-                        )
-                    );
-                }
-                // Upsert the matcher chain for a header key.
-                $keyToMatcher = $keyToMatcher->set($key, $matcher);
-            }
-            $assignments = $assignments
-                ->set($root, $assignments
-                    ->get($root, Vector::new([]))
-                    ->concat($keyToMatcher
-                        // Initialize the a matching results array for the (root) field named in the routing header config.
-                        ->mapValues(
-                            fn ($key, $matcher) =>
-                            AST::block(
-                                // $fooMatches = []
-                                AST::assign(AST::var(Helpers::toCamelCase($key) . 'Matches'), AST::array([])),
-                                // if (preg_match(..., $fooMatches))
-                                $matcher
-                            )
-                        )->values()));
-        }
-
-        return $assignments;
-    }
-
-    /**
-     * Compiles the code for implicit request header injection based on the configuration from
-     * google.api.http annotations for both required and optional fields. A Vector containing code
-     * for required fields is keyed to 'required'. A Map containing code for each optional field is
-     * keyed to 'optional' (does not support nested fields). If there are no headers configured to
-     * be set, both are set to null.
-     *
-     * @param MethodDetails $method The method with the HttpRule.
-     * @param Map $restRoutingHeaders Mapping of full header key name to getter/chain.
-     * @param Expression $requestParamHeaders The PHP variable used to collect the header key-value-pairs.
-     *
-     * @return Map Associative array with two keys: 'required' (Vector value) and 'optional' (Map value).
-     */
-    private static function implicitRequestParams(MethodDetails $method, Map $restRoutingHeaders, Expression $requestParamHeaders)
-    {
-        // Needed because a required field name like "foo" may map to a nested header name like "foo.bar".
-        $requiredFieldNames =
-            $method->requiredFields->map(fn ($f) => $f instanceof FieldDetails ? $f->name : $f);
-        // Contains full field names with parents, e.g. foo.bar.car.
-        $requiredRestRoutingKeys =
-            $restRoutingHeaders->keys()
-                 ->filter(fn ($x) => !empty($x) && $requiredFieldNames->contains(explode('.', $x)[0]));
-        $requiredFieldNamesInRoutingHeaders =
-            $requiredFieldNames->filter(
-                fn ($x) => !empty($x)
-                    && in_array(
-                        trim($x),
-                        array_map(fn ($k) => explode('.', $k)[0], $requiredRestRoutingKeys->toArray())
-                    )
-            )
-                ->toArray();
-        // Maps field names to a set of the relevant field in the URL pattern.
-        // e.g. $requiredFieldToHeaderName['foo'] = ['foo.bar', 'foo.car'].
-        // This is needed for RPCs that may have multiple subfields under the same field in their
-        // HTTP bindings.
-        $requiredFieldToHeaderName = [];
-        foreach ($requiredFieldNamesInRoutingHeaders as $header) {
-            $requiredFieldToHeaderName[$header] =
-                $requiredRestRoutingKeys->filter(
-                    fn ($k) => strpos($k, '.') !== 0 ? $header === explode('.', $k)[0] : $header === $k
-                );
-        }
-
-        // Has no request parameter headers.
-        if (count($restRoutingHeaders) === 0) {
-            return ['required' => null, 'optional' => null];
-        }
-        $requiredRequestHeaders = Vector::new([]);
-        // TODO(v2): Handle request params for oneofs - this currently isn't used by anyone.
-        foreach ($method->requiredFields as $field) {
-            if (!isset($requiredFieldToHeaderName[$field->name])) {
-                continue;
-            }
-            $requiredParam = AST::param(null, AST::var($field->camelName));
-            foreach ($requiredFieldToHeaderName[$field->name] as $urlPatternHeaderName) {
-                $assignValue = $requiredParam;
-                if ($restRoutingHeaders->get($urlPatternHeaderName, Vector::new([]))->count() >= 2) {
-                    $assignValue =
-                        $restRoutingHeaders->get($urlPatternHeaderName, Vector::new([]))
-                            ->skip(1)
-                            // Chains getter methods together for nested names like foo.bar.car, which
-                            // becomes $foo->getBar()->getCar().
-                            ->reduce($requiredParam, fn ($acc, $g) => AST::call($acc, AST::method($g))());
-                }
-                $requiredRequestHeaders = $requiredRequestHeaders->append(
-                    AST::assign(
-                        AST::index($requestParamHeaders, $urlPatternHeaderName),
-                        $assignValue
-                    )
-                );
-            }
-        }
-
-        // TODO(noahdietz): Consider assigning nested fields on optional params,
-        // at the risk of errors if they're not set on the message itself.
-        $optionalAssignments = $method->optionalFields
-        ->filter(fn ($f) => isset($restRoutingHeaders[$f->name]))
-        ->toMap(
-            fn ($f) => $f->name,
-            fn ($f) => AST::assign(
-                AST::index($requestParamHeaders, $f->name),
-                AST::index(AST::var('optionalArgs'), $f->camelName)
-            )
-        );
-
-        return ['required' => $requiredRequestHeaders, 'optional' => $optionalAssignments];
+        return sprintf('%s<%s>', $returnType, $nestedType);
     }
 }

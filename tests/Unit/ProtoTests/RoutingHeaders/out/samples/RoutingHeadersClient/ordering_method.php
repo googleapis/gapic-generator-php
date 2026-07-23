@@ -39,8 +39,7 @@ function ordering_method_sample(string $a, string $b, string $d, string $c, stri
 {
     // Create a client.
     $routingHeadersClient = new RoutingHeadersClient();
-
-    // Prepare the request message.
+    
     $request = (new OrderRequest())
         ->setA($a)
         ->setB($b)

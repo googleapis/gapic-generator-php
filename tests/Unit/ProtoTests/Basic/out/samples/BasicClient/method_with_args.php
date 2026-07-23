@@ -39,8 +39,7 @@ function method_with_args_sample(string $aString, int $status): void
 {
     // Create a client.
     $basicClient = new BasicClient();
-
-    // Prepare the request message.
+    
     $partOfRequestA = [new PartOfRequestA()];
     $request = (new RequestWithArgs())
         ->setAString($aString)

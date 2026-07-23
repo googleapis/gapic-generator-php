@@ -40,8 +40,7 @@ function method_explicit_paginated_sample(string $aField, string $pageToken): vo
 {
     // Create a client.
     $basicExplicitPaginatedClient = new BasicExplicitPaginatedClient();
-
-    // Prepare the request message.
+    
     $partOfRequestA = [new PartOfRequestA()];
     $request = (new ExplicitRequest())
         ->setAField($aField)

@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START resourcenames_generated_ResourceNames_NestedReferenceMethod_sync]
 use Google\ApiCore\ApiException;
+use Testing\ResourceNames\Client\ResourceNamesClient;
+use Testing\ResourceNames\NestedReferenceRequest;
 use Testing\ResourceNames\PlaceholderResponse;
-use Testing\ResourceNames\ResourceNamesClient;
 
 /**
  * This sample has been automatically generated and should be regarded as a code
@@ -38,11 +39,13 @@ function nested_reference_method_sample(): void
 {
     // Create a client.
     $resourceNamesClient = new ResourceNamesClient();
+    
+    $request = new NestedReferenceRequest();
 
     // Call the API and handle any network failures.
     try {
         /** @var PlaceholderResponse $response */
-        $response = $resourceNamesClient->nestedReferenceMethod();
+        $response = $resourceNamesClient->nestedReferenceMethod($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

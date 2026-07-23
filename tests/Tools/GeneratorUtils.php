@@ -19,7 +19,6 @@ declare(strict_types=1);
 namespace Google\Generator\Tests\Tools;
 
 use Google\Generator\CodeGenerator;
-use Google\Generator\Utils\MigrationMode;
 
 class GeneratorUtils
 {
@@ -38,7 +37,6 @@ class GeneratorUtils
         ?string $package = null,
         ?string $transport = null,
         bool $generateSnippets = true,
-        string $migrationMode = MigrationMode::PRE_MIGRATION_SURFACE_ONLY,
     ) {
         // Conventions:
         // * The proto package is 'testing.<proto-name>'.
@@ -66,7 +64,6 @@ class GeneratorUtils
             $numericEnums,
             $licenseYear,
             $generateSnippets,
-            $migrationMode
         );
         return $codeIterator;
     }

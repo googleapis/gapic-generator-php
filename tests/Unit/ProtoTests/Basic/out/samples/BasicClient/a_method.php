@@ -41,8 +41,7 @@ function a_method_sample(): void
 {
     // Create a client.
     $basicClient = new BasicClient();
-
-    // Prepare the request message.
+    
     $request = new Request();
 
     // Call the API and handle any network failures.

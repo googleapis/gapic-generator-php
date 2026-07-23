@@ -24,7 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START example_generated_Library_DeleteShelf_sync]
 use Google\ApiCore\ApiException;
-use Testing\BasicDiregapic\LibraryClient;
+use Testing\BasicDiregapic\Client\LibraryClient;
+use Testing\BasicDiregapic\DeleteShelfRequest;
 
 /**
  * Deletes a shelf.
@@ -36,10 +37,13 @@ function delete_shelf_sample(string $formattedName): void
 {
     // Create a client.
     $libraryClient = new LibraryClient();
+    
+    $request = (new DeleteShelfRequest())
+        ->setName($formattedName);
 
     // Call the API and handle any network failures.
     try {
-        $libraryClient->deleteShelf($formattedName);
+        $libraryClient->deleteShelf($request);
         printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

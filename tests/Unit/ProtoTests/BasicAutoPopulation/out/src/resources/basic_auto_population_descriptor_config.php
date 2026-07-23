@@ -24,9 +24,15 @@ return [
     'interfaces' => [
         'testing.basicautopopulation.BasicAutoPopulation' => [
             'CreateFoo' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Testing\BasicAutoPopulation\Response',
                 'autoPopulatedFields' => [
                     'requestId' => \Google\Api\FieldInfo\Format::UUID4,
                 ],
+            ],
+            'GetFoo' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Testing\BasicAutoPopulation\Response',
             ],
         ],
     ],

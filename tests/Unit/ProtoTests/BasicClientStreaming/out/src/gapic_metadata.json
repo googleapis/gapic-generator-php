@@ -8,7 +8,7 @@
         "BasicClientStreaming": {
             "clients": {
                 "grpc": {
-                    "libraryClient": "BasicClientStreamingGapicClient",
+                    "libraryClient": "BasicClientStreamingClient",
                     "rpcs": {
                         "MethodClient": {
                             "methods": [

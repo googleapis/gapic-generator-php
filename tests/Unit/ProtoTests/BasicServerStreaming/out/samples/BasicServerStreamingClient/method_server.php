@@ -34,8 +34,7 @@ function method_server_sample(int $aNumber): void
 {
     // Create a client.
     $basicServerStreamingClient = new BasicServerStreamingClient();
-
-    // Prepare the request message.
+    
     $request = (new Request())
         ->setANumber($aNumber);
 

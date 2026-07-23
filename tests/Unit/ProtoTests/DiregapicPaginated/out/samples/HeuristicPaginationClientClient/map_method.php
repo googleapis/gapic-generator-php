@@ -41,8 +41,7 @@ function map_method_sample(): void
 {
     // Create a client.
     $heuristicPaginationClientClient = new HeuristicPaginationClientClient();
-
-    // Prepare the request message.
+    
     $request = new Request();
 
     // Call the API and handle any network failures.

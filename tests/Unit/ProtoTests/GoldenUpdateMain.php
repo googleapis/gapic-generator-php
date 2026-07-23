@@ -18,15 +18,12 @@ declare(strict_types=1);
 
 namespace Google\Generator\Tests\Unit\ProtoTests;
 
-use Google\Generator\Utils\MigrationMode;
-
 class GoldenUpdateMain
 {
     private const UNIT_TESTS = [
         1 => [
             'name' => 'Basic',
             'protoPath' => 'Basic/basic.proto',
-            'migrationMode' => MigrationMode::NEW_SURFACE_ONLY
         ],
         2 => [
             'name' => 'BasicLro',
@@ -43,7 +40,6 @@ class GoldenUpdateMain
         5 => [
             'name' => 'BasicExplicitPaginated',
             'protoPath' => 'BasicExplicitPaginated/basic-explicit-paginated.proto',
-            'migrationMode' => MigrationMode::MIGRATING
         ],
         6 => [
             'name' => 'BasicBidiStreaming',
@@ -52,7 +48,6 @@ class GoldenUpdateMain
         7 => [
             'name' => 'BasicServerStreaming',
             'protoPath' => 'BasicServerStreaming/basic-server-streaming.proto',
-            'migrationMode' => MigrationMode::NEW_SURFACE_ONLY
         ],
         8 => [
             'name' => 'BasicClientStreaming',
@@ -66,7 +61,6 @@ class GoldenUpdateMain
         10 => [
             'name' => 'RoutingHeaders',
             'protoPath' => 'RoutingHeaders/routing-headers.proto',
-            'migrationMode' => MigrationMode::MIGRATING
         ],
         11 => [
             'name' => 'DeprecatedService',
@@ -77,12 +71,10 @@ class GoldenUpdateMain
             'protoPath' => 'BasicDiregapic/library_rest.proto',
             'package' => 'google.example.library.v1',
             'transport' => 'rest',
-            'migrationMode' => MigrationMode::PRE_MIGRATION_SURFACE_ONLY
         ],
         13 => [
             'name' => 'ResourceNames',
             'protoPath' => 'ResourceNames/resource-names.proto',
-            'migrationMode' => MigrationMode::MIGRATION_MODE_UNSPECIFIED
         ],
         14 => [
             'name' => 'CustomLro',
@@ -97,32 +89,18 @@ class GoldenUpdateMain
             'generateSnippets' => false
         ],
         16 => [
-            'name' => 'BasicOneof (new surface only)',
-            'protoPath' => 'BasicOneofNew/basic-oneof-new.proto',
-            'migrationMode' => MigrationMode::NEW_SURFACE_ONLY,
-        ],
-        17 => [
             'name' => 'BasicAutoPopulation',
             'protoPath' => 'BasicAutoPopulation/basic-auto-population.proto'
         ],
-        18 => [
+        17 => [
             'name' => 'BasicGrpcOnlyClient',
             'protoPath' => 'BasicGrpcOnly/basic-grpc-only.proto',
-            'migrationMode' => MigrationMode::NEW_SURFACE_ONLY,
             'transport' => 'grpc'
         ],
-        19 => [
-            'name' => 'CustomLro (new surface only)',
-            'protoPath' => 'CustomLroNew/custom_lro_new.proto',
-            'package' => 'testing.customlronew',
-            'transport' => 'rest',
-            'migrationMode' => MigrationMode::NEW_SURFACE_ONLY
-        ],
-        20 => [
+        18 => [
             'name' => 'DiregapicPaginated',
             'protoPath' => 'DiregapicPaginated/diregapic-paginated.proto',
             'transport' => 'rest',
-            'migrationMode' => MigrationMode::MIGRATING
         ]
     ];
 
@@ -170,7 +148,6 @@ class GoldenUpdateMain
             array_key_exists('package', $testData) ? $testData['package'] : null,
             array_key_exists('transport', $testData) ? $testData['transport'] : null,
             array_key_exists('generateSnippets', $testData) ? $testData['generateSnippets'] : true,
-            array_key_exists('migrationMode', $testData) ? $testData['migrationMode'] : MigrationMode::PRE_MIGRATION_SURFACE_ONLY
         );
         print("\n");
     }
