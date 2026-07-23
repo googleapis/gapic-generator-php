@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.23.1](https://github.com/googleapis/gapic-generator-php/compare/v1.23.0...v1.23.1) (2026-07-23)
+
+
+### Bug Fixes
+
+* Parent resource lookups for resources more than two levels deep ([#847](https://github.com/googleapis/gapic-generator-php/issues/847)) ([8039c59](https://github.com/googleapis/gapic-generator-php/commit/8039c59fac10d5821e3dd48384c5c4e1781c8f96))
+
 ## [1.23.0](https://github.com/googleapis/gapic-generator-php/compare/v1.22.0...v1.23.0) (2026-07-21)
 
 
