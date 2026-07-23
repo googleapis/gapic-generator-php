@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.23.0](https://github.com/googleapis/gapic-generator-php/compare/v1.22.0...v1.23.0) (2026-07-21)
+
+
+### Features
+
+* Add internal tag to generated $serviceScopes property ([#841](https://github.com/googleapis/gapic-generator-php/issues/841)) ([6b44606](https://github.com/googleapis/gapic-generator-php/commit/6b44606cf340f32a169c9f0f882b7365673701b0))
+
+
+### Bug Fixes
+
+* Handle extra whitespace in valid YAML ([#845](https://github.com/googleapis/gapic-generator-php/issues/845)) ([1abff8d](https://github.com/googleapis/gapic-generator-php/commit/1abff8dd1c87153c94973e9484730afe5f9f7d48))
+
 ## [1.22.0](https://github.com/googleapis/gapic-generator-php/compare/v1.21.2...v1.22.0) (2026-07-17)
 
 
