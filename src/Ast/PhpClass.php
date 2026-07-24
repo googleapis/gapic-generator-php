@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Ast;
 
+use AllowDynamicProperties;
 use Exception;
 use Google\Generator\Collections\Set;
 use Google\Generator\Collections\Vector;
@@ -26,6 +27,7 @@ use Google\Generator\Utils\Type;
 use RuntimeException;
 
 /** A class definition. */
+#[AllowDynamicProperties]
 final class PhpClass extends AST
 {
     use HasPhpDoc;
