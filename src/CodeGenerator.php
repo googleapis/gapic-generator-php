@@ -311,11 +311,11 @@ class CodeGenerator
             yield ["src/{$version}Client/{$service->gapicClientType->name}.php", $code];
 
             // Unit tests.
-            $ctx = new SourceFileContext($service->unitTestsV2Type->getNamespace(), $licenseYear);
+            $ctx = new SourceFileContext($service->unitTestsType->getNamespace(), $licenseYear);
             $file = UnitTestsGenerator::generate($ctx, $service);
             $code = $file->toCode();
             $code = Formatter::format($code);
-            yield ["tests/Unit/{$version}Client/{$service->unitTestsV2Type->name}.php", $code];
+            yield ["tests/Unit/{$version}Client/{$service->unitTestsType->name}.php", $code];
 
             // Resource: build_method.txt
             $ctx = new SourceFileContext($service->gapicClientType->getNamespace(), $licenseYear);

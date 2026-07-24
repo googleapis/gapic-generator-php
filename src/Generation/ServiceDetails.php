@@ -57,9 +57,6 @@ class ServiceDetails
     /** @var Type *Readonly* The type of the unit-tests class. */
     public Type $unitTestsType;
 
-    /** @var Type *Readonly* The type of the unit-tests class for V2 clients. */
-    public Type $unitTestsV2Type;
-
     /** @var Vector *Readonly* Vector of strings; the documentation lines from the source proto. */
     public Vector $docLines;
 
@@ -170,8 +167,7 @@ class ServiceDetails
         $unitTestNs = $nsVersionAndSuffix === '' ?
             "{$namespace}\\Tests\\Unit" :
             substr($namespace, 0, -strlen($nsVersionAndSuffix)) . 'Tests\\Unit\\' . str_replace('/', '\\', $nsVersionAndSuffix);
-        $this->unitTestsType = Type::fromName("{$unitTestNs}\\{$desc->getName()}ClientTest");
-        $this->unitTestsV2Type = Type::fromName("{$unitTestNs}\\Client\\{$desc->getName()}ClientTest");
+        $this->unitTestsType = Type::fromName("{$unitTestNs}\\Client\\{$desc->getName()}ClientTest");
         $this->docLines = $desc->leadingComments;
         $this->serviceName = "{$package}.{$desc->getName()}";
         $this->shortName = $desc->getName();

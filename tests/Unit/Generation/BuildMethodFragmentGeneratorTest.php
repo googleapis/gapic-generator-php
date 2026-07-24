@@ -24,7 +24,6 @@ use Google\Generator\Generation\BuildMethodFragmentGenerator;
 use Google\Generator\Generation\SourceFileContext;
 use Google\Generator\Generation\ServiceDetails;
 use Google\Generator\Tests\Tools\ProtoLoader;
-use Google\Generator\Utils\MigrationMode;
 use Google\Generator\Utils\ProtoAugmenter;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ServiceYamlConfig;
