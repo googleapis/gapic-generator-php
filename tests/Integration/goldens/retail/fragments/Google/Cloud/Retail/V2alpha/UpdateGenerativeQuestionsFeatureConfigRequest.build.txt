@@ -1,0 +1,17 @@
+
+    /**
+     * @param \Google\Cloud\Retail\V2alpha\GenerativeQuestionsFeatureConfig $generativeQuestionsFeatureConfig Required. The configuration managing the feature state.
+     * @param \Google\Protobuf\FieldMask                                    $updateMask                       Optional. Indicates which fields in the provided
+     *                                                                                                        [GenerativeQuestionsFeatureConfig][google.cloud.retail.v2alpha.GenerativeQuestionsFeatureConfig]
+     *                                                                                                        to update. If not set or empty, all supported fields are updated.
+     *
+     * @return \Google\Cloud\Retail\V2alpha\UpdateGenerativeQuestionsFeatureConfigRequest
+     *
+     * @experimental
+     */
+    public static function build(\Google\Cloud\Retail\V2alpha\GenerativeQuestionsFeatureConfig $generativeQuestionsFeatureConfig, \Google\Protobuf\FieldMask $updateMask): self
+    {
+        return (new self())
+            ->setGenerativeQuestionsFeatureConfig($generativeQuestionsFeatureConfig)
+            ->setUpdateMask($updateMask);
+    }

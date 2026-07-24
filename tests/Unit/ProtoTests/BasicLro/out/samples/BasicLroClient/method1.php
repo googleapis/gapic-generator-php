@@ -45,7 +45,8 @@ function method1_sample(): void
 {
     // Create a client.
     $basicLroClient = new BasicLroClient();
-    
+
+    // Prepare the request message.
     $request = new Request();
 
     // Call the API and handle any network failures.

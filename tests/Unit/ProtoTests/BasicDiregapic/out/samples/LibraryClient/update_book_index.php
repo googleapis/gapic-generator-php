@@ -38,7 +38,8 @@ function update_book_index_sample(string $formattedName, string $indexName): voi
 {
     // Create a client.
     $libraryClient = new LibraryClient();
-    
+
+    // Prepare the request message.
     $indexMap = [];
     $request = (new UpdateBookIndexRequest())
         ->setName($formattedName)

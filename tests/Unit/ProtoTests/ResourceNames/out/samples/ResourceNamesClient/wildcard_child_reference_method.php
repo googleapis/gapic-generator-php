@@ -39,7 +39,8 @@ function wildcard_child_reference_method_sample(): void
 {
     // Create a client.
     $resourceNamesClient = new ResourceNamesClient();
-    
+
+    // Prepare the request message.
     $request = new WildcardChildReferenceRequest();
 
     // Call the API and handle any network failures.

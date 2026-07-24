@@ -37,7 +37,8 @@ function create_foo_sample(string $project, string $region): void
 {
     // Create a client.
     $customLroClient = new CustomLroClient();
-    
+
+    // Prepare the request message.
     $request = (new CreateFooRequest())
         ->setProject($project)
         ->setRegion($region);

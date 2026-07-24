@@ -39,7 +39,8 @@ function nested_reference_method_sample(): void
 {
     // Create a client.
     $resourceNamesClient = new ResourceNamesClient();
-    
+
+    // Prepare the request message.
     $request = new NestedReferenceRequest();
 
     // Call the API and handle any network failures.

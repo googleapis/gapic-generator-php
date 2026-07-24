@@ -44,7 +44,8 @@ function create_inventory_sample(
 ): void {
     // Create a client.
     $libraryClient = new LibraryClient();
-    
+
+    // Prepare the request message.
     $assets = [$assetsElement,];
     $request = (new CreateInventoryRequest())
         ->setParent($formattedParent)

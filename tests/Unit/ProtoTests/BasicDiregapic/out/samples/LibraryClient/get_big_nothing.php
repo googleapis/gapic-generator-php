@@ -39,7 +39,8 @@ function get_big_nothing_sample(string $formattedName): void
 {
     // Create a client.
     $libraryClient = new LibraryClient();
-    
+
+    // Prepare the request message.
     $request = (new GetBookRequest())
         ->setName($formattedName);
 

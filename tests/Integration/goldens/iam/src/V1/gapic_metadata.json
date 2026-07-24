@@ -8,7 +8,7 @@
         "IAMPolicy": {
             "clients": {
                 "grpc": {
-                    "libraryClient": "IAMPolicyGapicClient",
+                    "libraryClient": "IAMPolicyClient",
                     "rpcs": {
                         "GetIamPolicy": {
                             "methods": [

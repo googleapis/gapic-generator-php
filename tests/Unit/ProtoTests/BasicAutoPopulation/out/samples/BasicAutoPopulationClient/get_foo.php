@@ -33,7 +33,8 @@ function get_foo_sample(string $aField): void
 {
     // Create a client.
     $basicAutoPopulationClient = new BasicAutoPopulationClient();
-    
+
+    // Prepare the request message.
     $request = (new Request())
         ->setAField($aField);
 

@@ -1,0 +1,15 @@
+
+    /**
+     * @param string $project Required. Full resource name of the project. Format:
+     *                        `projects/{project_number_or_id}/retailProject`
+     *                        Please see {@see ProjectServiceClient::retailProjectName()} for help formatting this field.
+     *
+     * @return \Google\Cloud\Retail\V2alpha\AcceptTermsRequest
+     *
+     * @experimental
+     */
+    public static function build(string $project): self
+    {
+        return (new self())
+            ->setProject($project);
+    }

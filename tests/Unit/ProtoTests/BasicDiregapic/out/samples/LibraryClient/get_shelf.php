@@ -39,7 +39,8 @@ function get_shelf_sample(string $formattedName, string $options): void
 {
     // Create a client.
     $libraryClient = new LibraryClient();
-    
+
+    // Prepare the request message.
     $request = (new GetShelfRequest())
         ->setName($formattedName)
         ->setOptions($options);

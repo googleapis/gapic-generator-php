@@ -42,7 +42,8 @@ function merge_shelves_sample(string $formattedName, string $formattedOtherShelf
 {
     // Create a client.
     $libraryClient = new LibraryClient();
-    
+
+    // Prepare the request message.
     $request = (new MergeShelvesRequest())
         ->setName($formattedName)
         ->setOtherShelfName($formattedOtherShelfName);

@@ -32,7 +32,8 @@ function cancel_sample(string $operation): void
 {
     // Create a client.
     $customLroOperationsClient = new CustomLroOperationsClient();
-    
+
+    // Prepare the request message.
     $request = (new CancelOperationRequest())
         ->setOperation($operation);
 

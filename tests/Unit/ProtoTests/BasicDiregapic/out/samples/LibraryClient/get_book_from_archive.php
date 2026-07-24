@@ -39,7 +39,8 @@ function get_book_from_archive_sample(string $formattedName, string $formattedPa
 {
     // Create a client.
     $libraryClient = new LibraryClient();
-    
+
+    // Prepare the request message.
     $request = (new GetBookFromArchiveRequest())
         ->setName($formattedName)
         ->setParent($formattedParent);

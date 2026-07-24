@@ -39,7 +39,8 @@ function file_level_type_ref_method_sample(): void
 {
     // Create a client.
     $resourceNamesClient = new ResourceNamesClient();
-    
+
+    // Prepare the request message.
     $request = new FileLevelTypeRefRequest();
 
     // Call the API and handle any network failures.

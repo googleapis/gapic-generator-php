@@ -43,7 +43,8 @@ function a_method_sample(
 ): void {
     // Create a client.
     $basicOneofClient = new BasicOneofClient();
-    
+
+    // Prepare the request message.
     $other = (new Other())
         ->setFirst($otherFirst);
     $request = (new Request())

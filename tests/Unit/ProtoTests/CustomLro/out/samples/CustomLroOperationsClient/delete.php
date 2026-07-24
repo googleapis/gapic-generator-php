@@ -32,7 +32,8 @@ function delete_sample(string $operation): void
 {
     // Create a client.
     $customLroOperationsClient = new CustomLroOperationsClient();
-    
+
+    // Prepare the request message.
     $request = (new DeleteOperationRequest())
         ->setOperation($operation);
 

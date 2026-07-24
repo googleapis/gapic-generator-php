@@ -41,7 +41,8 @@ function method1_b_lro_sample(): void
 {
     // Create a client.
     $grpcServiceConfigWithRetry1Client = new GrpcServiceConfigWithRetry1Client();
-    
+
+    // Prepare the request message.
     $request = new Request1();
 
     // Call the API and handle any network failures.

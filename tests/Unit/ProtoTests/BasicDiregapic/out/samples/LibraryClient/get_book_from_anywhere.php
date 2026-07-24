@@ -47,7 +47,8 @@ function get_book_from_anywhere_sample(
 ): void {
     // Create a client.
     $libraryClient = new LibraryClient();
-    
+
+    // Prepare the request message.
     $request = (new GetBookFromAnywhereRequest())
         ->setName($formattedName)
         ->setAltBookName($formattedAltBookName)

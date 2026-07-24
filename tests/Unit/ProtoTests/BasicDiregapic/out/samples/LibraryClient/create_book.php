@@ -42,7 +42,8 @@ function create_book_sample(string $formattedName, string $formattedBookName): v
 {
     // Create a client.
     $libraryClient = new LibraryClient();
-    
+
+    // Prepare the request message.
     $book = (new BookResponse())
         ->setName($formattedBookName);
     $request = (new CreateBookRequest())

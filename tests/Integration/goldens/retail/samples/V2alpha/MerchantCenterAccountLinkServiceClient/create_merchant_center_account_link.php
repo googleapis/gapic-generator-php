@@ -25,8 +25,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_MerchantCenterAccountLinkService_CreateMerchantCenterAccountLink_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
+use Google\Cloud\Retail\V2alpha\Client\MerchantCenterAccountLinkServiceClient;
+use Google\Cloud\Retail\V2alpha\CreateMerchantCenterAccountLinkRequest;
 use Google\Cloud\Retail\V2alpha\MerchantCenterAccountLink;
-use Google\Cloud\Retail\V2alpha\MerchantCenterAccountLinkServiceClient;
 use Google\Rpc\Status;
 
 /**
@@ -55,18 +56,18 @@ function create_merchant_center_account_link_sample(
     // Create a client.
     $merchantCenterAccountLinkServiceClient = new MerchantCenterAccountLinkServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $merchantCenterAccountLink = (new MerchantCenterAccountLink())
         ->setMerchantCenterAccountId($merchantCenterAccountLinkMerchantCenterAccountId)
         ->setBranchId($merchantCenterAccountLinkBranchId);
+    $request = (new CreateMerchantCenterAccountLinkRequest())
+        ->setParent($formattedParent)
+        ->setMerchantCenterAccountLink($merchantCenterAccountLink);
 
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $merchantCenterAccountLinkServiceClient->createMerchantCenterAccountLink(
-            $formattedParent,
-            $merchantCenterAccountLink
-        );
+        $response = $merchantCenterAccountLinkServiceClient->createMerchantCenterAccountLink($request);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

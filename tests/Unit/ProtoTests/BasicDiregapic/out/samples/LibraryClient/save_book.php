@@ -41,7 +41,8 @@ function save_book_sample(string $formattedName): void
 {
     // Create a client.
     $libraryClient = new LibraryClient();
-    
+
+    // Prepare the request message.
     $request = (new BookResponse())
         ->setName($formattedName);
 

@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START retail_v2alpha_generated_GenerativeQuestionService_UpdateGenerativeQuestionsFeatureConfig_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Retail\V2alpha\GenerativeQuestionServiceClient;
+use Google\Cloud\Retail\V2alpha\Client\GenerativeQuestionServiceClient;
 use Google\Cloud\Retail\V2alpha\GenerativeQuestionsFeatureConfig;
+use Google\Cloud\Retail\V2alpha\UpdateGenerativeQuestionsFeatureConfigRequest;
 
 /**
  * Manages overal generative question feature state -- enables toggling
@@ -40,16 +41,16 @@ function update_generative_questions_feature_config_sample(
     // Create a client.
     $generativeQuestionServiceClient = new GenerativeQuestionServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $generativeQuestionsFeatureConfig = (new GenerativeQuestionsFeatureConfig())
         ->setCatalog($generativeQuestionsFeatureConfigCatalog);
+    $request = (new UpdateGenerativeQuestionsFeatureConfigRequest())
+        ->setGenerativeQuestionsFeatureConfig($generativeQuestionsFeatureConfig);
 
     // Call the API and handle any network failures.
     try {
         /** @var GenerativeQuestionsFeatureConfig $response */
-        $response = $generativeQuestionServiceClient->updateGenerativeQuestionsFeatureConfig(
-            $generativeQuestionsFeatureConfig
-        );
+        $response = $generativeQuestionServiceClient->updateGenerativeQuestionsFeatureConfig($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

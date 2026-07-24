@@ -1,0 +1,13 @@
+
+    /**
+     * @param \Google\Cloud\Dataproc\V1\SessionTemplate $sessionTemplate Required. The updated session template.
+     *
+     * @return \Google\Cloud\Dataproc\V1\UpdateSessionTemplateRequest
+     *
+     * @experimental
+     */
+    public static function build(\Google\Cloud\Dataproc\V1\SessionTemplate $sessionTemplate): self
+    {
+        return (new self())
+            ->setSessionTemplate($sessionTemplate);
+    }

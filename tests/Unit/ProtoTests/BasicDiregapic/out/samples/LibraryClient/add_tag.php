@@ -39,7 +39,8 @@ function add_tag_sample(string $resource, string $tag): void
 {
     // Create a client.
     $libraryClient = new LibraryClient();
-    
+
+    // Prepare the request message.
     $request = (new AddTagRequest())
         ->setResource($resource)
         ->setTag($tag);

@@ -26,7 +26,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Google\ApiCore\ApiException;
 use Google\Cloud\Retail\V2alpha\AttributesConfig;
 use Google\Cloud\Retail\V2alpha\CatalogAttribute;
-use Google\Cloud\Retail\V2alpha\CatalogServiceClient;
+use Google\Cloud\Retail\V2alpha\Client\CatalogServiceClient;
+use Google\Cloud\Retail\V2alpha\ReplaceCatalogAttributeRequest;
 
 /**
  * Replaces the specified
@@ -60,17 +61,17 @@ function replace_catalog_attribute_sample(
     // Create a client.
     $catalogServiceClient = new CatalogServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $catalogAttribute = (new CatalogAttribute())
         ->setKey($catalogAttributeKey);
+    $request = (new ReplaceCatalogAttributeRequest())
+        ->setAttributesConfig($formattedAttributesConfig)
+        ->setCatalogAttribute($catalogAttribute);
 
     // Call the API and handle any network failures.
     try {
         /** @var AttributesConfig $response */
-        $response = $catalogServiceClient->replaceCatalogAttribute(
-            $formattedAttributesConfig,
-            $catalogAttribute
-        );
+        $response = $catalogServiceClient->replaceCatalogAttribute($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

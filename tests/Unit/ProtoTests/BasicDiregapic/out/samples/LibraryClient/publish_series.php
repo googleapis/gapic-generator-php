@@ -51,7 +51,8 @@ function publish_series_sample(
 ): void {
     // Create a client.
     $libraryClient = new LibraryClient();
-    
+
+    // Prepare the request message.
     $shelf = (new ShelfResponse())
         ->setName($shelfName);
     $bookResponse = (new BookResponse())

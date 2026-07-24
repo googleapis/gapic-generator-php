@@ -44,7 +44,8 @@ function file_level_child_type_ref_method_sample(
 ): void {
     // Create a client.
     $resourceNamesClient = new ResourceNamesClient();
-    
+
+    // Prepare the request message.
     $request = (new FileLevelChildTypeRefRequest())
         ->setReqFolderName($formattedReqFolderName)
         ->setReqFolderMultiName($formattedReqFolderMultiName)

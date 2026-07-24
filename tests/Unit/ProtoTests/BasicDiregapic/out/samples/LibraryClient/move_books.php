@@ -39,7 +39,8 @@ function move_books_sample(): void
 {
     // Create a client.
     $libraryClient = new LibraryClient();
-    
+
+    // Prepare the request message.
     $request = new MoveBooksRequest();
 
     // Call the API and handle any network failures.

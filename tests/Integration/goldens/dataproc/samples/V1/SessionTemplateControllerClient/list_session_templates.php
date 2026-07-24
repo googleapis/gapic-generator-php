@@ -25,8 +25,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START dataproc_v1_generated_SessionTemplateController_ListSessionTemplates_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
+use Google\Cloud\Dataproc\V1\Client\SessionTemplateControllerClient;
+use Google\Cloud\Dataproc\V1\ListSessionTemplatesRequest;
 use Google\Cloud\Dataproc\V1\SessionTemplate;
-use Google\Cloud\Dataproc\V1\SessionTemplateControllerClient;
 
 /**
  * Lists session templates.
@@ -39,10 +40,14 @@ function list_session_templates_sample(string $formattedParent): void
     // Create a client.
     $sessionTemplateControllerClient = new SessionTemplateControllerClient();
 
+    // Prepare the request message.
+    $request = (new ListSessionTemplatesRequest())
+        ->setParent($formattedParent);
+
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $sessionTemplateControllerClient->listSessionTemplates($formattedParent);
+        $response = $sessionTemplateControllerClient->listSessionTemplates($request);
 
         /** @var SessionTemplate $element */
         foreach ($response as $element) {

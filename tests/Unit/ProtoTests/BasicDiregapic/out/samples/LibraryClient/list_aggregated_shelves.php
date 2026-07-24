@@ -41,7 +41,8 @@ function list_aggregated_shelves_sample(): void
 {
     // Create a client.
     $libraryClient = new LibraryClient();
-    
+
+    // Prepare the request message.
     $request = new ListAggregatedShelvesRequest();
 
     // Call the API and handle any network failures.

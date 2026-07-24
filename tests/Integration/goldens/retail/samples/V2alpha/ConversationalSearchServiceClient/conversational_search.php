@@ -25,8 +25,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_ConversationalSearchService_ConversationalSearch_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\ServerStream;
+use Google\Cloud\Retail\V2alpha\Client\ConversationalSearchServiceClient;
+use Google\Cloud\Retail\V2alpha\ConversationalSearchRequest;
 use Google\Cloud\Retail\V2alpha\ConversationalSearchResponse;
-use Google\Cloud\Retail\V2alpha\ConversationalSearchServiceClient;
 
 /**
  * Performs a conversational search.
@@ -65,14 +66,16 @@ function conversational_search_sample(
     // Create a client.
     $conversationalSearchServiceClient = new ConversationalSearchServiceClient();
 
+    // Prepare the request message.
+    $request = (new ConversationalSearchRequest())
+        ->setPlacement($placement)
+        ->setBranch($formattedBranch)
+        ->setVisitorId($visitorId);
+
     // Call the API and handle any network failures.
     try {
         /** @var ServerStream $stream */
-        $stream = $conversationalSearchServiceClient->conversationalSearch(
-            $placement,
-            $formattedBranch,
-            $visitorId
-        );
+        $stream = $conversationalSearchServiceClient->conversationalSearch($request);
 
         /** @var ConversationalSearchResponse $element */
         foreach ($stream->readAll() as $element) {

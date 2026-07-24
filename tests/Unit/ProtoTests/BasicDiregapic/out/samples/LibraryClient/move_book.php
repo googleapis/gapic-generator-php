@@ -40,7 +40,8 @@ function move_book_sample(string $formattedName, string $formattedOtherShelfName
 {
     // Create a client.
     $libraryClient = new LibraryClient();
-    
+
+    // Prepare the request message.
     $request = (new MoveBookRequest())
         ->setName($formattedName)
         ->setOtherShelfName($formattedOtherShelfName);

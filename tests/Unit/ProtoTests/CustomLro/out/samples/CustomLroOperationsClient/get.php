@@ -38,7 +38,8 @@ function get_sample(string $operation, string $project, string $region, string $
 {
     // Create a client.
     $customLroOperationsClient = new CustomLroOperationsClient();
-    
+
+    // Prepare the request message.
     $request = (new GetOperationRequest())
         ->setOperation($operation)
         ->setProject($project)

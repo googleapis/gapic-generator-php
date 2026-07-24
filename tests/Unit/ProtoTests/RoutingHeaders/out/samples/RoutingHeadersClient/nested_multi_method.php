@@ -38,7 +38,8 @@ function nested_multi_method_sample(string $nest1Nest2Name, string $anotherName)
 {
     // Create a client.
     $routingHeadersClient = new RoutingHeadersClient();
-    
+
+    // Prepare the request message.
     $nest1Nest2 = (new Inner2())
         ->setName($nest1Nest2Name);
     $nest1 = (new Inner1())

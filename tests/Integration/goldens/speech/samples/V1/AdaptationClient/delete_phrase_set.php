@@ -24,7 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START speech_v1_generated_Adaptation_DeletePhraseSet_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Speech\V1\AdaptationClient;
+use Google\Cloud\Speech\V1\Client\AdaptationClient;
+use Google\Cloud\Speech\V1\DeletePhraseSetRequest;
 
 /**
  * Delete a phrase set.
@@ -39,9 +40,13 @@ function delete_phrase_set_sample(string $formattedName): void
     // Create a client.
     $adaptationClient = new AdaptationClient();
 
+    // Prepare the request message.
+    $request = (new DeletePhraseSetRequest())
+        ->setName($formattedName);
+
     // Call the API and handle any network failures.
     try {
-        $adaptationClient->deletePhraseSet($formattedName);
+        $adaptationClient->deletePhraseSet($request);
         printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

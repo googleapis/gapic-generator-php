@@ -8,7 +8,7 @@
         "DatabaseAdmin": {
             "clients": {
                 "grpc": {
-                    "libraryClient": "DatabaseAdminGapicClient",
+                    "libraryClient": "DatabaseAdminClient",
                     "rpcs": {
                         "AddSplitPoints": {
                             "methods": [

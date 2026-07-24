@@ -25,9 +25,10 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_UserEventService_ExportUserEvents_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
+use Google\Cloud\Retail\V2alpha\Client\UserEventServiceClient;
+use Google\Cloud\Retail\V2alpha\ExportUserEventsRequest;
 use Google\Cloud\Retail\V2alpha\ExportUserEventsResponse;
 use Google\Cloud\Retail\V2alpha\OutputConfig;
-use Google\Cloud\Retail\V2alpha\UserEventServiceClient;
 use Google\Rpc\Status;
 
 /**
@@ -46,13 +47,16 @@ function export_user_events_sample(string $formattedParent): void
     // Create a client.
     $userEventServiceClient = new UserEventServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $outputConfig = new OutputConfig();
+    $request = (new ExportUserEventsRequest())
+        ->setParent($formattedParent)
+        ->setOutputConfig($outputConfig);
 
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $userEventServiceClient->exportUserEvents($formattedParent, $outputConfig);
+        $response = $userEventServiceClient->exportUserEvents($request);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

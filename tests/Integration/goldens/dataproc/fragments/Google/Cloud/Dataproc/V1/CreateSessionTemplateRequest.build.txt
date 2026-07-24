@@ -1,0 +1,16 @@
+
+    /**
+     * @param string                                    $parent          Required. The parent resource where this session template will be created. Please see
+     *                                                                   {@see SessionTemplateControllerClient::locationName()} for help formatting this field.
+     * @param \Google\Cloud\Dataproc\V1\SessionTemplate $sessionTemplate Required. The session template to create.
+     *
+     * @return \Google\Cloud\Dataproc\V1\CreateSessionTemplateRequest
+     *
+     * @experimental
+     */
+    public static function build(string $parent, \Google\Cloud\Dataproc\V1\SessionTemplate $sessionTemplate): self
+    {
+        return (new self())
+            ->setParent($parent)
+            ->setSessionTemplate($sessionTemplate);
+    }

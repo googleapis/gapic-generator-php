@@ -40,7 +40,8 @@ function fast_fibonacci_sample(): void
 {
     // Create a client.
     $deprecatedServiceClient = new DeprecatedServiceClient();
-    
+
+    // Prepare the request message.
     $request = new FibonacciRequest();
 
     // Call the API and handle any network failures.

@@ -40,7 +40,8 @@ function method_paginated_sample(string $aField, string $pageToken): void
 {
     // Create a client.
     $basicPaginatedClient = new BasicPaginatedClient();
-    
+
+    // Prepare the request message.
     $partOfRequestA = [new PartOfRequestA()];
     $request = (new Request())
         ->setAField($aField)

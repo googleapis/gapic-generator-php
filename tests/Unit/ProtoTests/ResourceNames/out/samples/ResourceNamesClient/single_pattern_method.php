@@ -39,7 +39,8 @@ function single_pattern_method_sample(): void
 {
     // Create a client.
     $resourceNamesClient = new ResourceNamesClient();
-    
+
+    // Prepare the request message.
     $request = new SinglePatternRequest();
 
     // Call the API and handle any network failures.

@@ -38,7 +38,8 @@ function list_books_sample(string $formattedName): void
 {
     // Create a client.
     $libraryClient = new LibraryClient();
-    
+
+    // Prepare the request message.
     $request = (new ListBooksRequest())
         ->setName($formattedName);
 

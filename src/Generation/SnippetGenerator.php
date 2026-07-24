@@ -388,7 +388,8 @@ class SnippetGenerator
                         $snippetDetails->serviceClientVar,
                         AST::new($snippetDetails->context->type($clientType))()
                     ),
-                    $hasSampleAssignments ? PHP_EOL . '// Prepare the request message.' : null,
+                    $hasSampleAssignments ? PHP_EOL : null,
+                    $hasSampleAssignments ? '// Prepare the request message.' : null,
                     $snippetDetails->sampleAssignments,
                     PHP_EOL,
                     '// Call the API and handle any network failures.',

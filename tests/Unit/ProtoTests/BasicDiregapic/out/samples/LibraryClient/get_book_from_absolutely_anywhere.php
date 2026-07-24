@@ -38,7 +38,8 @@ function get_book_from_absolutely_anywhere_sample(string $formattedName): void
 {
     // Create a client.
     $libraryClient = new LibraryClient();
-    
+
+    // Prepare the request message.
     $request = (new GetBookFromAbsolutelyAnywhereRequest())
         ->setName($formattedName);
 

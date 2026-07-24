@@ -41,7 +41,8 @@ function list_strings_sample(): void
 {
     // Create a client.
     $libraryClient = new LibraryClient();
-    
+
+    // Prepare the request message.
     $request = new ListStringsRequest();
 
     // Call the API and handle any network failures.
