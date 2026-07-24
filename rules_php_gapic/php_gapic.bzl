@@ -54,10 +54,13 @@ def php_gapic_srcjar(
         transport = None,
         rest_numeric_enums = False,
         generate_snippets = True,
-        # Supported values validated and specified in src/Utils/MigrationMode.php.
+        # TODO(vNext): Remove deprecated migration_mode parameter once all downstream repos are cleaned up.
         migration_mode = "NEW_SURFACE_ONLY",
         generator_binary = Label("//rules_php_gapic:php_gapic_generator_binary"),
         **kwargs):
+    if migration_mode != "NEW_SURFACE_ONLY":
+        print("WARNING: 'migration_mode' is deprecated and has no effect. Only the new surface is supported.")
+
     plugin_file_args = {}
     if gapic_yaml:
         plugin_file_args[gapic_yaml] = "gapic_yaml"
