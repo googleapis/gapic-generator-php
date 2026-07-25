@@ -28,6 +28,20 @@ http_archive(
     ],
 )
 
+# gRPC.
+http_archive(
+    name = "com_github_grpc_grpc",
+    sha256 = "d5509e40fb24f6390deeef8a88668124f4ec77d2ebb3b1a957b235a2f08b70c0",
+    urls = ["https://github.com/grpc/grpc/archive/v1.64.0.tar.gz"],
+    strip_prefix = "grpc-1.64.0",
+)
+
+load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
+grpc_deps()
+
+load("@com_github_grpc_grpc//bazel:grpc_extra_deps.bzl", "grpc_extra_deps")
+grpc_extra_deps()
+
 load("//:repositories.bzl", "gapic_generator_php_repositories")
 gapic_generator_php_repositories()
 
@@ -44,18 +58,4 @@ switched_rules_by_language(
     grpc = True,
     php = True,
 )
-
-# gRPC.
-http_archive(
-    name = "com_github_grpc_grpc",
-    sha256 = "4b64cbc454cc4fd0801a2823111e1d99f519c765dfa116905740f7ca2256d085",
-    urls = ["https://github.com/grpc/grpc/archive/v1.51.1.zip"],
-    strip_prefix = "grpc-1.51.1",
-)
-
-load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
-grpc_deps()
-
-load("@com_github_grpc_grpc//bazel:grpc_extra_deps.bzl", "grpc_extra_deps")
-grpc_extra_deps()
 
