@@ -12,7 +12,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-24.04
-    container: gcr.io/gapic-images/googleapis:latest # zizmor: ignore[unpinned-images]
+    container: gcr.io/gapic-images/googleapis@sha256:10f630423413f9138bd68c71f87c4734b9eeaba040675162c2a0b38410b0effc
 
     steps:
     - name: Checkout code
