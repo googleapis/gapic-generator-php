@@ -14,12 +14,12 @@ on:
 jobs:
     style:
         name: PHP Style Check
-        uses: GoogleCloudPlatform/php-tools/.github/workflows/code-standards.yml@main # zizmor: ignore[unpinned-uses]
+        uses: GoogleCloudPlatform/php-tools/.github/workflows/code-standards.yml@c9ef4db634c55806c0a596e7278ff8ab62e0ca41 # v0.16.1
         with:
           path: src
 
     static-analysis:
         name: PHPStan Static Analysis
-        uses: GoogleCloudPlatform/php-tools/.github/workflows/static-analysis.yml@main # zizmor: ignore[unpinned-uses]
+        uses: GoogleCloudPlatform/php-tools/.github/workflows/static-analysis.yml@c9ef4db634c55806c0a596e7278ff8ab62e0ca41 # v0.16.1
         with:
           autoload-file: tests/Unit/autoload.php

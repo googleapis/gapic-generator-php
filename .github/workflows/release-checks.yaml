@@ -8,7 +8,7 @@ permissions:
 jobs:
     next-release-label-check:
         name: Check for "next release" label
-        uses: GoogleCloudPlatform/php-tools/.github/workflows/release-checks.yml@main # zizmor: ignore[unpinned-uses]
+        uses: GoogleCloudPlatform/php-tools/.github/workflows/release-checks.yml@c9ef4db634c55806c0a596e7278ff8ab62e0ca41 # v0.16.1
         if: github.event.pull_request.user.login == 'release-please[bot]'
         with:
             next-release-label-check: false
