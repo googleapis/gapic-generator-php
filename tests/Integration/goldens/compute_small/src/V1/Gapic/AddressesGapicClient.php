@@ -190,7 +190,7 @@ class AddressesGapicClient
      */
     public function resumeOperation($operationName, $methodName = null)
     {
-        $options = isset($methodName) ? isset($this->descriptors[$methodName]['longRunning']) ? $this->descriptors[$methodName]['longRunning'] : $this->getDefaultOperationDescriptor() : $this->getDefaultOperationDescriptor();
+        $options = $this->descriptors[$methodName ?? '']['longRunning'] ?? $this->getDefaultOperationDescriptor();
         $operation = new OperationResponse($operationName, $this->getOperationsClient(), $options);
         $operation->reload();
         return $operation;
