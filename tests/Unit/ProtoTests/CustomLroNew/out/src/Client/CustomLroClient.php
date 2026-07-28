@@ -152,7 +152,7 @@ final class CustomLroClient
      */
     public function resumeOperation($operationName, $methodName = null)
     {
-        $options = isset($methodName) ? $this->descriptors[$methodName]['longRunning'] ?? $this->getDefaultOperationDescriptor() : $this->getDefaultOperationDescriptor();
+        $options = $this->descriptors[$methodName ?? '']['longRunning'] ?? $this->getDefaultOperationDescriptor();
         $operation = new OperationResponse($operationName, $this->getOperationsClient(), $options);
         $operation->reload();
         return $operation;
