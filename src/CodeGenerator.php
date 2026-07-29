@@ -305,7 +305,7 @@ class CodeGenerator
             }
 
             $ctx = new SourceFileContext($service->gapicClientType->getNamespace(), $licenseYear);
-            $file = GapicClientGenerator::generate($ctx, $service, $generateSnippets);
+            $file = GapicClientGenerator::generate($ctx, $service);
             $code = $file->toCode();
             $code = Formatter::format($code);
             yield ["src/{$version}Client/{$service->gapicClientType->name}.php", $code];

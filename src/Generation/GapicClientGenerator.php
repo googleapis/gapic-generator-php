@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,12 @@ namespace Google\Generator\Generation;
 
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
+use Google\ApiCore\GapicClientTrait;
 use Google\ApiCore\OperationResponse;
+use Google\ApiCore\Options\ClientOptions;
+use Google\ApiCore\PathTemplate;
 use Google\ApiCore\RequestParamsHeaderDescriptor;
+use Google\ApiCore\ResourceHelperTrait;
 use Google\ApiCore\RetrySettings;
 use Google\ApiCore\Transport\GrpcTransport;
 use Google\ApiCore\Transport\RestTransport;
@@ -34,6 +38,7 @@ use Google\Generator\Ast\PhpClass;
 use Google\Generator\Ast\PhpClassMember;
 use Google\Generator\Ast\PhpDoc;
 use Google\Generator\Ast\PhpFile;
+use Google\Generator\Ast\PhpProperty;
 use Google\Generator\Collections\Map;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\Helpers;
@@ -41,6 +46,7 @@ use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Transport;
 use Google\Generator\Utils\Type;
 use Google\LongRunning\Client\OperationsClient;
+use Google\LongRunning\Operation;
 use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Log\LoggerInterface;
 
@@ -48,32 +54,29 @@ class GapicClientGenerator
 {
     private const CALL_OPTIONS_VAR = 'callOptions';
 
-    public static function generate(SourceFileContext $ctx, ServiceDetails $serviceDetails, bool $generateSnippets): PhpFile
+    public static function generate(SourceFileContext $ctx, ServiceDetails $serviceDetails): PhpFile
     {
-        return (new GapicClientGenerator($ctx, $serviceDetails, $generateSnippets))->generateImpl();
+        return (new GapicClientGenerator($ctx, $serviceDetails))->generateImpl();
     }
 
     private SourceFileContext $ctx;
     private ServiceDetails $serviceDetails;
-    // TODO(v2): This can be cleaned up after the v2 migration is complete.
-    private bool $generateSnippets;
 
-    private function __construct(SourceFileContext $ctx, ServiceDetails $serviceDetails, bool $generateSnippets)
+    private function __construct(SourceFileContext $ctx, ServiceDetails $serviceDetails)
     {
         $this->ctx = $ctx;
         $this->serviceDetails = $serviceDetails;
-        $this->generateSnippets = $generateSnippets;
     }
 
     private function generateImpl(): PhpFile
     {
         // TODO(vNext): Remove the forced addition of these `use` clauses.
-        $this->ctx->type(Type::fromName(\Google\ApiCore\PathTemplate::class));
-        $this->ctx->type(Type::fromName(\Google\ApiCore\Options\ClientOptions::class));
+        $this->ctx->type(Type::fromName(PathTemplate::class));
+        $this->ctx->type(Type::fromName(ClientOptions::class));
         $this->ctx->type(Type::fromName(RequestParamsHeaderDescriptor::class));
         $this->ctx->type(Type::fromName(RetrySettings::class));
         if ($this->serviceDetails->hasLro) {
-            $this->ctx->type(Type::fromName(\Google\LongRunning\Operation::class));
+            $this->ctx->type(Type::fromName(Operation::class));
             foreach ($this->serviceDetails->methods as $method) {
                 if ($method->methodType === MethodDetails::LRO) {
                     $this->ctx->type($method->lroResponseType);
@@ -136,9 +139,9 @@ class GapicClientGenerator
                 !$this->serviceDetails->isDeprecated ? null : PhpDoc::deprecated(ServiceDetails::DEPRECATED_MSG),
                 $this->serviceDetails->streamingOnly ? null : $this->magicAsyncDocs(),
             ))
-            ->withTrait($this->ctx->type(Type::fromName(\Google\ApiCore\GapicClientTrait::class)))
+            ->withTrait($this->ctx->type(Type::fromName(GapicClientTrait::class)))
             ->withTrait(
-                $this->serviceDetails->hasResources ? $this->ctx->type(Type::fromName(\Google\ApiCore\ResourceHelperTrait::class)): null
+                $this->serviceDetails->hasResources ? $this->ctx->type(Type::fromName(ResourceHelperTrait::class)): null
             )
             ->withMember($this->serviceName())
             ->withMember($this->serviceAddress())
@@ -167,10 +170,10 @@ class GapicClientGenerator
             ->withValue($this->serviceDetails->serviceName);
     }
 
-    private function apiVersion()
+    private function apiVersion(): ?PhpProperty
     {
         if (is_null($this->serviceDetails->apiVersion)) {
-            return;
+            return null;
         }
 
         return AST::property('apiVersion')
@@ -562,7 +565,7 @@ class GapicClientGenerator
         $optionsParam = AST::param(
             ResolvedType::union(
                 Type::array(),
-                Type::fromName(\Google\ApiCore\Options\ClientOptions::class)
+                Type::fromName(ClientOptions::class)
             ),
             $options,
             AST::array([])
