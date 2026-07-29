@@ -220,7 +220,7 @@ class Type implements Equality
     public string $name;
 
     /**
-     * Does this Type represent a class?
+     * Does this Type represent a class, trait, or interface?
      *
      * @return bool
      */
