@@ -53,9 +53,4 @@ class BasicClientStreamingClientTest extends GeneratedTest
         ];
         return new BasicClientStreamingClient($options);
     }
-
-    public function testClientTestCase()
-    {
-        $this->assertTrue(true);
-    }
 }
