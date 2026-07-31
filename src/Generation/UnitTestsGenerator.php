@@ -120,6 +120,22 @@ class UnitTestsGenerator
         // This is more of a sanity check than a coverage thing.
         $nonStreamingMethod = $this->serviceDetails->methods->filter(fn ($m) => !$m->isStreaming() && !$m->isMixin())->firstOrNull();
 
+        $testMethods = $this->serviceDetails->methods->flatMap(fn ($x) => Vector::new($this->testCases($x)));
+        if (!is_null($nonStreamingMethod)) {
+            $testMethods = $testMethods->append($this->testAsync($nonStreamingMethod));
+        }
+
+        if (count($testMethods) === 0) {
+            $testMethods = $testMethods->append(
+                AST::method('testClientTestCase')
+                    ->withAccess(Access::PUBLIC)
+                    ->withBody(AST::block(
+                        // Add a dummy assertion to silence PHPUnit warning
+                        ($this->assertTrue)(AST::literal('true'))
+                    ))
+            );
+        }
+
         return AST::class($this->serviceDetails->unitTestsType, $this->ctx->type(Type::fromName(GeneratedTest::class)))
             ->withPhpDoc(PhpDoc::block(
                 is_null($this->serviceDetails->unitTestGroupName) ? null : PhpDoc::group($this->serviceDetails->unitTestGroupName),
@@ -128,8 +144,7 @@ class UnitTestsGenerator
             ->withMember($this->createTransport())
             ->withMember($this->createCredentials())
             ->withMember($this->createClient())
-            ->withMembers($this->serviceDetails->methods->flatMap(fn ($x) => Vector::new($this->testCases($x))))
-            ->withMember(is_null($nonStreamingMethod) ? null : $this->testAsync($nonStreamingMethod));
+            ->withMembers($testMethods);
     }
 
     private function createTransport(): PhpClassMember

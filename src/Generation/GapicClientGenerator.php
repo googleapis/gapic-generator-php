@@ -346,7 +346,12 @@ class GapicClientGenerator
             ->withAccess(Access::PUBLIC)
             ->withParams(AST::param(null, $operationName), AST::param(null, $methodName, AST::NULL))
             ->withBody(AST::block(
-                AST::assign($options, AST::nullCoalescing(
+                AST::assign($options, AST::ternary(
+                    AST::binaryOp(
+                        $methodName,
+                        '&&',
+                        AST::call(AST::ISSET)(AST::access(AST::THIS, AST::property('descriptors'))[$methodName]['longRunning'])
+                    ),
                     AST::access(AST::THIS, AST::property('descriptors'))[$methodName]['longRunning'],
                     $default
                 )),

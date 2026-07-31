@@ -53,4 +53,9 @@ class BasicGrpcOnlyClientTest extends GeneratedTest
         ];
         return new BasicGrpcOnlyClient($options);
     }
+
+    public function testClientTestCase()
+    {
+        $this->assertTrue(true);
+    }
 }

@@ -71,3 +71,16 @@ message LroResponse {
 
 message LroMetadata {
 }
+
+message ChildResource {
+  option (google.api.resource) = {
+    type: "example.com/ChildResource"
+    pattern: "users/{user}/profile/nested/{item}"
+    pattern: "items/{item}/subitems/{subitem}"
+  };
+  string name = 1;
+}
+
+message ChildRequest {
+  string parent = 1 [(google.api.resource_reference).child_type = "example.com/ChildResource"];
+}
