@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.24.0](https://github.com/googleapis/gapic-generator-php/compare/v1.23.1...v1.24.0) (2026-07-31)
+
+
+### Miscellaneous Chores
+
+* Remove V1 surface ([#834](https://github.com/googleapis/gapic-generator-php/issues/834)) ([b7d6c86](https://github.com/googleapis/gapic-generator-php/commit/b7d6c861d3e61af00f13290d7b34f4c63c4c20eb))
+
 ## [1.23.1](https://github.com/googleapis/gapic-generator-php/compare/v1.23.0...v1.23.1) (2026-07-30)
 
 
