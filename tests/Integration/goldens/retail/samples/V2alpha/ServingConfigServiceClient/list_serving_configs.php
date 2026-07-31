@@ -25,8 +25,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_ServingConfigService_ListServingConfigs_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
+use Google\Cloud\Retail\V2alpha\Client\ServingConfigServiceClient;
+use Google\Cloud\Retail\V2alpha\ListServingConfigsRequest;
 use Google\Cloud\Retail\V2alpha\ServingConfig;
-use Google\Cloud\Retail\V2alpha\ServingConfigServiceClient;
 
 /**
  * Lists all ServingConfigs linked to this catalog.
@@ -40,10 +41,14 @@ function list_serving_configs_sample(string $formattedParent): void
     // Create a client.
     $servingConfigServiceClient = new ServingConfigServiceClient();
 
+    // Prepare the request message.
+    $request = (new ListServingConfigsRequest())
+        ->setParent($formattedParent);
+
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $servingConfigServiceClient->listServingConfigs($formattedParent);
+        $response = $servingConfigServiceClient->listServingConfigs($request);
 
         /** @var ServingConfig $element */
         foreach ($response as $element) {

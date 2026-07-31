@@ -19,7 +19,7 @@ declare(strict_types=1);
 namespace Google\Generator\Tests\Unit\ProtoTests;
 
 use PHPUnit\Framework\TestCase;
-use Testing\BasicDiregapic\LibraryClient;
+use Testing\BasicDiregapic\Client\LibraryClient;
 use Google\ApiCore\InsecureCredentialsWrapper;
 use Google\ApiCore\ValidationException;
 use Testing\BasicGrpcOnly\Client\BasicGrpcOnlyClient;

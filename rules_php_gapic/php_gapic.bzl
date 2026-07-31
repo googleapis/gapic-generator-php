@@ -54,10 +54,13 @@ def php_gapic_srcjar(
         transport = None,
         rest_numeric_enums = False,
         generate_snippets = True,
-        # Supported values validated and specified in src/Utils/MigrationMode.php.
+        # TODO(vNext): Remove deprecated migration_mode parameter once all downstream repos are cleaned up.
         migration_mode = "NEW_SURFACE_ONLY",
         generator_binary = Label("//rules_php_gapic:php_gapic_generator_binary"),
         **kwargs):
+    if migration_mode != "NEW_SURFACE_ONLY":
+        print("WARNING: 'migration_mode' is deprecated and has no effect. Only the new surface is supported.")
+
     plugin_file_args = {}
     if gapic_yaml:
         plugin_file_args[gapic_yaml] = "gapic_yaml"
@@ -71,13 +74,10 @@ def php_gapic_srcjar(
         transport = "grpc+rest"
     if transport != "grpc+rest" and transport != "rest" and transport != "grpc":
         fail("Error: Only 'grpc+rest', 'rest' or `grpc` transports are supported")
-    if transport == "grpc" and migration_mode != "NEW_SURFACE_ONLY":
-        fail("Error: 'grpc' transport is only supported with 'NEW_SURFACE_ONLY' migration mode")
 
     # Set plugin arguments.
     plugin_args = ["metadata"]  # Generate the gapic_metadata.json file.
     plugin_args.append("transport=%s" % transport)
-    plugin_args.append("migration-mode=%s" % migration_mode)
 
     # Generate REGAPIC param for requesting response enums be JSON-encoded as numbers, not strings.
     if rest_numeric_enums:

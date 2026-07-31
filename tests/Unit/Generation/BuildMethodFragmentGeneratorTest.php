@@ -24,7 +24,6 @@ use Google\Generator\Generation\BuildMethodFragmentGenerator;
 use Google\Generator\Generation\SourceFileContext;
 use Google\Generator\Generation\ServiceDetails;
 use Google\Generator\Tests\Tools\ProtoLoader;
-use Google\Generator\Utils\MigrationMode;
 use Google\Generator\Utils\ProtoAugmenter;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ServiceYamlConfig;
@@ -51,7 +50,6 @@ final class BuildMethodFragmentGeneratorTest extends TestCase
             $file,
             new ServiceYamlConfig(null),
             Transport::GRPC,
-            MigrationMode::NEW_SURFACE_ONLY
         );
 
         $ctx = new SourceFileContext($serviceDetails->gapicClientType->getNamespace(), 2026);

@@ -21,7 +21,6 @@ namespace Google\Generator\Tests\Unit\ProtoTests;
 use PHPUnit\Framework\TestCase;
 use FilesystemIterator;
 use Google\Generator\Tests\Tools\GeneratorUtils;
-use Google\Generator\Utils\MigrationMode;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
@@ -32,14 +31,12 @@ final class ProtoTest extends TestCase
         ?string $package = null,
         ?string $transport = null,
         bool $generateSnippets = true,
-        string $migrationMode = MigrationMode::PRE_MIGRATION_SURFACE_ONLY
     ): void {
         $codeIterator = GeneratorUtils::generateFromProto(
             $protoPath,
             $package,
             $transport,
             $generateSnippets,
-            $migrationMode
         );
         $files = iterator_to_array(
             new RecursiveIteratorIterator(
@@ -69,10 +66,9 @@ final class ProtoTest extends TestCase
         );
     }
 
-    public function testBasic0WithNewSurface(): void
+    public function testBasic(): void
     {
-        // test generating the client with only the new surface (no v1 client, v2 samples)
-        $this->runProtoTest('Basic/basic.proto', migrationMode: MigrationMode::NEW_SURFACE_ONLY);
+        $this->runProtoTest('Basic/basic.proto');
     }
 
     public function testBasicLro(): void
@@ -83,11 +79,6 @@ final class ProtoTest extends TestCase
     public function testBasicOneof(): void
     {
         $this->runProtoTest('BasicOneof/basic-oneof.proto');
-    }
-
-    public function testBasicOneofNew(): void
-    {
-        $this->runProtoTest('BasicOneofNew/basic-oneof-new.proto', migrationMode: MigrationMode::NEW_SURFACE_ONLY);
     }
 
     public function testBasicPaginated(): void
@@ -102,7 +93,7 @@ final class ProtoTest extends TestCase
 
     public function testServerStreaming(): void
     {
-        $this->runProtoTest('BasicServerStreaming/basic-server-streaming.proto', migrationMode: MigrationMode::NEW_SURFACE_ONLY);
+        $this->runProtoTest('BasicServerStreaming/basic-server-streaming.proto');
     }
 
     public function testClientStreaming(): void
@@ -118,7 +109,7 @@ final class ProtoTest extends TestCase
     public function testRoutingHeadersWithMigrationSurface(): void
     {
         // test generating the client in migration mode (both v1 and v2 clients, but with v2 samples)
-        $this->runProtoTest('RoutingHeaders/routing-headers.proto', migrationMode: MigrationMode::MIGRATING);
+        $this->runProtoTest('RoutingHeaders/routing-headers.proto');
     }
 
     public function testDeprecatedService(): void
@@ -128,12 +119,7 @@ final class ProtoTest extends TestCase
 
     public function testBasicDiregapicWithPreMigrationSurface(): void
     {
-        $this->runProtoTest('BasicDiregapic/library_rest.proto', 'google.example.library.v1', 'rest', migrationMode: MigrationMode::PRE_MIGRATION_SURFACE_ONLY);
-    }
-
-    public function testResourceNamesWithMigrationModeUnspecified(): void
-    {
-        $this->runProtoTest('ResourceNames/resource-names.proto', migrationMode: MigrationMode::MIGRATION_MODE_UNSPECIFIED);
+        $this->runProtoTest('BasicDiregapic/library_rest.proto', 'google.example.library.v1', 'rest');
     }
 
     public function testCustomLro(): void

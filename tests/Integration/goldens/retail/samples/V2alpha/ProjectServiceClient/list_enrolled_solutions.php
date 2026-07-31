@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START retail_v2alpha_generated_ProjectService_ListEnrolledSolutions_sync]
 use Google\ApiCore\ApiException;
+use Google\Cloud\Retail\V2alpha\Client\ProjectServiceClient;
+use Google\Cloud\Retail\V2alpha\ListEnrolledSolutionsRequest;
 use Google\Cloud\Retail\V2alpha\ListEnrolledSolutionsResponse;
-use Google\Cloud\Retail\V2alpha\ProjectServiceClient;
 
 /**
  * Lists all the retail API solutions the project has enrolled.
@@ -39,10 +40,14 @@ function list_enrolled_solutions_sample(string $formattedParent): void
     // Create a client.
     $projectServiceClient = new ProjectServiceClient();
 
+    // Prepare the request message.
+    $request = (new ListEnrolledSolutionsRequest())
+        ->setParent($formattedParent);
+
     // Call the API and handle any network failures.
     try {
         /** @var ListEnrolledSolutionsResponse $response */
-        $response = $projectServiceClient->listEnrolledSolutions($formattedParent);
+        $response = $projectServiceClient->listEnrolledSolutions($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

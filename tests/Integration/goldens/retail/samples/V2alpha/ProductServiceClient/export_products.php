@@ -25,9 +25,10 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_ProductService_ExportProducts_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
+use Google\Cloud\Retail\V2alpha\Client\ProductServiceClient;
+use Google\Cloud\Retail\V2alpha\ExportProductsRequest;
 use Google\Cloud\Retail\V2alpha\ExportProductsResponse;
 use Google\Cloud\Retail\V2alpha\OutputConfig;
-use Google\Cloud\Retail\V2alpha\ProductServiceClient;
 use Google\Rpc\Status;
 
 /**
@@ -43,13 +44,16 @@ function export_products_sample(string $formattedParent): void
     // Create a client.
     $productServiceClient = new ProductServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $outputConfig = new OutputConfig();
+    $request = (new ExportProductsRequest())
+        ->setParent($formattedParent)
+        ->setOutputConfig($outputConfig);
 
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $productServiceClient->exportProducts($formattedParent, $outputConfig);
+        $response = $productServiceClient->exportProducts($request);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

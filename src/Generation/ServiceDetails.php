@@ -22,7 +22,6 @@ use Google\Generator\Collections\Set;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\CustomOptions;
 use Google\Generator\Utils\Helpers;
-use Google\Generator\Utils\MigrationMode;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\ServiceYamlConfig;
@@ -52,20 +51,11 @@ class ServiceDetails
     /** @var Type *Readonly* The type of the service client class. */
     public Type $gapicClientType;
 
-    /** @var Type *Readonly* The type of the service client V2 class. */
-    public Type $gapicClientV2Type;
-
-    /** @var Type *Readonly* The type of the empty client class. */
-    public Type $emptyClientType;
-
     /** @var Type *Readonly* The type of the gRPC client. */
     public Type $grpcClientType;
 
     /** @var Type *Readonly* The type of the unit-tests class. */
     public Type $unitTestsType;
-
-    /** @var Type *Readonly* The type of the unit-tests class for V2 clients. */
-    public Type $unitTestsV2Type;
 
     /** @var Vector *Readonly* Vector of strings; the documentation lines from the source proto. */
     public Vector $docLines;
@@ -148,9 +138,6 @@ class ServiceDetails
     /** @var bool *Readonly* Whether the service only has streaming RPCs or not. */
     public bool $streamingOnly;
 
-    /** @var string *Readonly* MigrationMode to use during generation. */
-    public string $migrationMode;
-
     /**
      * @var ServiceYamlConfig *ReadOnly* Service yaml config to read custom
      *      settings while for library generation. For example:
@@ -167,25 +154,20 @@ class ServiceDetails
         FileDescriptorProto $fileDesc,
         ServiceYamlConfig $serviceYamlConfig,
         int $transportType = Transport::GRPC_REST,
-        string $migrationMode = MigrationMode::PRE_MIGRATION_SURFACE_ONLY
     ) {
         $this->catalog = $catalog;
         $this->package = $package;
         $this->namespace = $namespace;
-        $this->migrationMode = $migrationMode;
         $this->transportType = $transportType;
         $this->serviceYamlConfig = $serviceYamlConfig;
         $this->apiVersion = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_API_VERSION);
-        $this->gapicClientType = Type::fromName("{$namespace}\\Gapic\\{$desc->getName()}GapicClient");
-        $this->emptyClientType = Type::fromName("{$namespace}\\{$desc->getName()}Client");
-        $this->gapicClientV2Type = Type::fromName("{$namespace}\\Client\\{$desc->getName()}Client");
+        $this->gapicClientType = Type::fromName("{$namespace}\\Client\\{$desc->getName()}Client");
         $this->grpcClientType = Type::fromName("{$namespace}\\{$desc->getName()}GrpcClient");
         $nsVersionAndSuffix = Helpers::nsVersionAndSuffixPath($namespace);
         $unitTestNs = $nsVersionAndSuffix === '' ?
             "{$namespace}\\Tests\\Unit" :
             substr($namespace, 0, -strlen($nsVersionAndSuffix)) . 'Tests\\Unit\\' . str_replace('/', '\\', $nsVersionAndSuffix);
-        $this->unitTestsType = Type::fromName("{$unitTestNs}\\{$desc->getName()}ClientTest");
-        $this->unitTestsV2Type = Type::fromName("{$unitTestNs}\\Client\\{$desc->getName()}ClientTest");
+        $this->unitTestsType = Type::fromName("{$unitTestNs}\\Client\\{$desc->getName()}ClientTest");
         $this->docLines = $desc->leadingComments;
         $this->serviceName = "{$package}.{$desc->getName()}";
         $this->shortName = $desc->getName();
@@ -222,9 +204,7 @@ class ServiceDetails
 
             // Assuming the custom operations service client is in the same namespace as the client to generate.
             $cname = $this->customOperationService->getName() . 'Client';
-            $this->customOperationServiceClientType = $this->migrationMode === MigrationMode::NEW_SURFACE_ONLY
-                ? Type::fromName("{$this->namespace}\\Client\\{$cname}")
-                : Type::fromName("{$this->namespace}\\{$cname}");
+            $this->customOperationServiceClientType = Type::fromName("{$this->namespace}\\Client\\{$cname}");
         }
         if ($desc->hasOptions() && $desc->getOptions()->hasDeprecated()) {
             $this->isDeprecated = $desc->getOptions()->getDeprecated();

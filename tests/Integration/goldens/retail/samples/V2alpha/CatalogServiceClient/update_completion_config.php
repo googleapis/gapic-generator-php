@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START retail_v2alpha_generated_CatalogService_UpdateCompletionConfig_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Retail\V2alpha\CatalogServiceClient;
+use Google\Cloud\Retail\V2alpha\Client\CatalogServiceClient;
 use Google\Cloud\Retail\V2alpha\CompletionConfig;
+use Google\Cloud\Retail\V2alpha\UpdateCompletionConfigRequest;
 
 /**
  * Updates the
@@ -39,14 +40,16 @@ function update_completion_config_sample(string $completionConfigName): void
     // Create a client.
     $catalogServiceClient = new CatalogServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $completionConfig = (new CompletionConfig())
         ->setName($completionConfigName);
+    $request = (new UpdateCompletionConfigRequest())
+        ->setCompletionConfig($completionConfig);
 
     // Call the API and handle any network failures.
     try {
         /** @var CompletionConfig $response */
-        $response = $catalogServiceClient->updateCompletionConfig($completionConfig);
+        $response = $catalogServiceClient->updateCompletionConfig($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

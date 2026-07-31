@@ -8,7 +8,7 @@
         "GrpcServiceConfigWithRetry1": {
             "clients": {
                 "grpc": {
-                    "libraryClient": "GrpcServiceConfigWithRetry1GapicClient",
+                    "libraryClient": "GrpcServiceConfigWithRetry1Client",
                     "rpcs": {
                         "Method1A": {
                             "methods": [

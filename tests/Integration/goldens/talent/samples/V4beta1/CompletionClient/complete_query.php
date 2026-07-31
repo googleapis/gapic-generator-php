@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START jobs_v4beta1_generated_Completion_CompleteQuery_sync]
 use Google\ApiCore\ApiException;
+use Google\Cloud\Talent\V4beta1\Client\CompletionClient;
+use Google\Cloud\Talent\V4beta1\CompleteQueryRequest;
 use Google\Cloud\Talent\V4beta1\CompleteQueryResponse;
-use Google\Cloud\Talent\V4beta1\CompletionClient;
 
 /**
  * Completes the specified prefix with keyword suggestions.
@@ -51,10 +52,16 @@ function complete_query_sample(string $formattedParent, string $query, int $page
     // Create a client.
     $completionClient = new CompletionClient();
 
+    // Prepare the request message.
+    $request = (new CompleteQueryRequest())
+        ->setParent($formattedParent)
+        ->setQuery($query)
+        ->setPageSize($pageSize);
+
     // Call the API and handle any network failures.
     try {
         /** @var CompleteQueryResponse $response */
-        $response = $completionClient->completeQuery($formattedParent, $query, $pageSize);
+        $response = $completionClient->completeQuery($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

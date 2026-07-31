@@ -25,7 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START bidi_generated_BasicBidiStreaming_MethodBidi_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\BidiStream;
-use Testing\BasicBidiStreaming\BasicBidiStreamingClient;
+use Testing\BasicBidiStreaming\Client\BasicBidiStreamingClient;
 use Testing\BasicBidiStreaming\Request;
 use Testing\BasicBidiStreaming\Response;
 
@@ -35,7 +35,7 @@ function method_bidi_sample(int $aNumber): void
     // Create a client.
     $basicBidiStreamingClient = new BasicBidiStreamingClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $request = (new Request())
         ->setANumber($aNumber);
 

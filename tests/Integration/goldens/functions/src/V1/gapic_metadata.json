@@ -8,7 +8,7 @@
         "CloudFunctionsService": {
             "clients": {
                 "grpc": {
-                    "libraryClient": "CloudFunctionsServiceGapicClient",
+                    "libraryClient": "CloudFunctionsServiceClient",
                     "rpcs": {
                         "CallFunction": {
                             "methods": [

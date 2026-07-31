@@ -1,0 +1,15 @@
+
+    /**
+     * @param string $name Required. The name (project, location, cluster) of the cluster to get.
+     *                     Specified in the format `projects/&#42;/locations/&#42;/clusters/*` or
+     *                     `projects/&#42;/zones/&#42;/clusters/*`.
+     *
+     * @return \Google\Cloud\Container\V1\FetchClusterUpgradeInfoRequest
+     *
+     * @experimental
+     */
+    public static function build(string $name): self
+    {
+        return (new self())
+            ->setName($name);
+    }

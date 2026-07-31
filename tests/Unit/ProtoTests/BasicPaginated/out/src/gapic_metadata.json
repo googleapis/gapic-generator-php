@@ -8,7 +8,7 @@
         "BasicPaginated": {
             "clients": {
                 "grpc": {
-                    "libraryClient": "BasicPaginatedGapicClient",
+                    "libraryClient": "BasicPaginatedClient",
                     "rpcs": {
                         "MethodPaginated": {
                             "methods": [

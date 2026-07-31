@@ -25,7 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_AnalyticsService_ExportAnalyticsMetrics_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
-use Google\Cloud\Retail\V2alpha\AnalyticsServiceClient;
+use Google\Cloud\Retail\V2alpha\Client\AnalyticsServiceClient;
+use Google\Cloud\Retail\V2alpha\ExportAnalyticsMetricsRequest;
 use Google\Cloud\Retail\V2alpha\ExportAnalyticsMetricsResponse;
 use Google\Cloud\Retail\V2alpha\OutputConfig;
 use Google\Rpc\Status;
@@ -44,13 +45,16 @@ function export_analytics_metrics_sample(string $catalog): void
     // Create a client.
     $analyticsServiceClient = new AnalyticsServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $outputConfig = new OutputConfig();
+    $request = (new ExportAnalyticsMetricsRequest())
+        ->setCatalog($catalog)
+        ->setOutputConfig($outputConfig);
 
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $analyticsServiceClient->exportAnalyticsMetrics($catalog, $outputConfig);
+        $response = $analyticsServiceClient->exportAnalyticsMetrics($request);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

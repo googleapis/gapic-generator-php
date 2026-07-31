@@ -1,0 +1,21 @@
+
+    /**
+     * @param \Google\Cloud\Retail\V2alpha\GenerativeQuestionConfig $generativeQuestionConfig Required. The question to update.
+     * @param \Google\Protobuf\FieldMask                            $updateMask               Optional. Indicates which fields in the provided
+     *                                                                                        [GenerativeQuestionConfig][google.cloud.retail.v2alpha.GenerativeQuestionConfig]
+     *                                                                                        to update. The following are NOT supported:
+     *
+     *                                                                                        * [GenerativeQuestionConfig.frequency][google.cloud.retail.v2alpha.GenerativeQuestionConfig.frequency]
+     *
+     *                                                                                        If not set or empty, all supported fields are updated.
+     *
+     * @return \Google\Cloud\Retail\V2alpha\UpdateGenerativeQuestionConfigRequest
+     *
+     * @experimental
+     */
+    public static function build(\Google\Cloud\Retail\V2alpha\GenerativeQuestionConfig $generativeQuestionConfig, \Google\Protobuf\FieldMask $updateMask): self
+    {
+        return (new self())
+            ->setGenerativeQuestionConfig($generativeQuestionConfig)
+            ->setUpdateMask($updateMask);
+    }

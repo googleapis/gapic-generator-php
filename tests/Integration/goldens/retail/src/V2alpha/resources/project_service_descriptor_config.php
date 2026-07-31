@@ -32,6 +32,107 @@ return [
                     'maxPollDelayMillis' => '5000',
                     'totalPollTimeoutMillis' => '300000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
+                'headerParams' => [
+                    [
+                        'keyName' => 'project',
+                        'fieldAccessors' => [
+                            'getProject',
+                        ],
+                    ],
+                ],
+            ],
+            'AcceptTerms' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\Retail\V2alpha\Project',
+                'headerParams' => [
+                    [
+                        'keyName' => 'project',
+                        'fieldAccessors' => [
+                            'getProject',
+                        ],
+                    ],
+                ],
+            ],
+            'GetAlertConfig' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\Retail\V2alpha\AlertConfig',
+                'headerParams' => [
+                    [
+                        'keyName' => 'name',
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
+            'GetLoggingConfig' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\Retail\V2alpha\LoggingConfig',
+                'headerParams' => [
+                    [
+                        'keyName' => 'name',
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
+            'GetProject' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\Retail\V2alpha\Project',
+                'headerParams' => [
+                    [
+                        'keyName' => 'name',
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
+            'ListEnrolledSolutions' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\Retail\V2alpha\ListEnrolledSolutionsResponse',
+                'headerParams' => [
+                    [
+                        'keyName' => 'parent',
+                        'fieldAccessors' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
+            'UpdateAlertConfig' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\Retail\V2alpha\AlertConfig',
+                'headerParams' => [
+                    [
+                        'keyName' => 'alert_config.name',
+                        'fieldAccessors' => [
+                            'getAlertConfig',
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
+            'UpdateLoggingConfig' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\Retail\V2alpha\LoggingConfig',
+                'headerParams' => [
+                    [
+                        'keyName' => 'logging_config.name',
+                        'fieldAccessors' => [
+                            'getLoggingConfig',
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
+            'templateMap' => [
+                'alertConfig' => 'projects/{project}/alertConfig',
+                'loggingConfig' => 'projects/{project}/loggingConfig',
+                'project' => 'projects/{project}',
+                'retailProject' => 'projects/{project}/retailProject',
             ],
         ],
     ],

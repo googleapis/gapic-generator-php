@@ -25,7 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START speech_v1_generated_Adaptation_ListPhraseSet_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
-use Google\Cloud\Speech\V1\AdaptationClient;
+use Google\Cloud\Speech\V1\Client\AdaptationClient;
+use Google\Cloud\Speech\V1\ListPhraseSetRequest;
 use Google\Cloud\Speech\V1\PhraseSet;
 
 /**
@@ -47,10 +48,14 @@ function list_phrase_set_sample(string $formattedParent): void
     // Create a client.
     $adaptationClient = new AdaptationClient();
 
+    // Prepare the request message.
+    $request = (new ListPhraseSetRequest())
+        ->setParent($formattedParent);
+
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $adaptationClient->listPhraseSet($formattedParent);
+        $response = $adaptationClient->listPhraseSet($request);
 
         /** @var PhraseSet $element */
         foreach ($response as $element) {

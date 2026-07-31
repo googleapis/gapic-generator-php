@@ -27,7 +27,11 @@ def _php_impl(ctx):
     root_path = ctx.path(".")
 
     build_bazel = """
-exports_files(glob(include = ["bin/*", "lib/**"], exclude_directories = 0))
+filegroup(
+    name = "php",
+    srcs = ["bin/php"],
+    visibility = ["//visibility:public"],
+)
      """
 
     os_name = ctx.os.name

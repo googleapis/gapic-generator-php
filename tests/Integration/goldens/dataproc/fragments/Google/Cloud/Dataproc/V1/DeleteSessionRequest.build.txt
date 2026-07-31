@@ -1,0 +1,14 @@
+
+    /**
+     * @param string $name Required. The name of the session resource to delete. Please see
+     *                     {@see SessionControllerClient::sessionName()} for help formatting this field.
+     *
+     * @return \Google\Cloud\Dataproc\V1\DeleteSessionRequest
+     *
+     * @experimental
+     */
+    public static function build(string $name): self
+    {
+        return (new self())
+            ->setName($name);
+    }

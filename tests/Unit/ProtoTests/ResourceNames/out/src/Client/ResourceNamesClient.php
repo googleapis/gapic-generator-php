@@ -528,6 +528,8 @@ final class ResourceNamesClient
      * The async variant is
      * {@see ResourceNamesClient::fileLevelChildTypeRefMethodAsync()} .
      *
+     * @example samples/ResourceNamesClient/file_level_child_type_ref_method.php
+     *
      * @param FileLevelChildTypeRefRequest $request     A request to house fields associated with the call.
      * @param array                        $callOptions {
      *     Optional.
@@ -549,6 +551,8 @@ final class ResourceNamesClient
 
     /**
      * The async variant is {@see ResourceNamesClient::fileLevelTypeRefMethodAsync()} .
+     *
+     * @example samples/ResourceNamesClient/file_level_type_ref_method.php
      *
      * @param FileLevelTypeRefRequest $request     A request to house fields associated with the call.
      * @param array                   $callOptions {
@@ -572,6 +576,8 @@ final class ResourceNamesClient
     /**
      * The async variant is {@see ResourceNamesClient::multiPatternMethodAsync()} .
      *
+     * @example samples/ResourceNamesClient/multi_pattern_method.php
+     *
      * @param MultiPatternRequest $request     A request to house fields associated with the call.
      * @param array               $callOptions {
      *     Optional.
@@ -594,6 +600,8 @@ final class ResourceNamesClient
     /**
      * The async variant is {@see ResourceNamesClient::nestedReferenceMethodAsync()} .
      *
+     * @example samples/ResourceNamesClient/nested_reference_method.php
+     *
      * @param NestedReferenceRequest $request     A request to house fields associated with the call.
      * @param array                  $callOptions {
      *     Optional.
@@ -615,6 +623,8 @@ final class ResourceNamesClient
 
     /**
      * The async variant is {@see ResourceNamesClient::singlePatternMethodAsync()} .
+     *
+     * @example samples/ResourceNamesClient/single_pattern_method.php
      *
      * @param SinglePatternRequest $request     A request to house fields associated with the call.
      * @param array                $callOptions {
@@ -639,6 +649,8 @@ final class ResourceNamesClient
      * The async variant is
      * {@see ResourceNamesClient::wildcardChildReferenceMethodAsync()} .
      *
+     * @example samples/ResourceNamesClient/wildcard_child_reference_method.php
+     *
      * @param WildcardChildReferenceRequest $request     A request to house fields associated with the call.
      * @param array                         $callOptions {
      *     Optional.
@@ -660,6 +672,8 @@ final class ResourceNamesClient
 
     /**
      * The async variant is {@see ResourceNamesClient::wildcardMethodAsync()} .
+     *
+     * @example samples/ResourceNamesClient/wildcard_method.php
      *
      * @param WildcardPatternRequest $request     A request to house fields associated with the call.
      * @param array                  $callOptions {
@@ -683,6 +697,8 @@ final class ResourceNamesClient
     /**
      * The async variant is {@see ResourceNamesClient::wildcardMultiMethodAsync()} .
      *
+     * @example samples/ResourceNamesClient/wildcard_multi_method.php
+     *
      * @param WildcardMultiPatternRequest $request     A request to house fields associated with the call.
      * @param array                       $callOptions {
      *     Optional.
@@ -705,6 +721,8 @@ final class ResourceNamesClient
     /**
      * The async variant is {@see ResourceNamesClient::wildcardReferenceMethodAsync()}
      * .
+     *
+     * @example samples/ResourceNamesClient/wildcard_reference_method.php
      *
      * @param WildcardReferenceRequest $request     A request to house fields associated with the call.
      * @param array                    $callOptions {
