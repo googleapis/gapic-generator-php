@@ -215,8 +215,8 @@ class SnippetGenerator
                 '// $uploader object in memory is lost): the session URL obtained via',
                 '// `$uploader->getUploadUrl()` can be persisted and loaded later.',
                 "// \$resumedUpload = \${$snippetDetails->serviceClientVar->name}->resumeUpload(\n" .
-                "        //     '{$snippetDetails->methodDetails->methodName}',\n" .
                 "        //     'https://upload.url/session123'\n" .
+                "        //     '{$snippetDetails->methodDetails->methodName}',\n" .
                 "        // );\n" .
                 "        // \$resumedUpload->startUpload(\$stream);"
             ]
