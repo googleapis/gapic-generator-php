@@ -20,7 +20,6 @@ namespace Google\Generator;
 
 use Exception;
 use Google\Generator\Collections\Vector;
-use Google\Generator\Utils\MigrationMode;
 use Google\Protobuf\Compiler\CodeGeneratorRequest;
 use Google\Protobuf\Compiler\CodeGeneratorResponse;
 use Google\Protobuf\Compiler\CodeGeneratorResponse\Feature;
@@ -114,7 +113,7 @@ if ($argc === 1 || (!is_null($sideLoadedRootDir) && $argc <= 3)) {
             $opts['generate-snippets'] = false;
         }
 
-        [$grpcServiceConfig, $gapicYaml, $serviceYaml, $transport, $generateGapicMetadata, $numericEnums, $generateSnippets, $migrationMode] =
+        [$grpcServiceConfig, $gapicYaml, $serviceYaml, $transport, $generateGapicMetadata, $numericEnums, $generateSnippets] =
             readOptions($opts, $sideLoadedRootDir);
 
         $files = CodeGenerator::generate(
@@ -128,7 +127,6 @@ if ($argc === 1 || (!is_null($sideLoadedRootDir) && $argc <= 3)) {
             $numericEnums,
             $defaultLicenseYear,
             $generateSnippets,
-            $migrationMode
         );
         $files = Vector::new($files)->map(function ($fileData) {
             [$relativeFilename, $fileContent] = $fileData;
@@ -151,7 +149,7 @@ if ($argc === 1 || (!is_null($sideLoadedRootDir) && $argc <= 3)) {
     $descBytes = file_get_contents($opts['descriptor']);
     $package = $opts['package'];
     $outputDir = $opts['output'];
-    [$grpcServiceConfig, $gapicYaml, $serviceYaml, $transport, $generateGapicMetadata, $numericEnums, $generateSnippets, $migrationMode] = readOptions($opts);
+    [$grpcServiceConfig, $gapicYaml, $serviceYaml, $transport, $generateGapicMetadata, $numericEnums, $generateSnippets] = readOptions($opts);
 
     // Generate PHP code.
     $files = CodeGenerator::generateFromDescriptor(
@@ -165,7 +163,6 @@ if ($argc === 1 || (!is_null($sideLoadedRootDir) && $argc <= 3)) {
         $numericEnums,
         $defaultLicenseYear,
         $generateSnippets,
-        $migrationMode
     );
 
     if (is_null($outputDir)) {
@@ -233,13 +230,6 @@ function readOptions($opts, $sideLoadedRootDir = null)
         $transport = null;
     }
 
-    if (isset($opts['migration-mode'])) {
-        $migrationMode = $opts['migration-mode'];
-        MigrationMode::validateMode($migrationMode);
-    } else {
-        $migrationMode = MigrationMode::PRE_MIGRATION_SURFACE_ONLY;
-    }
-
     // Flip the flag value because PHP is weird: the presence of the --metadata flag evaluates to false.
     $generateGapicMetadata =  (isset($opts['metadata']) && !$opts['metadata']);
     $numericEnums =  (isset($opts['rest-numeric-enums']) && !$opts['rest-numeric-enums']);
@@ -253,6 +243,5 @@ function readOptions($opts, $sideLoadedRootDir = null)
         $generateGapicMetadata,
         $numericEnums,
         $generateSnippets,
-        $migrationMode
     ];
 }

@@ -25,8 +25,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_ModelService_ListModels_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
+use Google\Cloud\Retail\V2alpha\Client\ModelServiceClient;
+use Google\Cloud\Retail\V2alpha\ListModelsRequest;
 use Google\Cloud\Retail\V2alpha\Model;
-use Google\Cloud\Retail\V2alpha\ModelServiceClient;
 
 /**
  * Lists all the models linked to this event store.
@@ -41,10 +42,14 @@ function list_models_sample(string $formattedParent): void
     // Create a client.
     $modelServiceClient = new ModelServiceClient();
 
+    // Prepare the request message.
+    $request = (new ListModelsRequest())
+        ->setParent($formattedParent);
+
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $modelServiceClient->listModels($formattedParent);
+        $response = $modelServiceClient->listModels($request);
 
         /** @var Model $element */
         foreach ($response as $element) {

@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START speech_v1_generated_Adaptation_UpdatePhraseSet_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Speech\V1\AdaptationClient;
+use Google\Cloud\Speech\V1\Client\AdaptationClient;
 use Google\Cloud\Speech\V1\PhraseSet;
+use Google\Cloud\Speech\V1\UpdatePhraseSetRequest;
 
 /**
  * Update a phrase set.
@@ -41,13 +42,15 @@ function update_phrase_set_sample(): void
     // Create a client.
     $adaptationClient = new AdaptationClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $phraseSet = new PhraseSet();
+    $request = (new UpdatePhraseSetRequest())
+        ->setPhraseSet($phraseSet);
 
     // Call the API and handle any network failures.
     try {
         /** @var PhraseSet $response */
-        $response = $adaptationClient->updatePhraseSet($phraseSet);
+        $response = $adaptationClient->updatePhraseSet($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

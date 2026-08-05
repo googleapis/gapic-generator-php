@@ -24,7 +24,6 @@ use Google\Generator\Generation\BuildMethodFragmentGenerator;
 use Google\Generator\Generation\SourceFileContext;
 use Google\Generator\Generation\ServiceDetails;
 use Google\Generator\Tests\Tools\ProtoLoader;
-use Google\Generator\Utils\MigrationMode;
 use Google\Generator\Utils\ProtoAugmenter;
 use Google\Generator\Utils\ProtoCatalog;
 use Google\Generator\Utils\ServiceYamlConfig;
@@ -51,7 +50,6 @@ final class BuildMethodFragmentGeneratorTest extends TestCase
             $file,
             new ServiceYamlConfig(null),
             Transport::GRPC,
-            MigrationMode::NEW_SURFACE_ONLY
         );
 
         $ctx = new SourceFileContext($serviceDetails->gapicClientType->getNamespace(), 2026);
@@ -62,12 +60,15 @@ final class BuildMethodFragmentGeneratorTest extends TestCase
         $this->assertTrue(isset($fragments[$requestClassName]));
 
         $buildMethods = $fragments[$requestClassName];
-        $this->assertEquals(2, $buildMethods->count());
+        $this->assertEquals(3, $buildMethods->count());
 
         // First builder method should be 'build'
         $this->assertEquals('build', $buildMethods[0]->name);
 
         // Second builder method should be 'buildFromNameNumber' (spaces stripped and camel-cased)
         $this->assertEquals('buildFromNameNumber', $buildMethods[1]->name);
+
+        // Third builder method should be 'buildFromNameUserDisplayName' (dots replaced and camel-cased)
+        $this->assertEquals('buildFromNameUserDisplayName', $buildMethods[2]->name);
     }
 }

@@ -37,6 +37,10 @@ class ServiceYamlConfig
         $result = '';
         $fixNextLine = false;
         foreach (explode("\n", $yaml) as $line) {
+            $trimmed = trim($line);
+            if ($trimmed === '' || preg_match('/^[a-zA-Z0-9_.-]+\s*:/', $line)) {
+                $fixNextLine = false;
+            }
             if ($fixNextLine) {
                 if (strlen($line) > 0 && !static::isWhitespace(substr($line, 0, 1))) {
                     $result .= '  ' . $line . "\n";

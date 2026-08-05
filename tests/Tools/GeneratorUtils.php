@@ -19,7 +19,6 @@ declare(strict_types=1);
 namespace Google\Generator\Tests\Tools;
 
 use Google\Generator\CodeGenerator;
-use Google\Generator\Utils\MigrationMode;
 
 class GeneratorUtils
 {
@@ -38,7 +37,6 @@ class GeneratorUtils
         ?string $package = null,
         ?string $transport = null,
         bool $generateSnippets = true,
-        string $migrationMode = MigrationMode::PRE_MIGRATION_SURFACE_ONLY,
     ) {
         // Conventions:
         // * The proto package is 'testing.<proto-name>'.
@@ -51,10 +49,9 @@ class GeneratorUtils
         $grpcServiceConfigJson = ConfigLoader::loadConfig("{$protoDirName}/grpc-service-config.json");
         $gapicYaml = ConfigLoader::loadConfig("{$protoDirName}/{$baseName}_gapic.yaml");
         $serviceYaml = ConfigLoader::loadConfig("{$protoDirName}/{$baseName}_service.yaml");
-        $numericEnums = true;
-
         $licenseYear = 2022; // Avoid updating tests all the time.
         $generateGapicMetadata = true;
+        $numericEnums = true;
         $codeIterator = CodeGenerator::generateFromDescriptor(
             $descBytes,
             $package,
@@ -66,7 +63,6 @@ class GeneratorUtils
             $numericEnums,
             $licenseYear,
             $generateSnippets,
-            $migrationMode
         );
         return $codeIterator;
     }

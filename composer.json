@@ -1,4 +1,5 @@
 {
+    "name": "google/gapic-generator",
     "autoload": {
         "psr-4": {
             "Google\\PostProcessor\\": "src/PostProcessor",
@@ -25,12 +26,10 @@
             "Testing\\BasicGrpcOnly\\": "tests/Unit/ProtoTests/BasicGrpcOnly/out/src",
             "Testing\\BasicLro\\": "tests/Unit/ProtoTests/BasicLro/out/src",
             "Testing\\BasicOneof\\": "tests/Unit/ProtoTests/BasicOneof/out/src",
-            "Testing\\BasicOneofNew\\": "tests/Unit/ProtoTests/BasicOneofNew/out/src",
             "Testing\\BasicPaginated\\": "tests/Unit/ProtoTests/BasicPaginated/out/src",
             "Testing\\BasicExplicitPaginated\\": "tests/Unit/ProtoTests/BasicExplicitPaginated/out/src",
             "Testing\\BasicServerStreaming\\": "tests/Unit/ProtoTests/BasicServerStreaming/out/src",
             "Testing\\CustomLro\\": "tests/Unit/ProtoTests/CustomLro/out/src",
-            "Testing\\CustomLroNew\\": "tests/Unit/ProtoTests/CustomLroNew/out/src",
             "Testing\\Deprecated\\": "tests/Unit/ProtoTests/DeprecatedService/out/src",
             "Testing\\DisableSnippets\\": "tests/Unit/ProtoTests/DisableSnippets/out/src",
             "Testing\\GrpcServiceConfig\\": "tests/Unit/ProtoTests/GrpcServiceConfig/out/src",
@@ -44,13 +43,14 @@
         "php": "^8.2",
         "google/protobuf": "^5.0",
         "friendsofphp/php-cs-fixer": "^3",
-        "symfony/yaml": "^5.2",
+        "symfony/yaml": "^6.0",
         "microsoft/tolerant-php-parser": "^0.1.2",
         "symplify/coding-standard": "13.0.1"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
-        "google/gax": "*"
+        "google/gax": "*",
+        "opis/closure": "^4.5"
     },
     "scripts": {
         "update-all-tests": [

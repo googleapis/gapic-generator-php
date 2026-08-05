@@ -172,7 +172,13 @@ class ProtoCatalog
                 // Ordering matters, to exactly reproduce monolith behaviour.
                 // parents must be in file order of option-defined resource, followed by file order of message-defined resource.
                 // This is important when selecting a resource to use in test and example methods.
-                return [$childType, $parentPatterns->map(fn ($x) => $this->resourcesByPattern[$x])->orderBy(fn ($x) => $order[$x->getType()])];
+                return [
+                    $childType,
+                    $parentPatterns
+                        ->filter(fn ($x) => isset($this->resourcesByPattern[$x]))
+                        ->map(fn ($x) => $this->resourcesByPattern[$x])
+                        ->orderBy(fn ($x) => $order[$x->getType()])
+                ];
             })
             ->filter(fn ($x) => !is_null($x))
             ->toMap(fn ($x) => $x[0], fn ($x) => $x[1]);

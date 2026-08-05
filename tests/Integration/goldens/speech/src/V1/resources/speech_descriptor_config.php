@@ -32,11 +32,23 @@ return [
                     'maxPollDelayMillis' => '5000',
                     'totalPollTimeoutMillis' => '300000',
                 ],
+                'callType' => \Google\ApiCore\Call::LONGRUNNING_CALL,
+            ],
+            'Recognize' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\Speech\V1\RecognizeResponse',
             ],
             'StreamingRecognize' => [
                 'grpcStreaming' => [
                     'grpcStreamingType' => 'BidiStreaming',
                 ],
+                'callType' => \Google\ApiCore\Call::BIDI_STREAMING_CALL,
+                'responseType' => 'Google\Cloud\Speech\V1\StreamingRecognizeResponse',
+            ],
+            'templateMap' => [
+                'customClass' => 'projects/{project}/locations/{location}/customClasses/{custom_class}',
+                'location' => 'projects/{project}/locations/{location}',
+                'phraseSet' => 'projects/{project}/locations/{location}/phraseSets/{phrase_set}',
             ],
         ],
     ],

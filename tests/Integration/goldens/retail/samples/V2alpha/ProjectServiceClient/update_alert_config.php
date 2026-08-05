@@ -25,7 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_ProjectService_UpdateAlertConfig_sync]
 use Google\ApiCore\ApiException;
 use Google\Cloud\Retail\V2alpha\AlertConfig;
-use Google\Cloud\Retail\V2alpha\ProjectServiceClient;
+use Google\Cloud\Retail\V2alpha\Client\ProjectServiceClient;
+use Google\Cloud\Retail\V2alpha\UpdateAlertConfigRequest;
 
 /**
  * Update the alert config of the requested project.
@@ -38,14 +39,16 @@ function update_alert_config_sample(string $alertConfigName): void
     // Create a client.
     $projectServiceClient = new ProjectServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $alertConfig = (new AlertConfig())
         ->setName($alertConfigName);
+    $request = (new UpdateAlertConfigRequest())
+        ->setAlertConfig($alertConfig);
 
     // Call the API and handle any network failures.
     try {
         /** @var AlertConfig $response */
-        $response = $projectServiceClient->updateAlertConfig($alertConfig);
+        $response = $projectServiceClient->updateAlertConfig($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

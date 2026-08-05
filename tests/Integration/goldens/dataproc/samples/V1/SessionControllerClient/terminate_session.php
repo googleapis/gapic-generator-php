@@ -25,8 +25,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START dataproc_v1_generated_SessionController_TerminateSession_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
+use Google\Cloud\Dataproc\V1\Client\SessionControllerClient;
 use Google\Cloud\Dataproc\V1\Session;
-use Google\Cloud\Dataproc\V1\SessionControllerClient;
+use Google\Cloud\Dataproc\V1\TerminateSessionRequest;
 use Google\Rpc\Status;
 
 /**
@@ -40,10 +41,14 @@ function terminate_session_sample(string $formattedName): void
     // Create a client.
     $sessionControllerClient = new SessionControllerClient();
 
+    // Prepare the request message.
+    $request = (new TerminateSessionRequest())
+        ->setName($formattedName);
+
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $sessionControllerClient->terminateSession($formattedName);
+        $response = $sessionControllerClient->terminateSession($request);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

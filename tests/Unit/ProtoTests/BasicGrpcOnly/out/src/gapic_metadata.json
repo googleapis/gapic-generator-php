@@ -8,7 +8,7 @@
         "BasicGrpcOnly": {
             "clients": {
                 "grpc": {
-                    "libraryClient": "BasicGrpcOnlyGapicClient"
+                    "libraryClient": "BasicGrpcOnlyClient"
                 }
             }
         }

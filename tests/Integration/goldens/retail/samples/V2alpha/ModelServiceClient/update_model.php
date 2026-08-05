@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START retail_v2alpha_generated_ModelService_UpdateModel_sync]
 use Google\ApiCore\ApiException;
+use Google\Cloud\Retail\V2alpha\Client\ModelServiceClient;
 use Google\Cloud\Retail\V2alpha\Model;
-use Google\Cloud\Retail\V2alpha\ModelServiceClient;
+use Google\Cloud\Retail\V2alpha\UpdateModelRequest;
 
 /**
  * Update of model metadata. Only fields that
@@ -65,16 +66,18 @@ function update_model_sample(string $modelName, string $modelDisplayName, string
     // Create a client.
     $modelServiceClient = new ModelServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $model = (new Model())
         ->setName($modelName)
         ->setDisplayName($modelDisplayName)
         ->setType($modelType);
+    $request = (new UpdateModelRequest())
+        ->setModel($model);
 
     // Call the API and handle any network failures.
     try {
         /** @var Model $response */
-        $response = $modelServiceClient->updateModel($model);
+        $response = $modelServiceClient->updateModel($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

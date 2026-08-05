@@ -27,7 +27,11 @@ def _php_impl(ctx):
     root_path = ctx.path(".")
 
     build_bazel = """
-exports_files(glob(include = ["bin/*", "lib/**"], exclude_directories = 0))
+filegroup(
+    name = "php",
+    srcs = ["bin/php"],
+    visibility = ["//visibility:public"],
+)
      """
 
     os_name = ctx.os.name
@@ -60,6 +64,13 @@ exports_files(glob(include = ["bin/*", "lib/**"], exclude_directories = 0))
         output = srcs_dir,
     )
 
+    os_name = ctx.os.name
+    iconv_arg = "--with-iconv"
+    if os_name == "mac os x":
+        res = ctx.execute(["xcrun", "--show-sdk-path"])
+        if res.return_code == 0:
+            iconv_arg = "--with-iconv=" + res.stdout.strip() + "/usr"
+
     configure_opts = ["./configure",
         "--enable-static",
         "--disable-all",
@@ -77,7 +88,7 @@ exports_files(glob(include = ["bin/*", "lib/**"], exclude_directories = 0))
         "--disable-mbregex",
         "--with-openssl",
         "--with-openssl-dir=/usr",
-        "--with-iconv",
+        iconv_arg,
         "--enable-bcmath",
         "--prefix=%s" % root_path.realpath]
 

@@ -25,7 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START grpcserviceconfig_generated_GrpcServiceConfigWithRetry1_Method1BidiStreaming_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\BidiStream;
-use Testing\GrpcServiceConfig\GrpcServiceConfigWithRetry1Client;
+use Testing\GrpcServiceConfig\Client\GrpcServiceConfigWithRetry1Client;
 use Testing\GrpcServiceConfig\Request1;
 use Testing\GrpcServiceConfig\Response1;
 
@@ -41,7 +41,7 @@ function method1_bidi_streaming_sample(): void
     // Create a client.
     $grpcServiceConfigWithRetry1Client = new GrpcServiceConfigWithRetry1Client();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $request = new Request1();
 
     // Call the API and handle any network failures.

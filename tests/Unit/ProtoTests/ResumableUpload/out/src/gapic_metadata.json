@@ -8,7 +8,7 @@
         "ResumableUpload": {
             "clients": {
                 "grpc": {
-                    "libraryClient": "ResumableUploadGapicClient",
+                    "libraryClient": "ResumableUploadClient",
                     "rpcs": {
                         "CreateYouTubeVideoUpload": {
                             "methods": [

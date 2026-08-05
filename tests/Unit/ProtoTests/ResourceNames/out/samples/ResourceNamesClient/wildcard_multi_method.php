@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START resourcenames_generated_ResourceNames_WildcardMultiMethod_sync]
 use Google\ApiCore\ApiException;
+use Testing\ResourceNames\Client\ResourceNamesClient;
 use Testing\ResourceNames\PlaceholderResponse;
-use Testing\ResourceNames\ResourceNamesClient;
+use Testing\ResourceNames\WildcardMultiPatternRequest;
 
 /**
  * This sample has been automatically generated and should be regarded as a code
@@ -39,10 +40,13 @@ function wildcard_multi_method_sample(): void
     // Create a client.
     $resourceNamesClient = new ResourceNamesClient();
 
+    // Prepare the request message.
+    $request = new WildcardMultiPatternRequest();
+
     // Call the API and handle any network failures.
     try {
         /** @var PlaceholderResponse $response */
-        $response = $resourceNamesClient->wildcardMultiMethod();
+        $response = $resourceNamesClient->wildcardMultiMethod($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

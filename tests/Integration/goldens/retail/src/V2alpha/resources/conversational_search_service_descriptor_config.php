@@ -27,6 +27,19 @@ return [
                 'grpcStreaming' => [
                     'grpcStreamingType' => 'ServerStreaming',
                 ],
+                'callType' => \Google\ApiCore\Call::SERVER_STREAMING_CALL,
+                'responseType' => 'Google\Cloud\Retail\V2alpha\ConversationalSearchResponse',
+                'headerParams' => [
+                    [
+                        'keyName' => 'placement',
+                        'fieldAccessors' => [
+                            'getPlacement',
+                        ],
+                    ],
+                ],
+            ],
+            'templateMap' => [
+                'branch' => 'projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}',
             ],
         ],
     ],

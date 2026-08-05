@@ -1,0 +1,21 @@
+
+    /**
+     * @param \Google\Cloud\Retail\V2alpha\Control $control    Required. The Control to update.
+     * @param \Google\Protobuf\FieldMask           $updateMask Indicates which fields in the provided
+     *                                                         [Control][google.cloud.retail.v2alpha.Control] to update. The following are
+     *                                                         NOT supported:
+     *
+     *                                                         * [Control.name][google.cloud.retail.v2alpha.Control.name]
+     *
+     *                                                         If not set or empty, all supported fields are updated.
+     *
+     * @return \Google\Cloud\Retail\V2alpha\UpdateControlRequest
+     *
+     * @experimental
+     */
+    public static function build(\Google\Cloud\Retail\V2alpha\Control $control, \Google\Protobuf\FieldMask $updateMask): self
+    {
+        return (new self())
+            ->setControl($control)
+            ->setUpdateMask($updateMask);
+    }

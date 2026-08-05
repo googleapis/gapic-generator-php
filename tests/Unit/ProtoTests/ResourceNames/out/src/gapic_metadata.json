@@ -8,7 +8,7 @@
         "ResourceNames": {
             "clients": {
                 "grpc": {
-                    "libraryClient": "ResourceNamesGapicClient",
+                    "libraryClient": "ResourceNamesClient",
                     "rpcs": {
                         "FileLevelChildTypeRefMethod": {
                             "methods": [

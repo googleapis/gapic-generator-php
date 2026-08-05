@@ -25,8 +25,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_ProjectService_EnrollSolution_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
+use Google\Cloud\Retail\V2alpha\Client\ProjectServiceClient;
+use Google\Cloud\Retail\V2alpha\EnrollSolutionRequest;
 use Google\Cloud\Retail\V2alpha\EnrollSolutionResponse;
-use Google\Cloud\Retail\V2alpha\ProjectServiceClient;
 use Google\Cloud\Retail\V2alpha\SolutionType;
 use Google\Rpc\Status;
 
@@ -50,10 +51,15 @@ function enroll_solution_sample(string $formattedProject, int $solution): void
     // Create a client.
     $projectServiceClient = new ProjectServiceClient();
 
+    // Prepare the request message.
+    $request = (new EnrollSolutionRequest())
+        ->setProject($formattedProject)
+        ->setSolution($solution);
+
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $projectServiceClient->enrollSolution($formattedProject, $solution);
+        $response = $projectServiceClient->enrollSolution($request);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

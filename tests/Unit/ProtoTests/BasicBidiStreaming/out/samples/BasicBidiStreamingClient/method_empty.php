@@ -25,7 +25,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START bidi_generated_BasicBidiStreaming_MethodEmpty_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\BidiStream;
-use Testing\BasicBidiStreaming\BasicBidiStreamingClient;
+use Testing\BasicBidiStreaming\Client\BasicBidiStreamingClient;
 use Testing\BasicBidiStreaming\EmptyRequest;
 use Testing\BasicBidiStreaming\Response;
 
@@ -41,7 +41,7 @@ function method_empty_sample(): void
     // Create a client.
     $basicBidiStreamingClient = new BasicBidiStreamingClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $request = new EmptyRequest();
 
     // Call the API and handle any network failures.

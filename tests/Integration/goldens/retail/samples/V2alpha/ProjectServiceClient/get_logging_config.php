@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START retail_v2alpha_generated_ProjectService_GetLoggingConfig_sync]
 use Google\ApiCore\ApiException;
+use Google\Cloud\Retail\V2alpha\Client\ProjectServiceClient;
+use Google\Cloud\Retail\V2alpha\GetLoggingConfigRequest;
 use Google\Cloud\Retail\V2alpha\LoggingConfig;
-use Google\Cloud\Retail\V2alpha\ProjectServiceClient;
 
 /**
  * Gets the [LoggingConfig][google.cloud.retail.v2alpha.LoggingConfig] of the
@@ -40,10 +41,14 @@ function get_logging_config_sample(string $formattedName): void
     // Create a client.
     $projectServiceClient = new ProjectServiceClient();
 
+    // Prepare the request message.
+    $request = (new GetLoggingConfigRequest())
+        ->setName($formattedName);
+
     // Call the API and handle any network failures.
     try {
         /** @var LoggingConfig $response */
-        $response = $projectServiceClient->getLoggingConfig($formattedName);
+        $response = $projectServiceClient->getLoggingConfig($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

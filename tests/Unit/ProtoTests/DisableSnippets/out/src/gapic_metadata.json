@@ -8,7 +8,7 @@
         "DisableSnippets": {
             "clients": {
                 "grpc": {
-                    "libraryClient": "DisableSnippetsGapicClient",
+                    "libraryClient": "DisableSnippetsClient",
                     "rpcs": {
                         "Method1": {
                             "methods": [

@@ -1,5 +1,39 @@
 # Changelog
 
+## [1.24.0](https://github.com/googleapis/gapic-generator-php/compare/v1.23.1...v1.24.0) (2026-07-31)
+
+
+### Miscellaneous Chores
+
+* Remove V1 surface ([#834](https://github.com/googleapis/gapic-generator-php/issues/834)) ([b7d6c86](https://github.com/googleapis/gapic-generator-php/commit/b7d6c861d3e61af00f13290d7b34f4c63c4c20eb))
+
+## [1.23.1](https://github.com/googleapis/gapic-generator-php/compare/v1.23.0...v1.23.1) (2026-07-30)
+
+
+### Bug Fixes
+
+* Avoid passing null as an array offset in resumeOperation ([#842](https://github.com/googleapis/gapic-generator-php/issues/842)) ([1022342](https://github.com/googleapis/gapic-generator-php/commit/1022342a43cb2c0de1797e878b4bbae440e86ade))
+* Parent resource lookups for resources more than two levels deep ([#847](https://github.com/googleapis/gapic-generator-php/issues/847)) ([8039c59](https://github.com/googleapis/gapic-generator-php/commit/8039c59fac10d5821e3dd48384c5c4e1781c8f96))
+
+## [1.23.0](https://github.com/googleapis/gapic-generator-php/compare/v1.22.0...v1.23.0) (2026-07-21)
+
+
+### Features
+
+* Add internal tag to generated $serviceScopes property ([#841](https://github.com/googleapis/gapic-generator-php/issues/841)) ([6b44606](https://github.com/googleapis/gapic-generator-php/commit/6b44606cf340f32a169c9f0f882b7365673701b0))
+
+
+### Bug Fixes
+
+* Handle extra whitespace in valid YAML ([#845](https://github.com/googleapis/gapic-generator-php/issues/845)) ([1abff8d](https://github.com/googleapis/gapic-generator-php/commit/1abff8dd1c87153c94973e9484730afe5f9f7d48))
+
+## [1.22.0](https://github.com/googleapis/gapic-generator-php/compare/v1.21.2...v1.22.0) (2026-07-17)
+
+
+### Features
+
+* Support method signatures with a dotted notation. ([#838](https://github.com/googleapis/gapic-generator-php/issues/838)) ([eeca5ca](https://github.com/googleapis/gapic-generator-php/commit/eeca5cabbb148c86adcdcd73e58a4d35d2facfba))
+
 ## [1.21.2](https://github.com/googleapis/gapic-generator-php/compare/v1.21.1...v1.21.2) (2026-06-08)
 
 

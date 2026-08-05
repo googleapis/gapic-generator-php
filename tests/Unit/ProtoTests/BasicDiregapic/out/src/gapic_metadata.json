@@ -8,7 +8,7 @@
         "Library": {
             "clients": {
                 "grpc": {
-                    "libraryClient": "LibraryGapicClient",
+                    "libraryClient": "LibraryClient",
                     "rpcs": {
                         "AddComments": {
                             "methods": [
