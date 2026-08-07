@@ -218,7 +218,7 @@ class SnippetGenerator
                 "        //     'https://upload.url/session123'\n" .
                 "        //     '{$snippetDetails->methodDetails->methodName}',\n" .
                 "        // );\n" .
-                "        // \$resumedUpload->startUpload(\$stream);"
+                '        // $resumedUpload->startUpload($stream);'
             ]
         );
     }

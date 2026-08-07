@@ -13,9 +13,10 @@ service ResumableUpload {
     option (google.api.http) = {
       post: "/v1/files:upload"
       body: "*"
-      media_upload: {
-        enabled: true
-      }
+      // Uncomment once the media_upload annotation is supported
+      // media_upload: {
+      //   enabled: true
+      // }
     };
   }
 }
