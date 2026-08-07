@@ -9,7 +9,7 @@
             "Grpc\\": "generated/Grpc",
             "GPBMetadata\\": "generated/GPBMetadata"
         }
-    ],
+    },
     "autoload-dev": {
         "psr-4": {
             "Testing\\Basic\\": "tests/Unit/ProtoTests/Basic/out/src",
