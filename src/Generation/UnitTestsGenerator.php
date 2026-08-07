@@ -318,7 +318,7 @@ class UnitTestsGenerator
 
     private function testSuccessCaseResumableUpload(MethodDetails $method): PhpMethod
     {
-        $prod = new TestNameValueProducer($method->catalog, $this->ctx, true);
+        $prod = new TestNameValueProducer($method->catalog, $this->ctx);
         $transport = AST::var('transport');
         $client = AST::var(self::CLIENT_VARIABLE);
         [$requestPerField, $requestCallArgs] = $prod->perFieldRequest($method);
