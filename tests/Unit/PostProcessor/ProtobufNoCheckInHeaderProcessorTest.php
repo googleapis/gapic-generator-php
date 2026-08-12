@@ -98,6 +98,20 @@ EOL;
         $this->expectOutputString('No Check-In Header removed in ' . $toFile . PHP_EOL);
     }
 
+    /**
+     * @runInSeparateProcess
+     */
+    public function testRunDoesNotFailWhenProtoSrcDirectoryIsMissing()
+    {
+        $tmpDir = sys_get_temp_dir() . '/test-missing-proto-src-' . rand();
+        mkdir($tmpDir, 0777, true);
+
+        // This should not throw an exception.
+        ProtobufNoCheckInHeaderProcessor::run($tmpDir);
+
+        $this->assertTrue(true); // If we reach here, no exception was thrown.
+    }
+
     private function classContainsNoCheckInHeader(string $classContents): bool
     {
         $tokens = token_get_all($classContents);
