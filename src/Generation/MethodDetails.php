@@ -199,19 +199,22 @@ abstract class MethodDetails
 
         // Leverage short-circuting.
         if ($resourceFieldValid && !$isDireGapic) {
-            $resourceFieldValid &= !ProtoHelpers::isMap($catalog, $resources)
+            $resourceFieldValid = !ProtoHelpers::isMap($catalog, $resources)
                 && $resourceByNumber[0] === $resourceByPosition[0];
         }
 
-        if (is_null($pageSize) || is_null($pageToken) || is_null($nextPageToken) || is_null($resources) || !$resourceFieldValid) {
+        // A method missing any of the pagination fields is simply not paginated. A method that
+        // has them all but whose resource field is unusable is malformed, and is reported below.
+        if (is_null($pageSize) || is_null($pageToken) || is_null($nextPageToken) || is_null($resources)) {
             return null;
         }
 
         $isValidPageSize = !$pageSize->isRepeated();
         if ($isDireGapic) {
-            $isValidPageSize = $pageSize->getType() === GPBType::UINT32 || $pageSize->getType() === GPBType::INT32;
+            $isValidPageSize = $isValidPageSize
+                && ($pageSize->getType() === GPBType::UINT32 || $pageSize->getType() === GPBType::INT32);
         } else {
-            $isValidPageSize = $pageSize->getType() === GPBType::INT32;
+            $isValidPageSize = $isValidPageSize && $pageSize->getType() === GPBType::INT32;
         }
         if (!$isValidPageSize) {
             throw new Exception('page_size field must be of type ' . ($isDireGapic ? 'uint32 or int32' : 'int32') . '.');
