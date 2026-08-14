@@ -70,6 +70,27 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
     }
 
     /**
+     * Create a new Map from an array of key/value pair values, where a repeated key
+     * overwrites the earlier entry rather than being rejected. Unlike fromPairs(), this
+     * never throws on duplicates, and so is suitable for callers that are deduplicating.
+     *
+     * @param array $pairs An array in which each value is a length-2 array containing a key/value pair.
+     *
+     * @return Map
+     */
+    public static function fromPairsAllowingDuplicates(array $pairs): Map
+    {
+        $data = [];
+        $count = 0;
+        foreach ($pairs as [$k, $v]) {
+            if (!static::apply($data, $k, 1, $v)[0]) {
+                $count++;
+            }
+        }
+        return new Map($data, $count);
+    }
+
+    /**
      * @param array $data The map data.
      * @param mixed $k The key to lookup and/or modify.
      * @param int $action -1 to remove element $k, 0 to lookup whether an element exists, +1 to add/overwrite an element.
