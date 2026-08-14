@@ -127,9 +127,14 @@ class ProtoAugmenter
 
     private static function getComments(?Vector $locations, callable $fn): Vector
     {
+        // A path may have more than one location, so the trailing blank must be dropped per
+        // location rather than once over the concatenation - otherwise every location but the
+        // last contributes a stray blank line. The blank is also only present when the comment
+        // ends in a newline, so it must be tested for rather than assumed.
         return is_null($locations) ? Vector::new([]) : $locations
-            ->flatMap(fn ($x) => Vector::new(explode("\n", $fn($x))))
-            ->map(fn ($x) => trim($x))
-            ->skipLast(1); // Last line is always empty due to trailing \n
+            ->flatMap(function ($x) use ($fn) {
+                $lines = Vector::new(explode("\n", $fn($x)))->map(fn ($line) => trim($line));
+                return count($lines) > 0 && $lines->last() === '' ? $lines->skipLast(1) : $lines;
+            });
     }
 }
