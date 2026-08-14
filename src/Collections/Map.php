@@ -63,7 +63,7 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
         $data = [];
         foreach ($pairs as [$k, $v]) {
             if (static::apply($data, $k, 1, $v)[0]) {
-                throw new Exception("Cannot add two items with the same key $k");
+                throw new Exception('Cannot add two items with the same key ' . static::keyToString($k));
             }
         }
         return new Map($data, count($pairs));
@@ -155,7 +155,25 @@ class Map implements \IteratorAggregate, \Countable, \ArrayAccess
         }
         $dbt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
         $caller = isset($dbt[1]['function']) ? $dbt[1]['function'] : null;
-        throw new Exception("Key $key does not exist, called from $caller");
+        throw new Exception('Key ' . static::keyToString($key) . " does not exist, called from $caller");
+    }
+
+    /**
+     * Render a key for use in an exception message. Keys may be any type that supports
+     * equality, which does not imply they are convertible to string; interpolating such a
+     * key directly would raise an "object could not be converted to string" error, masking
+     * the diagnostic being reported.
+     *
+     * @param mixed $key The key to render.
+     *
+     * @return string
+     */
+    private static function keyToString($key): string
+    {
+        if (is_object($key)) {
+            return method_exists($key, '__toString') ? (string) $key : '<' . get_class($key) . '>';
+        }
+        return (string) $key;
     }
 
     /** @inheritDoc */
