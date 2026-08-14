@@ -70,8 +70,8 @@ function create_you_tube_video_upload_sample(): void
     // $uploader object in memory is lost): the session URL obtained via
     // `$uploader->getUploadUrl()` can be persisted and loaded later.
     // $resumedUpload = $resumableUploadClient->resumeUpload(
-        //     'https://upload.url/session123',
-        //     'createYouTubeVideoUpload',
+    //     'https://upload.url/session123',
+    //     'createYouTubeVideoUpload',
     // );
     // $resumedUpload->startUpload($stream);
 }
