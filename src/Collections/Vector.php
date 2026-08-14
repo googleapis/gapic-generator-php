@@ -39,7 +39,9 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
         if ($data instanceof Vector) {
             return $data;
         } elseif ($data instanceof \Traversable) {
-            return new Vector(iterator_to_array($data));
+            // Discard keys, as for the array case below; preserving them would produce a
+            // Vector whose data is not a list, breaking all positional access.
+            return new Vector(iterator_to_array($data, false));
         } elseif (is_array($data)) {
             return new Vector(array_values($data));
         } else {
@@ -117,7 +119,8 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
     /** @inheritDoc */
     public function offsetExists($offset): bool
     {
-        return isset($this->data[$offset < 0 ? count($this->data) + $offset : $offset]);
+        // array_key_exists, not isset: an element that is present but null still exists.
+        return array_key_exists($offset < 0 ? count($this->data) + $offset : $offset, $this->data);
     }
 
     /** @inheritDoc */
@@ -454,6 +457,9 @@ class Vector implements \IteratorAggregate, \Countable, \ArrayAccess, Equality
      */
     public function last()
     {
+        if (count($this->data) === 0) {
+            throw new Exception('Cannot take the last element of an empty Vector');
+        }
         return $this->data[count($this->data) - 1];
     }
 
