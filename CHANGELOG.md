@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.25.0](https://github.com/googleapis/gapic-generator-php/compare/v1.24.0...v1.25.0) (2026-08-15)
+
+
+### Features
+
+* Resumable Uploads ([#852](https://github.com/googleapis/gapic-generator-php/issues/852)) ([65d7456](https://github.com/googleapis/gapic-generator-php/commit/65d74564ac3fdd1a0b965eab3e8b4386af56cf7d))
+
+
+### Bug Fixes
+
+* Gracefully handle missing proto/src directories in ProtobufNoCheckInHeaderProcessor ([#855](https://github.com/googleapis/gapic-generator-php/issues/855)) ([1361453](https://github.com/googleapis/gapic-generator-php/commit/13614537036f5372566282a75d455258ab29c45c))
+
 ## [1.24.0](https://github.com/googleapis/gapic-generator-php/compare/v1.23.1...v1.24.0) (2026-07-31)
 
 
