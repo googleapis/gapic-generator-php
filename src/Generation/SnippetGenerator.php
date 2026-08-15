@@ -120,6 +120,9 @@ class SnippetGenerator
             case MethodDetails::CLIENT_STREAMING:
                 $code = $this->rpcMethodExampleClientStreaming($snippetDetails);
                 break;
+            case MethodDetails::RESUMABLE_UPLOAD:
+                $code = $this->rpcMethodExampleResumableUpload($snippetDetails);
+                break;
             default:
                 throw new Exception("Cannot handle method-type: '{$snippetDetails->methodDetails->methodType}'");
         }
@@ -142,6 +145,80 @@ class SnippetGenerator
                 $snippetDetails->methodDetails->hasEmptyResponse
                     ? $this->buildPrintFCall('Call completed successfully.')
                     : $this->buildPrintFCall('Response data: %s', "{$responseVar->toCode()}->serializeToJsonString()")
+            ]
+        );
+    }
+
+    /**
+     * @param SnippetDetails $snippetDetails
+     * @return AST
+     */
+    private function rpcMethodExampleResumableUpload(SnippetDetails $snippetDetails): AST
+    {
+        $uploaderVar = AST::var('uploader');
+        $streamVar = AST::var('stream');
+        $resultVar = AST::var('result');
+        $exceptionVar = AST::var('ex');
+        $resumedUploadVar = AST::var('resumedUpload');
+        $uploadOptionsVar = AST::var('resumableUploadOptions');
+
+        $uploadOptions = AST::array([
+            'chunkSize' => AST::literal('8 * 1024 * 1024 /* 8MB */'),
+            'progressCallback' => AST::fn('')
+                ->withoutNewlineAfterDeclaration()
+                ->withParams(
+                    AST::param($snippetDetails->context->type(Type::int()), AST::var('bytesUploaded')),
+                    AST::param($snippetDetails->context->type(Type::fromName(\Google\ApiCore\ResumableUpload\ResumableUpload::class)), AST::var('upload'))
+                )
+                ->withBody(
+                    AST::block(
+                        $this->buildPrintFCall(
+                            'Committed %d bytes to session: %s',
+                            '$bytesUploaded',
+                            '$upload->getUploadUrl()'
+                        )
+                    )
+                )
+        ]);
+
+        return $this->buildSnippetFunctions(
+            $snippetDetails,
+            [
+                $this->buildClientMethodCall($snippetDetails, $uploaderVar),
+                PHP_EOL,
+                AST::assign(
+                    $streamVar,
+                    AST::staticCall(
+                        $snippetDetails->context->type(Type::fromName('GuzzleHttp\Psr7\Utils')),
+                        AST::method('streamFor')
+                    )(AST::call("\0fopen")('/path/to/file.txt', 'r'))
+                ),
+                AST::assign($uploadOptionsVar, $uploadOptions),
+                AST::try(
+                    AST::assign($resultVar, AST::call($uploaderVar, AST::method('startUpload'))($streamVar, $uploadOptionsVar))
+                )->catch(
+                    $snippetDetails->context->type(Type::fromName(\Exception::class)),
+                    $exceptionVar
+                )(
+                    '// Resuming directly on the existing $uploader object after an interruption',
+                    '// in the same process: calling `startUpload()` queries the server for the',
+                    '// current byte offset and resumes transmitting remaining chunks.',
+                    AST::assign($resultVar, AST::call($uploaderVar, AST::method('startUpload'))($streamVar, $uploadOptionsVar))
+                ),
+                PHP_EOL,
+                $this->buildPrintFCall(
+                    'Operation successful with response data: %s',
+                    "{$resultVar->toCode()}->serializeToJsonString()"
+                ),
+                PHP_EOL,
+                '// Resuming across separate processes or restarts (where the original',
+                '// $uploader object in memory is lost): the session URL obtained via',
+                '// `$uploader->getUploadUrl()` can be persisted and loaded later.',
+                "// \$resumedUpload = \${$snippetDetails->serviceClientVar->name}->resumeUpload(\n" .
+                "    //     'https://upload.url/session123',\n" .
+                "    //     '{$snippetDetails->methodDetails->methodName}',\n" .
+                "// );\n" .
+                '// $resumedUpload->startUpload($stream);'
             ]
         );
     }
@@ -392,8 +469,12 @@ class SnippetGenerator
                     $hasSampleAssignments ? '// Prepare the request message.' : null,
                     $snippetDetails->sampleAssignments,
                     PHP_EOL,
-                    '// Call the API and handle any network failures.',
-                    $this->buildTryCatchStatement($tryStatements, $snippetDetails)
+                    ...($snippetDetails->methodDetails->methodType === MethodDetails::RESUMABLE_UPLOAD
+                        ? $tryStatements
+                        : [
+                            '// Call the API and handle any network failures.',
+                            $this->buildTryCatchStatement($tryStatements, $snippetDetails)
+                        ])
                 )
             );
 
@@ -450,13 +531,15 @@ class SnippetGenerator
     /**
      * @param SnippetDetails $snippetDetails
      * @param Variable $var
+     * @param ?Vector $customArguments
      * @return Vector
      */
-    private function buildClientMethodCall(SnippetDetails $snippetDetails, Variable $var): Vector
+    private function buildClientMethodCall(SnippetDetails $snippetDetails, Variable $var, ?Vector $customArguments = null): Vector
     {
         $vector = Vector::new();
         $methodDetails = $snippetDetails->methodDetails;
         $returnType = $methodDetails->methodReturnType;
+        $arguments = $customArguments ?? $snippetDetails->rpcArguments;
 
         if (!$methodDetails->hasEmptyResponse) {
             $vector = $vector->append(
@@ -474,7 +557,7 @@ class SnippetGenerator
         );
         $call = $methodDetails->isClientStreaming() || $methodDetails->isBidiStreaming()
             ? $call()
-            : $call($snippetDetails->rpcArguments);
+            : $call($arguments);
         return $vector->append(
             $methodDetails->hasEmptyResponse
                 ? $call

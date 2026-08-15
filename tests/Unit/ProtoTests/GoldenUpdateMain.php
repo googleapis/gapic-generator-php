@@ -101,7 +101,12 @@ class GoldenUpdateMain
             'name' => 'DiregapicPaginated',
             'protoPath' => 'DiregapicPaginated/diregapic-paginated.proto',
             'transport' => 'rest',
-        ]
+        ],
+        19 => [
+            'name' => 'ResumableUpload',
+            'protoPath' => 'ResumableUpload/resumable_upload.proto',
+            'package' => 'testing.resumableupload',
+        ],
     ];
 
     public static function updateAll()

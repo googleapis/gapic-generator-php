@@ -141,4 +141,13 @@ final class ProtoTest extends TestCase
     {
         $this->runProtoTest('BasicAutoPopulation/basic-auto-population.proto', 'testing.basicautopopulation');
     }
+
+    public function testResumableUpload(): void
+    {
+        $this->runProtoTest(
+            'ResumableUpload/resumable_upload.proto',
+            'testing.resumableupload',
+        );
+    }
 }
+

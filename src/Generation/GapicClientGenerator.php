@@ -143,6 +143,9 @@ class GapicClientGenerator
             ->withTrait(
                 $this->serviceDetails->hasResources ? $this->ctx->type(Type::fromName(ResourceHelperTrait::class)): null
             )
+            ->withTrait(
+                $this->serviceDetails->hasResumableUploadMethods() ? $this->ctx->type(Type::fromName(\Google\ApiCore\ResumableUpload\ResumableUploadTrait::class)): null
+            )
             ->withMember($this->serviceName())
             ->withMember($this->serviceAddress())
             ->withMember($this->hasServiceAddressTemplate() ? $this->serviceAddressTemplate() : null)
@@ -242,7 +245,7 @@ class GapicClientGenerator
     private function magicAsyncDocs(): PhpDoc
     {
         $methodDocs = $this->serviceDetails->methods
-            ->filter(fn ($m) => !$m->isStreaming())
+            ->filter(fn ($m) => !$m->isStreaming() && !$m->isResumableUpload())
             ->map(fn ($m) => PhpDoc::method(
                 $m->methodName . 'Async',
                 $this->asyncReturnType($m),
@@ -511,7 +514,7 @@ class GapicClientGenerator
         }
         $clientDefaultValues['credentialsConfig'] = AST::array($credentialsConfig);
 
-        if ($this->serviceDetails->transportType !== Transport::GRPC) {
+        if ($this->serviceDetails->transportType !== Transport::GRPC || $this->serviceDetails->hasResumableUploadMethods()) {
             $clientDefaultValues['transportConfig'] = AST::array([
                 'rest' => AST::array([
                     'restClientConfigPath' => AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->restConfigFilename}"),
@@ -650,6 +653,12 @@ class GapicClientGenerator
                     ? AST::assign(
                         AST::access(AST::THIS, $this->operationsClient()),
                         AST::call(AST::THIS, AST::method('createOperationsClient'))($clientOptions)
+                    )
+                    : null,
+                $this->serviceDetails->hasResumableUploadMethods()
+                    ? AST::assign(
+                        AST::access(AST::THIS, AST::property('resumableUploadClient')),
+                        AST::call(AST::THIS, AST::method('createResumableUploadClient'))($clientOptions)
                     )
                     : null
             ))
@@ -807,7 +816,11 @@ class GapicClientGenerator
         $startCall = $this->startCall($method, $callOptions, $request);
         $phpDocReturnType = null;
         $returnType = $this->ctx->type(Type::void());
-        if (!$method->hasEmptyResponse) {
+        if ($method->isResumableUpload()) {
+            $returnType = $this->ctx->type($method->methodReturnType);
+            $phpDocReturnType = PhpDoc::return($returnType);
+            $startCall = AST::return($startCall);
+        } elseif (!$method->hasEmptyResponse) {
             $returnType = $this->ctx->type($method->methodReturnType);
             $phpDocReturnType = PhpDoc::return($returnType);
             $startCall = AST::return($startCall);
@@ -841,7 +854,7 @@ class GapicClientGenerator
                     count($method->docLines) > 0
                         ? PhpDoc::preFormattedText($method->docLines)
                         : null,
-                    !$method->isStreaming()
+                    !$method->isStreaming() && !$method->isResumableUpload()
                         ? PhpDoc::text(
                             'The async variant is',
                             AST::staticCall( // use staticCall for PHP Doc :: syntax
@@ -911,6 +924,9 @@ class GapicClientGenerator
             case MethodDetails::SERVER_STREAMING:
                 // Fall through to PAGINATED.
             case MethodDetails::PAGINATED:
+                $wait = false;
+                break;
+            case MethodDetails::RESUMABLE_UPLOAD:
                 $wait = false;
                 break;
             default:

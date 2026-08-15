@@ -571,17 +571,21 @@ abstract class AST
      *
      * @return callable The returned callable returns an Expression once called with callee args.
      */
-    public static function new(ResolvedType $type): callable
+    public static function new(ResolvedType $type, bool $oneLine = true): callable
     {
-        return fn (...$args) => new class($type, Vector::new($args)) extends Expression {
-            public function __construct(private ResolvedType $type, private Vector $args)
+        return fn (...$args) => new class($type, Vector::new($args), $oneLine) extends Expression {
+            public function __construct(private ResolvedType $type, private Vector $args, private bool $oneLine)
             {
             }
 
             public function toCode(): string
             {
-                $args = $this->args->map(fn ($x) => static::toPhp($x))->join(', ');
-                return 'new ' . static::toPhp($this->type) . "({$args})";
+                if ($this->oneLine || count($this->args) === 0) {
+                    $args = $this->args->map(fn ($x) => static::toPhp($x))->join(', ');
+                    return 'new ' . static::toPhp($this->type) . "({$args})";
+                }
+                $args = $this->args->map(fn ($x) => static::toPhp($x))->join(",\n");
+                return 'new ' . static::toPhp($this->type) . "(\n{$args}\n)";
             }
         };
     }
