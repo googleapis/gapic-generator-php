@@ -203,9 +203,7 @@ abstract class MethodDetails
                 && $resourceByNumber[0] === $resourceByPosition[0];
         }
 
-        // A method missing any of the pagination fields is simply not paginated. A method that
-        // has them all but whose resource field is unusable is malformed, and is reported below.
-        if (is_null($pageSize) || is_null($pageToken) || is_null($nextPageToken) || is_null($resources)) {
+        if (is_null($pageSize) || is_null($pageToken) || is_null($nextPageToken) || is_null($resources) || !$resourceFieldValid) {
             return null;
         }
 
@@ -224,12 +222,6 @@ abstract class MethodDetails
         }
         if ($nextPageToken->isRepeated() || $nextPageToken->getType() !== GPBType::STRING) {
             throw new Exception('next_page_token field must be of type string.');
-        }
-        if (!$resourceFieldValid) {
-            if ($isDireGapic) {
-                throw new Exception('Item resources field must a map or repeated field.');
-            }
-            throw new Exception('Item resources field must be the first repeated field by number and position.');
         }
         return new class($svc, $desc, $outputMsg, $pageSize, $pageToken, $nextPageToken, $resources) extends MethodDetails {
             public function __construct($svc, $desc, $outputMsg, $pageSize, $pageToken, $nextPageToken, $resources)
