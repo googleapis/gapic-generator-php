@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2022 Google LLC
  *
@@ -40,19 +41,25 @@ use stdClass;
  */
 class BasicOneofClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return BasicOneofClient */
+    /**
+     * @return BasicOneofClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -61,7 +68,9 @@ class BasicOneofClientTest extends GeneratedTest
         return new BasicOneofClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function aMethodTest()
     {
         $transport = $this->createTransport();
@@ -98,7 +107,9 @@ class BasicOneofClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function aMethodExceptionTest()
     {
         $transport = $this->createTransport();
@@ -139,7 +150,9 @@ class BasicOneofClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function aMethodAsyncTest()
     {
         $transport = $this->createTransport();

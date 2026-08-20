@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2022 Google LLC
  *
@@ -27,7 +28,9 @@ use Google\ApiCore\ApiException;
 use Testing\CustomLro\Client\CustomLroOperationsClient;
 use Testing\CustomLro\DeleteOperationRequest;
 
-/** @param string $operation Name of th Operations resource to delete. */
+/**
+ * @param string $operation Name of th Operations resource to delete.
+ */
 function delete_sample(string $operation): void
 {
     // Create a client.

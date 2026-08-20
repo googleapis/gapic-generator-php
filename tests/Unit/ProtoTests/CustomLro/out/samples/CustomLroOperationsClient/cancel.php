@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2022 Google LLC
  *
@@ -27,7 +28,9 @@ use Google\ApiCore\ApiException;
 use Testing\CustomLro\CancelOperationRequest;
 use Testing\CustomLro\Client\CustomLroOperationsClient;
 
-/** @param string $operation Name of th Operations resource to cancel. */
+/**
+ * @param string $operation Name of th Operations resource to cancel.
+ */
 function cancel_sample(string $operation): void
 {
     // Create a client.

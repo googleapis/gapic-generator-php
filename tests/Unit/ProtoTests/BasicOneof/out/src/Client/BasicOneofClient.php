@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2022 Google LLC
  *
@@ -49,16 +50,24 @@ final class BasicOneofClient
 {
     use GapicClientTrait;
 
-    /** The name of the service. */
+    /**
+     * The name of the service.
+     */
     private const SERVICE_NAME = 'testing.basiconeof.BasicOneof';
 
-    /** The default address of the service. */
+    /**
+     * The default address of the service.
+     */
     private const SERVICE_ADDRESS = 'basic.example.com';
 
-    /** The default port of the service. */
+    /**
+     * The default port of the service.
+     */
     private const DEFAULT_SERVICE_PORT = 443;
 
-    /** The name of the code generator, to be included in the agent header. */
+    /**
+     * The name of the code generator, to be included in the agent header.
+     */
     private const CODEGEN_NAME = 'gapic';
 
     /**
@@ -164,7 +173,9 @@ final class BasicOneofClient
         $this->setClientOptions($clientOptions);
     }
 
-    /** Handles execution of the async variants for each documented method. */
+    /**
+     * Handles execution of the async variants for each documented method.
+     */
     public function __call($method, $args)
     {
         if (substr($method, -5) !== 'Async') {
