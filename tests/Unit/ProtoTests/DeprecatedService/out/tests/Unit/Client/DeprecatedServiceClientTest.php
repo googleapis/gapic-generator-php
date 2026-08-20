@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2022 Google LLC
  *
@@ -39,19 +40,25 @@ use stdClass;
  */
 class DeprecatedServiceClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return DeprecatedServiceClient */
+    /**
+     * @return DeprecatedServiceClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -60,7 +67,9 @@ class DeprecatedServiceClientTest extends GeneratedTest
         return new DeprecatedServiceClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function fastFibonacciTest()
     {
         $transport = $this->createTransport();
@@ -81,7 +90,9 @@ class DeprecatedServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function fastFibonacciExceptionTest()
     {
         $transport = $this->createTransport();
@@ -113,7 +124,9 @@ class DeprecatedServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function slowFibonacciTest()
     {
         $transport = $this->createTransport();
@@ -134,7 +147,9 @@ class DeprecatedServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function slowFibonacciExceptionTest()
     {
         $transport = $this->createTransport();
@@ -166,7 +181,9 @@ class DeprecatedServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function fastFibonacciAsyncTest()
     {
         $transport = $this->createTransport();

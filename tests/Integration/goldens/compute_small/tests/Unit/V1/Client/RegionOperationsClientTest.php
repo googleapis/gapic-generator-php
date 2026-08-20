@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -39,19 +40,25 @@ use stdClass;
  */
 class RegionOperationsClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return RegionOperationsClient */
+    /**
+     * @return RegionOperationsClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -60,7 +67,9 @@ class RegionOperationsClientTest extends GeneratedTest
         return new RegionOperationsClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getTest()
     {
         $transport = $this->createTransport();
@@ -135,7 +144,9 @@ class RegionOperationsClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getExceptionTest()
     {
         $transport = $this->createTransport();
@@ -174,7 +185,9 @@ class RegionOperationsClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getAsyncTest()
     {
         $transport = $this->createTransport();

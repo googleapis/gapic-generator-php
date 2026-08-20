@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -49,7 +50,9 @@ final class RegionOperationsClient
 {
     use GapicClientTrait;
 
-    /** The name of the service. */
+    /**
+     * The name of the service.
+     */
     private const SERVICE_NAME = 'google.cloud.compute.v1.RegionOperations';
 
     /**
@@ -59,13 +62,19 @@ final class RegionOperationsClient
      */
     private const SERVICE_ADDRESS = 'compute.googleapis.com';
 
-    /** The address template of the service. */
+    /**
+     * The address template of the service.
+     */
     private const SERVICE_ADDRESS_TEMPLATE = 'compute.UNIVERSE_DOMAIN';
 
-    /** The default port of the service. */
+    /**
+     * The default port of the service.
+     */
     private const DEFAULT_SERVICE_PORT = 443;
 
-    /** The name of the code generator, to be included in the agent header. */
+    /**
+     * The name of the code generator, to be included in the agent header.
+     */
     private const CODEGEN_NAME = 'gapic';
 
     /**
@@ -98,13 +107,17 @@ final class RegionOperationsClient
         ];
     }
 
-    /** Implements GapicClientTrait::defaultTransport. */
+    /**
+     * Implements GapicClientTrait::defaultTransport.
+     */
     private static function defaultTransport()
     {
         return 'rest';
     }
 
-    /** Implements ClientOptionsTrait::supportedTransports. */
+    /**
+     * Implements ClientOptionsTrait::supportedTransports.
+     */
     private static function supportedTransports()
     {
         return [
@@ -183,7 +196,9 @@ final class RegionOperationsClient
         $this->setClientOptions($clientOptions);
     }
 
-    /** Handles execution of the async variants for each documented method. */
+    /**
+     * Handles execution of the async variants for each documented method.
+     */
     public function __call($method, $args)
     {
         if (substr($method, -5) !== 'Async') {

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -60,19 +61,25 @@ use stdClass;
  */
 class CloudFunctionsServiceClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return CloudFunctionsServiceClient */
+    /**
+     * @return CloudFunctionsServiceClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -81,7 +88,9 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         return new CloudFunctionsServiceClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function callFunctionTest()
     {
         $transport = $this->createTransport();
@@ -118,7 +127,9 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function callFunctionExceptionTest()
     {
         $transport = $this->createTransport();
@@ -155,7 +166,9 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createFunctionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -261,7 +274,9 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createFunctionExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -320,7 +335,9 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteFunctionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -384,7 +401,9 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteFunctionExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -441,7 +460,9 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function generateDownloadUrlTest()
     {
         $transport = $this->createTransport();
@@ -465,7 +486,9 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function generateDownloadUrlExceptionTest()
     {
         $transport = $this->createTransport();
@@ -497,7 +520,9 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function generateUploadUrlTest()
     {
         $transport = $this->createTransport();
@@ -521,7 +546,9 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function generateUploadUrlExceptionTest()
     {
         $transport = $this->createTransport();
@@ -553,7 +580,9 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getFunctionTest()
     {
         $transport = $this->createTransport();
@@ -618,7 +647,9 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getFunctionExceptionTest()
     {
         $transport = $this->createTransport();
@@ -653,7 +684,9 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getIamPolicyTest()
     {
         $transport = $this->createTransport();
@@ -684,7 +717,9 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getIamPolicyExceptionTest()
     {
         $transport = $this->createTransport();
@@ -719,7 +754,9 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listFunctionsTest()
     {
         $transport = $this->createTransport();
@@ -751,7 +788,9 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listFunctionsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -783,7 +822,9 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function setIamPolicyTest()
     {
         $transport = $this->createTransport();
@@ -818,7 +859,9 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function setIamPolicyExceptionTest()
     {
         $transport = $this->createTransport();
@@ -855,7 +898,9 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function testIamPermissionsTest()
     {
         $transport = $this->createTransport();
@@ -886,7 +931,9 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function testIamPermissionsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -923,7 +970,9 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateFunctionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -1025,7 +1074,9 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateFunctionExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -1082,7 +1133,9 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function callFunctionAsyncTest()
     {
         $transport = $this->createTransport();

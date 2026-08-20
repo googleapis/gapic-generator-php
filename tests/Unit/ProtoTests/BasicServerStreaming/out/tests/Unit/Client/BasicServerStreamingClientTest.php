@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2022 Google LLC
  *
@@ -41,19 +42,25 @@ use stdClass;
  */
 class BasicServerStreamingClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return BasicServerStreamingClient */
+    /**
+     * @return BasicServerStreamingClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -62,7 +69,9 @@ class BasicServerStreamingClientTest extends GeneratedTest
         return new BasicServerStreamingClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function methodEmptyTest()
     {
         $transport = $this->createTransport();
@@ -95,7 +104,9 @@ class BasicServerStreamingClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function methodEmptyExceptionTest()
     {
         $transport = $this->createTransport();
@@ -130,7 +141,9 @@ class BasicServerStreamingClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function methodServerTest()
     {
         $transport = $this->createTransport();
@@ -167,7 +180,9 @@ class BasicServerStreamingClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function methodServerExceptionTest()
     {
         $transport = $this->createTransport();

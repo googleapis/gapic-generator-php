@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2022 Google LLC
  *
@@ -29,7 +30,9 @@ use Testing\BasicClientStreaming\Client\BasicClientStreamingClient;
 use Testing\BasicClientStreaming\Request;
 use Testing\BasicClientStreaming\Response;
 
-/** @param int $aNumber  */
+/**
+ * @param int $aNumber
+ */
 function method_client_sample(int $aNumber): void
 {
     // Create a client.

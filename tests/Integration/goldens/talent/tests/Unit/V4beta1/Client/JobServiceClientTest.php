@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -57,19 +58,25 @@ use stdClass;
  */
 class JobServiceClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return JobServiceClient */
+    /**
+     * @return JobServiceClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -78,7 +85,9 @@ class JobServiceClientTest extends GeneratedTest
         return new JobServiceClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function batchCreateJobsTest()
     {
         $operationsTransport = $this->createTransport();
@@ -146,7 +155,9 @@ class JobServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function batchCreateJobsExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -205,7 +216,9 @@ class JobServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function batchDeleteJobsTest()
     {
         $transport = $this->createTransport();
@@ -235,7 +248,9 @@ class JobServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function batchDeleteJobsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -272,7 +287,9 @@ class JobServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function batchUpdateJobsTest()
     {
         $operationsTransport = $this->createTransport();
@@ -340,7 +357,9 @@ class JobServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function batchUpdateJobsExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -399,7 +418,9 @@ class JobServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createJobTest()
     {
         $transport = $this->createTransport();
@@ -462,7 +483,9 @@ class JobServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createJobExceptionTest()
     {
         $transport = $this->createTransport();
@@ -507,7 +530,9 @@ class JobServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteJobTest()
     {
         $transport = $this->createTransport();
@@ -533,7 +558,9 @@ class JobServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteJobExceptionTest()
     {
         $transport = $this->createTransport();
@@ -568,7 +595,9 @@ class JobServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getJobTest()
     {
         $transport = $this->createTransport();
@@ -619,7 +648,9 @@ class JobServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getJobExceptionTest()
     {
         $transport = $this->createTransport();
@@ -654,7 +685,9 @@ class JobServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listJobsTest()
     {
         $transport = $this->createTransport();
@@ -695,7 +728,9 @@ class JobServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listJobsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -732,7 +767,9 @@ class JobServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function searchJobsTest()
     {
         $transport = $this->createTransport();
@@ -779,7 +816,9 @@ class JobServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function searchJobsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -816,7 +855,9 @@ class JobServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function searchJobsForAlertTest()
     {
         $transport = $this->createTransport();
@@ -863,7 +904,9 @@ class JobServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function searchJobsForAlertExceptionTest()
     {
         $transport = $this->createTransport();
@@ -900,7 +943,9 @@ class JobServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateJobTest()
     {
         $transport = $this->createTransport();
@@ -959,7 +1004,9 @@ class JobServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateJobExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1002,7 +1049,9 @@ class JobServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function batchCreateJobsAsyncTest()
     {
         $operationsTransport = $this->createTransport();

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -87,19 +88,25 @@ use stdClass;
  */
 class KeyManagementServiceClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return KeyManagementServiceClient */
+    /**
+     * @return KeyManagementServiceClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -108,7 +115,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         return new KeyManagementServiceClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function asymmetricDecryptTest()
     {
         $transport = $this->createTransport();
@@ -143,7 +152,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function asymmetricDecryptExceptionTest()
     {
         $transport = $this->createTransport();
@@ -180,7 +191,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function asymmetricSignTest()
     {
         $transport = $this->createTransport();
@@ -217,7 +230,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function asymmetricSignExceptionTest()
     {
         $transport = $this->createTransport();
@@ -254,7 +269,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createCryptoKeyTest()
     {
         $transport = $this->createTransport();
@@ -291,7 +308,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createCryptoKeyExceptionTest()
     {
         $transport = $this->createTransport();
@@ -330,7 +349,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createCryptoKeyVersionTest()
     {
         $transport = $this->createTransport();
@@ -367,7 +388,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createCryptoKeyVersionExceptionTest()
     {
         $transport = $this->createTransport();
@@ -404,7 +427,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createImportJobTest()
     {
         $transport = $this->createTransport();
@@ -445,7 +470,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createImportJobExceptionTest()
     {
         $transport = $this->createTransport();
@@ -488,7 +515,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createKeyRingTest()
     {
         $transport = $this->createTransport();
@@ -525,7 +554,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createKeyRingExceptionTest()
     {
         $transport = $this->createTransport();
@@ -564,7 +595,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function decryptTest()
     {
         $transport = $this->createTransport();
@@ -597,7 +630,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function decryptExceptionTest()
     {
         $transport = $this->createTransport();
@@ -634,7 +669,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function destroyCryptoKeyVersionTest()
     {
         $transport = $this->createTransport();
@@ -667,7 +704,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function destroyCryptoKeyVersionExceptionTest()
     {
         $transport = $this->createTransport();
@@ -702,7 +741,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function encryptTest()
     {
         $transport = $this->createTransport();
@@ -741,7 +782,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function encryptExceptionTest()
     {
         $transport = $this->createTransport();
@@ -778,7 +821,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getCryptoKeyTest()
     {
         $transport = $this->createTransport();
@@ -807,7 +852,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getCryptoKeyExceptionTest()
     {
         $transport = $this->createTransport();
@@ -842,7 +889,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getCryptoKeyVersionTest()
     {
         $transport = $this->createTransport();
@@ -875,7 +924,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getCryptoKeyVersionExceptionTest()
     {
         $transport = $this->createTransport();
@@ -910,7 +961,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getIamPolicyTest()
     {
         $transport = $this->createTransport();
@@ -941,7 +994,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getIamPolicyExceptionTest()
     {
         $transport = $this->createTransport();
@@ -976,7 +1031,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getImportJobTest()
     {
         $transport = $this->createTransport();
@@ -1005,7 +1062,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getImportJobExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1040,7 +1099,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getKeyRingTest()
     {
         $transport = $this->createTransport();
@@ -1069,7 +1130,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getKeyRingExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1104,7 +1167,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getPublicKeyTest()
     {
         $transport = $this->createTransport();
@@ -1135,7 +1200,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getPublicKeyExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1170,7 +1237,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function importCryptoKeyVersionTest()
     {
         $transport = $this->createTransport();
@@ -1211,7 +1280,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function importCryptoKeyVersionExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1250,7 +1321,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listCryptoKeyVersionsTest()
     {
         $transport = $this->createTransport();
@@ -1289,7 +1362,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listCryptoKeyVersionsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1324,7 +1399,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listCryptoKeysTest()
     {
         $transport = $this->createTransport();
@@ -1363,7 +1440,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listCryptoKeysExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1398,7 +1477,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listImportJobsTest()
     {
         $transport = $this->createTransport();
@@ -1437,7 +1518,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listImportJobsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1472,7 +1555,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listKeyRingsTest()
     {
         $transport = $this->createTransport();
@@ -1511,7 +1596,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listKeyRingsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1546,7 +1633,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function restoreCryptoKeyVersionTest()
     {
         $transport = $this->createTransport();
@@ -1579,7 +1668,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function restoreCryptoKeyVersionExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1614,7 +1705,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateCryptoKeyTest()
     {
         $transport = $this->createTransport();
@@ -1647,7 +1740,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateCryptoKeyExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1684,7 +1779,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateCryptoKeyPrimaryVersionTest()
     {
         $transport = $this->createTransport();
@@ -1717,7 +1814,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateCryptoKeyPrimaryVersionExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1754,7 +1853,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateCryptoKeyVersionTest()
     {
         $transport = $this->createTransport();
@@ -1791,7 +1892,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateCryptoKeyVersionExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1828,7 +1931,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function setIamPolicyTest()
     {
         $transport = $this->createTransport();
@@ -1863,7 +1968,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function setIamPolicyExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1900,7 +2007,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function testIamPermissionsTest()
     {
         $transport = $this->createTransport();
@@ -1931,7 +2040,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function testIamPermissionsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1968,7 +2079,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getLocationTest()
     {
         $transport = $this->createTransport();
@@ -1996,7 +2109,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getLocationExceptionTest()
     {
         $transport = $this->createTransport();
@@ -2028,7 +2143,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listLocationsTest()
     {
         $transport = $this->createTransport();
@@ -2060,7 +2177,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listLocationsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -2092,7 +2211,9 @@ class KeyManagementServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function asymmetricDecryptAsyncTest()
     {
         $transport = $this->createTransport();

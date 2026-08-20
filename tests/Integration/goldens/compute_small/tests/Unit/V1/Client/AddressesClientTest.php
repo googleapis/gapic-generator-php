@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -49,19 +50,25 @@ use stdClass;
  */
 class AddressesClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return AddressesClient */
+    /**
+     * @return AddressesClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -70,7 +77,9 @@ class AddressesClientTest extends GeneratedTest
         return new AddressesClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function aggregatedListTest()
     {
         $transport = $this->createTransport();
@@ -114,7 +123,9 @@ class AddressesClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function aggregatedListExceptionTest()
     {
         $transport = $this->createTransport();
@@ -149,7 +160,9 @@ class AddressesClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteTest()
     {
         $operationsTransport = $this->createTransport();
@@ -217,7 +230,9 @@ class AddressesClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -276,7 +291,9 @@ class AddressesClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function insertTest()
     {
         $operationsTransport = $this->createTransport();
@@ -344,7 +361,9 @@ class AddressesClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function insertExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -403,7 +422,9 @@ class AddressesClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listTest()
     {
         $transport = $this->createTransport();
@@ -454,7 +475,9 @@ class AddressesClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listExceptionTest()
     {
         $transport = $this->createTransport();
@@ -493,7 +516,9 @@ class AddressesClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function aggregatedListAsyncTest()
     {
         $transport = $this->createTransport();

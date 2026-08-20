@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -47,19 +48,25 @@ use stdClass;
  */
 class MerchantCenterAccountLinkServiceClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return MerchantCenterAccountLinkServiceClient */
+    /**
+     * @return MerchantCenterAccountLinkServiceClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -68,7 +75,9 @@ class MerchantCenterAccountLinkServiceClientTest extends GeneratedTest
         return new MerchantCenterAccountLinkServiceClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createMerchantCenterAccountLinkTest()
     {
         $operationsTransport = $this->createTransport();
@@ -156,7 +165,9 @@ class MerchantCenterAccountLinkServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createMerchantCenterAccountLinkExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -219,7 +230,9 @@ class MerchantCenterAccountLinkServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteMerchantCenterAccountLinkTest()
     {
         $transport = $this->createTransport();
@@ -245,7 +258,9 @@ class MerchantCenterAccountLinkServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteMerchantCenterAccountLinkExceptionTest()
     {
         $transport = $this->createTransport();
@@ -280,7 +295,9 @@ class MerchantCenterAccountLinkServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listMerchantCenterAccountLinksTest()
     {
         $transport = $this->createTransport();
@@ -307,7 +324,9 @@ class MerchantCenterAccountLinkServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listMerchantCenterAccountLinksExceptionTest()
     {
         $transport = $this->createTransport();
@@ -342,7 +361,9 @@ class MerchantCenterAccountLinkServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createMerchantCenterAccountLinkAsyncTest()
     {
         $operationsTransport = $this->createTransport();
