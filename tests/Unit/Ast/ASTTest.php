@@ -42,6 +42,19 @@ final class ASTTest extends TestCase
         $this->assertEquals('[]', static::stripLf($ast->toCode()));
     }
 
+    public function testArrayEmptyOneLine(): void
+    {
+        $ast = AST::array([], true);
+        $this->assertEquals('[]', static::stripLf($ast->toCode()));
+    }
+
+    public function testArraySequentialOneLine(): void
+    {
+        $x = AST::var('x');
+        $ast = AST::array([$x, 2], true);
+        $this->assertEquals('[$x, 2]', static::stripLf($ast->toCode()));
+    }
+
     public function testArraySequential(): void
     {
         $x = AST::var('x');

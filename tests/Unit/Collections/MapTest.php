@@ -149,6 +149,46 @@ final class MapTest extends TestCase
         $this->assertContains('two', $v);
     }
 
+    public function testFromPairs(): void
+    {
+        $m = Map::fromPairs([[1, 'one'], [2, 'two']]);
+        $this->assertCount(2, $m);
+        $this->assertEquals('one', $m[1]);
+        $this->assertEquals('two', $m[2]);
+    }
+
+    public function testFromPairsRejectsDuplicateKeys(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Cannot add two items with the same key');
+        Map::fromPairs([[1, 'one'], [1, 'uno']]);
+    }
+
+    public function testFromPairsAllowingDuplicates(): void
+    {
+        $m = Map::fromPairsAllowingDuplicates([[1, 'one'], [2, 'two'], [1, 'uno']]);
+        $this->assertCount(2, $m);
+        // A repeated key overwrites, rather than being rejected.
+        $this->assertEquals('uno', $m[1]);
+        $this->assertEquals('two', $m[2]);
+    }
+
+    public function testFromPairsAllowingDuplicatesWithObjectKeys(): void
+    {
+        $k1 = new ObjEq(1);
+        $k2 = new ObjEq(1);
+        $m = Map::fromPairsAllowingDuplicates([[$k1, 'first'], [$k2, 'second']]);
+        // $k1 and $k2 are equal by Equality, so they are one key.
+        $this->assertCount(1, $m);
+        $this->assertEquals('second', $m[$k1]);
+        $this->assertEquals('second', $m[$k2]);
+    }
+
+    public function testFromPairsAllowingDuplicatesEmpty(): void
+    {
+        $this->assertCount(0, Map::fromPairsAllowingDuplicates([]));
+    }
+
     public function testToAssociativeArray(): void
     {
         $m = Map::new()->set(1, 'one')->set(2, 'two');
