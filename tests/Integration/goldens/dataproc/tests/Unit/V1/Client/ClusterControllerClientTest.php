@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -59,19 +60,25 @@ use stdClass;
  */
 class ClusterControllerClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return ClusterControllerClient */
+    /**
+     * @return ClusterControllerClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -80,7 +87,9 @@ class ClusterControllerClientTest extends GeneratedTest
         return new ClusterControllerClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createClusterTest()
     {
         $operationsTransport = $this->createTransport();
@@ -162,7 +171,9 @@ class ClusterControllerClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createClusterExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -227,7 +238,9 @@ class ClusterControllerClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteClusterTest()
     {
         $operationsTransport = $this->createTransport();
@@ -299,7 +312,9 @@ class ClusterControllerClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteClusterExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -360,7 +375,9 @@ class ClusterControllerClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function diagnoseClusterTest()
     {
         $operationsTransport = $this->createTransport();
@@ -434,7 +451,9 @@ class ClusterControllerClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function diagnoseClusterExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -495,7 +514,9 @@ class ClusterControllerClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getClusterTest()
     {
         $transport = $this->createTransport();
@@ -536,7 +557,9 @@ class ClusterControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getClusterExceptionTest()
     {
         $transport = $this->createTransport();
@@ -575,7 +598,9 @@ class ClusterControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listClustersTest()
     {
         $transport = $this->createTransport();
@@ -616,7 +641,9 @@ class ClusterControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listClustersExceptionTest()
     {
         $transport = $this->createTransport();
@@ -653,7 +680,9 @@ class ClusterControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function startClusterTest()
     {
         $operationsTransport = $this->createTransport();
@@ -731,7 +760,9 @@ class ClusterControllerClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function startClusterExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -792,7 +823,9 @@ class ClusterControllerClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function stopClusterTest()
     {
         $operationsTransport = $this->createTransport();
@@ -870,7 +903,9 @@ class ClusterControllerClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function stopClusterExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -931,7 +966,9 @@ class ClusterControllerClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateClusterTest()
     {
         $operationsTransport = $this->createTransport();
@@ -1021,7 +1058,9 @@ class ClusterControllerClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateClusterExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -1090,7 +1129,9 @@ class ClusterControllerClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getIamPolicyTest()
     {
         $transport = $this->createTransport();
@@ -1121,7 +1162,9 @@ class ClusterControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getIamPolicyExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1156,7 +1199,9 @@ class ClusterControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function setIamPolicyTest()
     {
         $transport = $this->createTransport();
@@ -1191,7 +1236,9 @@ class ClusterControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function setIamPolicyExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1228,7 +1275,9 @@ class ClusterControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function testIamPermissionsTest()
     {
         $transport = $this->createTransport();
@@ -1259,7 +1308,9 @@ class ClusterControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function testIamPermissionsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1296,7 +1347,9 @@ class ClusterControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createClusterAsyncTest()
     {
         $operationsTransport = $this->createTransport();

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -40,19 +41,25 @@ use stdClass;
  */
 class EventServiceClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return EventServiceClient */
+    /**
+     * @return EventServiceClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -61,7 +68,9 @@ class EventServiceClientTest extends GeneratedTest
         return new EventServiceClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createClientEventTest()
     {
         $transport = $this->createTransport();
@@ -102,7 +111,9 @@ class EventServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createClientEventExceptionTest()
     {
         $transport = $this->createTransport();
@@ -143,7 +154,9 @@ class EventServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createClientEventAsyncTest()
     {
         $transport = $this->createTransport();

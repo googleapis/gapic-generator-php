@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -40,19 +41,25 @@ use stdClass;
  */
 class PredictionServiceClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return PredictionServiceClient */
+    /**
+     * @return PredictionServiceClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -61,7 +68,9 @@ class PredictionServiceClientTest extends GeneratedTest
         return new PredictionServiceClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function predictTest()
     {
         $transport = $this->createTransport();
@@ -100,7 +109,9 @@ class PredictionServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function predictExceptionTest()
     {
         $transport = $this->createTransport();
@@ -141,7 +152,9 @@ class PredictionServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function predictAsyncTest()
     {
         $transport = $this->createTransport();

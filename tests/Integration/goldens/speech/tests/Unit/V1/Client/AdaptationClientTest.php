@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -52,19 +53,25 @@ use stdClass;
  */
 class AdaptationClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return AdaptationClient */
+    /**
+     * @return AdaptationClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -73,7 +80,9 @@ class AdaptationClientTest extends GeneratedTest
         return new AdaptationClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createCustomClassTest()
     {
         $transport = $this->createTransport();
@@ -112,7 +121,9 @@ class AdaptationClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createCustomClassExceptionTest()
     {
         $transport = $this->createTransport();
@@ -151,7 +162,9 @@ class AdaptationClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createPhraseSetTest()
     {
         $transport = $this->createTransport();
@@ -190,7 +203,9 @@ class AdaptationClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createPhraseSetExceptionTest()
     {
         $transport = $this->createTransport();
@@ -229,7 +244,9 @@ class AdaptationClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteCustomClassTest()
     {
         $transport = $this->createTransport();
@@ -255,7 +272,9 @@ class AdaptationClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteCustomClassExceptionTest()
     {
         $transport = $this->createTransport();
@@ -290,7 +309,9 @@ class AdaptationClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deletePhraseSetTest()
     {
         $transport = $this->createTransport();
@@ -316,7 +337,9 @@ class AdaptationClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deletePhraseSetExceptionTest()
     {
         $transport = $this->createTransport();
@@ -351,7 +374,9 @@ class AdaptationClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getCustomClassTest()
     {
         $transport = $this->createTransport();
@@ -382,7 +407,9 @@ class AdaptationClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getCustomClassExceptionTest()
     {
         $transport = $this->createTransport();
@@ -417,7 +444,9 @@ class AdaptationClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getPhraseSetTest()
     {
         $transport = $this->createTransport();
@@ -448,7 +477,9 @@ class AdaptationClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getPhraseSetExceptionTest()
     {
         $transport = $this->createTransport();
@@ -483,7 +514,9 @@ class AdaptationClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listCustomClassesTest()
     {
         $transport = $this->createTransport();
@@ -520,7 +553,9 @@ class AdaptationClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listCustomClassesExceptionTest()
     {
         $transport = $this->createTransport();
@@ -555,7 +590,9 @@ class AdaptationClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listPhraseSetTest()
     {
         $transport = $this->createTransport();
@@ -592,7 +629,9 @@ class AdaptationClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listPhraseSetExceptionTest()
     {
         $transport = $this->createTransport();
@@ -627,7 +666,9 @@ class AdaptationClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateCustomClassTest()
     {
         $transport = $this->createTransport();
@@ -658,7 +699,9 @@ class AdaptationClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateCustomClassExceptionTest()
     {
         $transport = $this->createTransport();
@@ -693,7 +736,9 @@ class AdaptationClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updatePhraseSetTest()
     {
         $transport = $this->createTransport();
@@ -724,7 +769,9 @@ class AdaptationClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updatePhraseSetExceptionTest()
     {
         $transport = $this->createTransport();
@@ -759,7 +806,9 @@ class AdaptationClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createCustomClassAsyncTest()
     {
         $transport = $this->createTransport();

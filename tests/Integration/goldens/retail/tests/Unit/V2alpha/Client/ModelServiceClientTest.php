@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -53,19 +54,25 @@ use stdClass;
  */
 class ModelServiceClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return ModelServiceClient */
+    /**
+     * @return ModelServiceClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -74,7 +81,9 @@ class ModelServiceClientTest extends GeneratedTest
         return new ModelServiceClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createModelTest()
     {
         $operationsTransport = $this->createTransport();
@@ -158,7 +167,9 @@ class ModelServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createModelExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -223,7 +234,9 @@ class ModelServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteModelTest()
     {
         $transport = $this->createTransport();
@@ -249,7 +262,9 @@ class ModelServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteModelExceptionTest()
     {
         $transport = $this->createTransport();
@@ -284,7 +299,9 @@ class ModelServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getModelTest()
     {
         $transport = $this->createTransport();
@@ -321,7 +338,9 @@ class ModelServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getModelExceptionTest()
     {
         $transport = $this->createTransport();
@@ -356,7 +375,9 @@ class ModelServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listModelsTest()
     {
         $transport = $this->createTransport();
@@ -393,7 +414,9 @@ class ModelServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listModelsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -428,7 +451,9 @@ class ModelServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function pauseModelTest()
     {
         $transport = $this->createTransport();
@@ -465,7 +490,9 @@ class ModelServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function pauseModelExceptionTest()
     {
         $transport = $this->createTransport();
@@ -500,7 +527,9 @@ class ModelServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function resumeModelTest()
     {
         $transport = $this->createTransport();
@@ -537,7 +566,9 @@ class ModelServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function resumeModelExceptionTest()
     {
         $transport = $this->createTransport();
@@ -572,7 +603,9 @@ class ModelServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function tuneModelTest()
     {
         $operationsTransport = $this->createTransport();
@@ -636,7 +669,9 @@ class ModelServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function tuneModelExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -693,7 +728,9 @@ class ModelServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateModelTest()
     {
         $transport = $this->createTransport();
@@ -736,7 +773,9 @@ class ModelServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateModelExceptionTest()
     {
         $transport = $this->createTransport();
@@ -777,7 +816,9 @@ class ModelServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createModelAsyncTest()
     {
         $operationsTransport = $this->createTransport();

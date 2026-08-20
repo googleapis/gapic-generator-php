@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -44,19 +45,25 @@ use stdClass;
  */
 class AnalyticsServiceClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return AnalyticsServiceClient */
+    /**
+     * @return AnalyticsServiceClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -65,7 +72,9 @@ class AnalyticsServiceClientTest extends GeneratedTest
         return new AnalyticsServiceClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function exportAnalyticsMetricsTest()
     {
         $operationsTransport = $this->createTransport();
@@ -133,7 +142,9 @@ class AnalyticsServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function exportAnalyticsMetricsExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -192,7 +203,9 @@ class AnalyticsServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function exportAnalyticsMetricsAsyncTest()
     {
         $operationsTransport = $this->createTransport();

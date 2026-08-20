@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -47,19 +48,25 @@ use stdClass;
  */
 class CompletionServiceClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return CompletionServiceClient */
+    /**
+     * @return CompletionServiceClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -68,7 +75,9 @@ class CompletionServiceClientTest extends GeneratedTest
         return new CompletionServiceClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function completeQueryTest()
     {
         $transport = $this->createTransport();
@@ -101,7 +110,9 @@ class CompletionServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function completeQueryExceptionTest()
     {
         $transport = $this->createTransport();
@@ -138,7 +149,9 @@ class CompletionServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function importCompletionDataTest()
     {
         $operationsTransport = $this->createTransport();
@@ -212,7 +225,9 @@ class CompletionServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function importCompletionDataExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -277,7 +292,9 @@ class CompletionServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function completeQueryAsyncTest()
     {
         $transport = $this->createTransport();

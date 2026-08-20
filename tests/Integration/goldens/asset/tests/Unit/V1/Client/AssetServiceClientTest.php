@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -95,19 +96,25 @@ use stdClass;
  */
 class AssetServiceClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return AssetServiceClient */
+    /**
+     * @return AssetServiceClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -116,7 +123,9 @@ class AssetServiceClientTest extends GeneratedTest
         return new AssetServiceClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function analyzeIamPolicyTest()
     {
         $transport = $this->createTransport();
@@ -147,7 +156,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function analyzeIamPolicyExceptionTest()
     {
         $transport = $this->createTransport();
@@ -184,7 +195,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function analyzeIamPolicyLongrunningTest()
     {
         $operationsTransport = $this->createTransport();
@@ -254,7 +267,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function analyzeIamPolicyLongrunningExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -315,7 +330,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function analyzeMoveTest()
     {
         $transport = $this->createTransport();
@@ -346,7 +363,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function analyzeMoveExceptionTest()
     {
         $transport = $this->createTransport();
@@ -383,7 +402,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function analyzeOrgPoliciesTest()
     {
         $transport = $this->createTransport();
@@ -424,7 +445,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function analyzeOrgPoliciesExceptionTest()
     {
         $transport = $this->createTransport();
@@ -461,7 +484,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function analyzeOrgPolicyGovernedAssetsTest()
     {
         $transport = $this->createTransport();
@@ -502,7 +527,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function analyzeOrgPolicyGovernedAssetsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -539,7 +566,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function analyzeOrgPolicyGovernedContainersTest()
     {
         $transport = $this->createTransport();
@@ -580,7 +609,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function analyzeOrgPolicyGovernedContainersExceptionTest()
     {
         $transport = $this->createTransport();
@@ -617,7 +648,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function batchGetAssetsHistoryTest()
     {
         $transport = $this->createTransport();
@@ -652,7 +685,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function batchGetAssetsHistoryExceptionTest()
     {
         $transport = $this->createTransport();
@@ -691,7 +726,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function batchGetEffectiveIamPoliciesTest()
     {
         $transport = $this->createTransport();
@@ -722,7 +759,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function batchGetEffectiveIamPoliciesExceptionTest()
     {
         $transport = $this->createTransport();
@@ -759,7 +798,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createFeedTest()
     {
         $transport = $this->createTransport();
@@ -800,7 +841,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createFeedExceptionTest()
     {
         $transport = $this->createTransport();
@@ -843,7 +886,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createSavedQueryTest()
     {
         $transport = $this->createTransport();
@@ -886,7 +931,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createSavedQueryExceptionTest()
     {
         $transport = $this->createTransport();
@@ -925,7 +972,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteFeedTest()
     {
         $transport = $this->createTransport();
@@ -951,7 +1000,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteFeedExceptionTest()
     {
         $transport = $this->createTransport();
@@ -986,7 +1037,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteSavedQueryTest()
     {
         $transport = $this->createTransport();
@@ -1012,7 +1065,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteSavedQueryExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1047,7 +1102,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function exportAssetsTest()
     {
         $operationsTransport = $this->createTransport();
@@ -1115,7 +1172,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function exportAssetsExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -1174,7 +1233,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getFeedTest()
     {
         $transport = $this->createTransport();
@@ -1203,7 +1264,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getFeedExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1238,7 +1301,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getSavedQueryTest()
     {
         $transport = $this->createTransport();
@@ -1273,7 +1338,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getSavedQueryExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1308,7 +1375,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listAssetsTest()
     {
         $transport = $this->createTransport();
@@ -1345,7 +1414,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listAssetsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1380,7 +1451,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listFeedsTest()
     {
         $transport = $this->createTransport();
@@ -1407,7 +1480,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listFeedsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1442,7 +1517,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listSavedQueriesTest()
     {
         $transport = $this->createTransport();
@@ -1479,7 +1556,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listSavedQueriesExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1514,7 +1593,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function queryAssetsTest()
     {
         $transport = $this->createTransport();
@@ -1545,7 +1626,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function queryAssetsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1580,7 +1663,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function searchAllIamPoliciesTest()
     {
         $transport = $this->createTransport();
@@ -1617,7 +1702,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function searchAllIamPoliciesExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1652,7 +1739,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function searchAllResourcesTest()
     {
         $transport = $this->createTransport();
@@ -1689,7 +1778,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function searchAllResourcesExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1724,7 +1815,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateFeedTest()
     {
         $transport = $this->createTransport();
@@ -1761,7 +1854,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateFeedExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1802,7 +1897,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateSavedQueryTest()
     {
         $transport = $this->createTransport();
@@ -1841,7 +1938,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateSavedQueryExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1878,7 +1977,9 @@ class AssetServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function analyzeIamPolicyAsyncTest()
     {
         $transport = $this->createTransport();

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -39,19 +40,25 @@ use stdClass;
  */
 class CompletionClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return CompletionClient */
+    /**
+     * @return CompletionClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -60,7 +67,9 @@ class CompletionClientTest extends GeneratedTest
         return new CompletionClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function completeQueryTest()
     {
         $transport = $this->createTransport();
@@ -95,7 +104,9 @@ class CompletionClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function completeQueryExceptionTest()
     {
         $transport = $this->createTransport();
@@ -134,7 +145,9 @@ class CompletionClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function completeQueryAsyncTest()
     {
         $transport = $this->createTransport();
