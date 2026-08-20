@@ -60,7 +60,7 @@ class ProtoHelpers
         // DO NOT CHANGE THIS LOGIC.
         // Used by devrel_library_tracker/langs/utils.py (as of 2021/06/22).
         return Vector::new(explode('.', $fileDesc->getPackage()))
-            ->map(fn ($x) => strtoupper($x[0]) . substr($x, 1))
+            ->map(fn ($x) => $x === '' ? '' : strtoupper($x[0]) . substr($x, 1))
             ->join('\\');
     }
 

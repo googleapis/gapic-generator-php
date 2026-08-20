@@ -44,7 +44,9 @@ class Set implements \IteratorAggregate, \Countable, \ArrayAccess
             foreach ($data as $v) {
                 $pairs[] = [$v, true];
             }
-            return new Set(Map::fromPairs($pairs));
+            // Duplicates collapse rather than being rejected; a repeated element is the
+            // normal case for a set, and matches the behaviour of add().
+            return new Set(Map::fromPairsAllowingDuplicates($pairs));
         }
         throw new Exception('Set::new accepts a Traversable or an array only');
     }

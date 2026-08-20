@@ -425,6 +425,9 @@ abstract class AST
                     return "{$items}";
                 }
                 if ($this->oneLine) {
+                    if (count($items) === 0) {
+                        return '[]';
+                    }
                     $itemsStr = $items->skipLast(1)->map(fn ($x) => "{$x}, ")->join();
                     $itemsStr = $itemsStr . "{$items->last()}";
                     return "[{$itemsStr}]";
