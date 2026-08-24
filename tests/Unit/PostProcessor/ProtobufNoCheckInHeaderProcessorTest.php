@@ -112,6 +112,47 @@ EOL;
         $this->assertTrue(true); // If we reach here, no exception was thrown.
     }
 
+    /**
+     * @runInSeparateProcess
+     */
+    public function testRunDoesNotFailWhenInputDirectoryDoesNotExist()
+    {
+        $tmpDir = sys_get_temp_dir() . '/test-nonexistent-dir-' . rand();
+
+        // This should not throw an exception.
+        ProtobufNoCheckInHeaderProcessor::run($tmpDir);
+
+        $this->assertTrue(true); // If we reach here, no exception was thrown.
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testProtobufProcessorRecursivelyFiltersProtoSrc()
+    {
+        $tmpDir = sys_get_temp_dir() . '/test-recursive-proto-src-' . rand();
+        $nestedProtoSrcDir = $tmpDir . '/nested/dir/proto/src/Google/Api';
+        $nonProtoDir = $tmpDir . '/nested/dir/src/Google/Api';
+        mkdir($nestedProtoSrcDir, 0777, true);
+        mkdir($nonProtoDir, 0777, true);
+
+        file_put_contents($protoFile = $nestedProtoSrcDir . '/Bar.php', $this->classContents);
+        file_put_contents($nonProtoFile = $nonProtoDir . '/Baz.php', $this->classContents);
+
+        ProtobufNoCheckInHeaderProcessor::run($tmpDir);
+
+        // Verify the proto file had the header removed
+        $protoFileContents = file_get_contents($protoFile);
+        $this->assertFalse($this->classContainsNoCheckInHeader($protoFileContents));
+
+        // Verify the non-proto file was untouched
+        $nonProtoFileContents = file_get_contents($nonProtoFile);
+        $this->assertTrue($this->classContainsNoCheckInHeader($nonProtoFileContents));
+
+        // Verify post-processor output only logged the proto file
+        $this->expectOutputString('No Check-In Header removed in ' . $protoFile . PHP_EOL);
+    }
+
     private function classContainsNoCheckInHeader(string $classContents): bool
     {
         $tokens = token_get_all($classContents);

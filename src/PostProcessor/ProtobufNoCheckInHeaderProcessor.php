@@ -22,15 +22,18 @@ class ProtobufNoCheckInHeaderProcessor implements ProcessorInterface
 {
     public static function run(string $inputDir): void
     {
-        $protoSrcDir = $inputDir . '/proto/src';
-        if (!is_dir($protoSrcDir)) {
+        if (!is_dir($inputDir)) {
             return;
         }
-        $protoDir = new \RecursiveDirectoryIterator($protoSrcDir);
+        $protoDir = new \RecursiveDirectoryIterator($inputDir);
         $protoDirItr = new \RecursiveIteratorIterator($protoDir);
         $protoItr = new \RegexIterator($protoDirItr, '/^.+\.php$/i', \RecursiveRegexIterator::GET_MATCH);
         foreach ($protoItr as $finding) {
-            self::inject($finding[0]);
+            $classFile = $finding[0];
+            if (!str_contains(dirname($classFile), '/proto/src')) {
+                continue;
+            }
+            self::inject($classFile);
         }
     }
 
