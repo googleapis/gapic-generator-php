@@ -101,6 +101,7 @@ EOL;
     /**
      * @runInSeparateProcess
      */
+<<<<<<< Updated upstream
     public function testRunDoesNotFailWhenProtoSrcDirectoryIsMissing()
     {
         $tmpDir = sys_get_temp_dir() . '/test-missing-proto-src-' . rand();
@@ -110,6 +111,35 @@ EOL;
         ProtobufNoCheckInHeaderProcessor::run($tmpDir);
 
         $this->assertTrue(true); // If we reach here, no exception was thrown.
+=======
+    public function testProtobufDeprecationProcessorNestedDirectory()
+    {
+        $tmpDir = sys_get_temp_dir() . '/test-nested-header-processor-' . rand();
+        $nestedProtoDir = $tmpDir . '/v2/Admin/proto/src';
+        mkdir($nestedProtoDir, 0777, true);
+        file_put_contents($toFile = $nestedProtoDir . '/Table.php', $this->classContents);
+
+        ProtobufNoCheckInHeaderProcessor::run($tmpDir);
+
+        $newClassContents = file_get_contents($toFile);
+        $this->assertFalse($this->classContainsNoCheckInHeader($newClassContents));
+
+        // Verify post-processor output
+        $this->expectOutputString('No Check-In Header removed in ' . $toFile . PHP_EOL);
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testRunDoesNotFailWhenDirectoryIsMissing()
+    {
+        $missingDir = sys_get_temp_dir() . '/test-non-existent-dir-' . rand();
+
+        // This should not throw an exception.
+        ProtobufNoCheckInHeaderProcessor::run($missingDir);
+
+        $this->assertTrue(true);
+>>>>>>> Stashed changes
     }
 
     private function classContainsNoCheckInHeader(string $classContents): bool
