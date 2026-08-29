@@ -41,6 +41,32 @@ class FragmentInjectionProcessor implements ProcessorInterface
 
             self::inject($fragmentPath, $protoPath);
         }
+
+        // Remove fragment sources after injection so packaging does not ship
+        // empty fragments/ directory trees (see googleapis/gapic-generator-php#621).
+        self::removeFragmentsDirectory($inputDir);
+    }
+
+    private static function removeFragmentsDirectory(string $inputDir): void
+    {
+        $fragmentsDir = rtrim($inputDir, '/').'/fragments';
+        if (!is_dir($fragmentsDir)) {
+            return;
+        }
+
+        $files = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($fragmentsDir, \FilesystemIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::CHILD_FIRST
+        );
+        foreach ($files as $fileinfo) {
+            $pathname = $fileinfo->getPathname();
+            if ($fileinfo->isDir()) {
+                rmdir($pathname);
+            } else {
+                unlink($pathname);
+            }
+        }
+        rmdir($fragmentsDir);
     }
 
     private static function inject(string $fragmentFile, string $classFile): void

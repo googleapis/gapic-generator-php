@@ -140,6 +140,8 @@ EOL;
 
         // If we've gotten here, the PHP code is valid. Just assert that the contents have changed.
         $this->expectOutputString('Fragment written to ' . $toFile . PHP_EOL);
+        $this->assertFileDoesNotExist($tmpDir . '/fragments/Bar.build.txt');
+        $this->assertDirectoryDoesNotExist($tmpDir . '/fragments');
     }
 
     public function provideWriteMethodToClassScript()
