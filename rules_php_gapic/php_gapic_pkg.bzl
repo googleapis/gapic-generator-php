@@ -70,6 +70,8 @@ def _php_gapic_src_pkg_impl(ctx):
         fi
     done
     {post_processor} --input {package_dir_path}
+    # Drop any leftover empty fragments/ tree from the package tarball.
+    rm -rf {package_dir_path}/fragments
     cd {package_dir_path}/{tar_cd_suffix}
     tar --exclude=*.build.txt  -zchpf {tar_prefix}/{package_dir}.tar.gz {tar_prefix}/*
     cd -
