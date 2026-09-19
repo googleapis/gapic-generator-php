@@ -17,6 +17,7 @@
 declare(strict_types=1);
 
 use function Opis\Closure\{serialize, unserialize};
+use Google\Protobuf\Internal\CodedInputStream;
 
 if (!isset($GLOBALS['gapic_php_test_temp_files'])) {
     $GLOBALS['gapic_php_test_temp_files'] = [];
@@ -75,15 +76,15 @@ class FakeMessage extends \Google\Protobuf\Internal\Message
         return $result;
     }
 
-    public function mergeFromString($s)
+    public function mergeFromString($data, $recursion_limit = CodedInputStream::DEFAULT_RECURSION_LIMIT)
     {
         $pos = 0;
-        while ($pos < strlen($s)) {
-            $colon1 = strpos($s, ':', $pos);
-            $colon2 = strpos($s, ':', $colon1 + 1);
-            $name = substr($s, $pos, $colon1 - $pos);
-            $valueLen = (int)substr($s, $colon1 + 1, $colon2 - $colon1 - 1);
-            $value = unserialize(substr($s, $colon2 + 1, $valueLen));
+        while ($pos < strlen($data)) {
+            $colon1 = strpos($data, ':', $pos);
+            $colon2 = strpos($data, ':', $colon1 + 1);
+            $name = substr($data, $pos, $colon1 - $pos);
+            $valueLen = (int)substr($data, $colon1 + 1, $colon2 - $colon1 - 1);
+            $value = unserialize(substr($data, $colon2 + 1, $valueLen));
             $this->$name = $value;
             $pos = $colon2 + 1 + $valueLen;
         }
