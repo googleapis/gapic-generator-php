@@ -24,7 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START retail_v2alpha_generated_BranchService_ListBranches_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Retail\V2alpha\BranchServiceClient;
+use Google\Cloud\Retail\V2alpha\Client\BranchServiceClient;
+use Google\Cloud\Retail\V2alpha\ListBranchesRequest;
 use Google\Cloud\Retail\V2alpha\ListBranchesResponse;
 
 /**
@@ -39,10 +40,14 @@ function list_branches_sample(string $formattedParent): void
     // Create a client.
     $branchServiceClient = new BranchServiceClient();
 
+    // Prepare the request message.
+    $request = (new ListBranchesRequest())
+        ->setParent($formattedParent);
+
     // Call the API and handle any network failures.
     try {
         /** @var ListBranchesResponse $response */
-        $response = $branchServiceClient->listBranches($formattedParent);
+        $response = $branchServiceClient->listBranches($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

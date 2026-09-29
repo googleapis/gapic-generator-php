@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START retail_v2alpha_generated_CatalogService_BatchRemoveCatalogAttributes_sync]
 use Google\ApiCore\ApiException;
+use Google\Cloud\Retail\V2alpha\BatchRemoveCatalogAttributesRequest;
 use Google\Cloud\Retail\V2alpha\BatchRemoveCatalogAttributesResponse;
-use Google\Cloud\Retail\V2alpha\CatalogServiceClient;
+use Google\Cloud\Retail\V2alpha\Client\CatalogServiceClient;
 
 /**
  * Removes all specified
@@ -47,16 +48,16 @@ function batch_remove_catalog_attributes_sample(
     // Create a client.
     $catalogServiceClient = new CatalogServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $attributeKeys = [$attributeKeysElement,];
+    $request = (new BatchRemoveCatalogAttributesRequest())
+        ->setAttributesConfig($formattedAttributesConfig)
+        ->setAttributeKeys($attributeKeys);
 
     // Call the API and handle any network failures.
     try {
         /** @var BatchRemoveCatalogAttributesResponse $response */
-        $response = $catalogServiceClient->batchRemoveCatalogAttributes(
-            $formattedAttributesConfig,
-            $attributeKeys
-        );
+        $response = $catalogServiceClient->batchRemoveCatalogAttributes($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

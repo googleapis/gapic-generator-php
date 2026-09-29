@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START retail_v2alpha_generated_ProjectService_GetProject_sync]
 use Google\ApiCore\ApiException;
+use Google\Cloud\Retail\V2alpha\Client\ProjectServiceClient;
+use Google\Cloud\Retail\V2alpha\GetProjectRequest;
 use Google\Cloud\Retail\V2alpha\Project;
-use Google\Cloud\Retail\V2alpha\ProjectServiceClient;
 
 /**
  * Gets the project.
@@ -42,10 +43,14 @@ function get_project_sample(string $formattedName): void
     // Create a client.
     $projectServiceClient = new ProjectServiceClient();
 
+    // Prepare the request message.
+    $request = (new GetProjectRequest())
+        ->setName($formattedName);
+
     // Call the API and handle any network failures.
     try {
         /** @var Project $response */
-        $response = $projectServiceClient->getProject($formattedName);
+        $response = $projectServiceClient->getProject($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

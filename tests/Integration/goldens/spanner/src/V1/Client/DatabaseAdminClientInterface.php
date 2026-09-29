@@ -25,7 +25,6 @@
 namespace Google\Cloud\Spanner\Admin\Database\V1\Client;
 
 use Google\ApiCore\ApiException;
-use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\PagedListResponse;
 use Google\ApiCore\RetrySettings;
@@ -70,6 +69,7 @@ use Google\Cloud\Spanner\Admin\Database\V1\UpdateDatabaseDdlMetadata;
 use Google\Cloud\Spanner\Admin\Database\V1\UpdateDatabaseDdlRequest;
 use Google\Cloud\Spanner\Admin\Database\V1\UpdateDatabaseMetadata;
 use Google\Cloud\Spanner\Admin\Database\V1\UpdateDatabaseRequest;
+use Google\LongRunning\Client\OperationsClient;
 use Google\LongRunning\Operation;
 use GuzzleHttp\Promise\PromiseInterface;
 

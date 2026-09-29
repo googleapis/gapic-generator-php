@@ -24,7 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START dataproc_v1_generated_SessionTemplateController_DeleteSessionTemplate_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Dataproc\V1\SessionTemplateControllerClient;
+use Google\Cloud\Dataproc\V1\Client\SessionTemplateControllerClient;
+use Google\Cloud\Dataproc\V1\DeleteSessionTemplateRequest;
 
 /**
  * Deletes a session template.
@@ -37,9 +38,13 @@ function delete_session_template_sample(string $formattedName): void
     // Create a client.
     $sessionTemplateControllerClient = new SessionTemplateControllerClient();
 
+    // Prepare the request message.
+    $request = (new DeleteSessionTemplateRequest())
+        ->setName($formattedName);
+
     // Call the API and handle any network failures.
     try {
-        $sessionTemplateControllerClient->deleteSessionTemplate($formattedName);
+        $sessionTemplateControllerClient->deleteSessionTemplate($request);
         printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

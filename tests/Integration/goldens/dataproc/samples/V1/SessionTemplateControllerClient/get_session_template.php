@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START dataproc_v1_generated_SessionTemplateController_GetSessionTemplate_sync]
 use Google\ApiCore\ApiException;
+use Google\Cloud\Dataproc\V1\Client\SessionTemplateControllerClient;
+use Google\Cloud\Dataproc\V1\GetSessionTemplateRequest;
 use Google\Cloud\Dataproc\V1\SessionTemplate;
-use Google\Cloud\Dataproc\V1\SessionTemplateControllerClient;
 
 /**
  * Gets the resource representation for a session template.
@@ -38,10 +39,14 @@ function get_session_template_sample(string $formattedName): void
     // Create a client.
     $sessionTemplateControllerClient = new SessionTemplateControllerClient();
 
+    // Prepare the request message.
+    $request = (new GetSessionTemplateRequest())
+        ->setName($formattedName);
+
     // Call the API and handle any network failures.
     try {
         /** @var SessionTemplate $response */
-        $response = $sessionTemplateControllerClient->getSessionTemplate($formattedName);
+        $response = $sessionTemplateControllerClient->getSessionTemplate($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

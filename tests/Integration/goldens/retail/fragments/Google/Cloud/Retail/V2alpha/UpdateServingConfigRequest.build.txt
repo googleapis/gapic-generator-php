@@ -1,0 +1,21 @@
+
+    /**
+     * @param \Google\Cloud\Retail\V2alpha\ServingConfig $servingConfig Required. The ServingConfig to update.
+     * @param \Google\Protobuf\FieldMask                 $updateMask    Indicates which fields in the provided
+     *                                                                  [ServingConfig][google.cloud.retail.v2alpha.ServingConfig] to update. The
+     *                                                                  following are NOT supported:
+     *
+     *                                                                  * [ServingConfig.name][google.cloud.retail.v2alpha.ServingConfig.name]
+     *
+     *                                                                  If not set, all supported fields are updated.
+     *
+     * @return \Google\Cloud\Retail\V2alpha\UpdateServingConfigRequest
+     *
+     * @experimental
+     */
+    public static function build(\Google\Cloud\Retail\V2alpha\ServingConfig $servingConfig, \Google\Protobuf\FieldMask $updateMask): self
+    {
+        return (new self())
+            ->setServingConfig($servingConfig)
+            ->setUpdateMask($updateMask);
+    }

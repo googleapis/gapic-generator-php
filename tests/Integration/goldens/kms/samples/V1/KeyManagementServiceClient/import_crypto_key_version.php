@@ -24,9 +24,10 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START cloudkms_v1_generated_KeyManagementService_ImportCryptoKeyVersion_sync]
 use Google\ApiCore\ApiException;
+use Google\Cloud\Kms\V1\Client\KeyManagementServiceClient;
 use Google\Cloud\Kms\V1\CryptoKeyVersion;
 use Google\Cloud\Kms\V1\CryptoKeyVersion\CryptoKeyVersionAlgorithm;
-use Google\Cloud\Kms\V1\KeyManagementServiceClient;
+use Google\Cloud\Kms\V1\ImportCryptoKeyVersionRequest;
 
 /**
  * Imports a new [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] into
@@ -56,14 +57,16 @@ function import_crypto_key_version_sample(
     // Create a client.
     $keyManagementServiceClient = new KeyManagementServiceClient();
 
+    // Prepare the request message.
+    $request = (new ImportCryptoKeyVersionRequest())
+        ->setParent($formattedParent)
+        ->setAlgorithm($algorithm)
+        ->setImportJob($importJob);
+
     // Call the API and handle any network failures.
     try {
         /** @var CryptoKeyVersion $response */
-        $response = $keyManagementServiceClient->importCryptoKeyVersion(
-            $formattedParent,
-            $algorithm,
-            $importJob
-        );
+        $response = $keyManagementServiceClient->importCryptoKeyVersion($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

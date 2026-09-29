@@ -8,7 +8,7 @@
         "Addresses": {
             "clients": {
                 "grpc": {
-                    "libraryClient": "AddressesGapicClient",
+                    "libraryClient": "AddressesClient",
                     "rpcs": {
                         "AggregatedList": {
                             "methods": [
@@ -37,7 +37,7 @@
         "RegionOperations": {
             "clients": {
                 "grpc": {
-                    "libraryClient": "RegionOperationsGapicClient",
+                    "libraryClient": "RegionOperationsClient",
                     "rpcs": {
                         "Get": {
                             "methods": [
@@ -51,7 +51,7 @@
         "Subnetworks": {
             "clients": {
                 "grpc": {
-                    "libraryClient": "SubnetworksGapicClient",
+                    "libraryClient": "SubnetworksClient",
                     "rpcs": {
                         "ListUsable": {
                             "methods": [

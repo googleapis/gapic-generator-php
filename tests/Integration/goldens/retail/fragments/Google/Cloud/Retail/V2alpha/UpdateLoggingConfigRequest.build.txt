@@ -1,0 +1,30 @@
+
+    /**
+     * @param \Google\Cloud\Retail\V2alpha\LoggingConfig $loggingConfig Required. The [LoggingConfig][google.cloud.retail.v2alpha.LoggingConfig] to
+     *                                                                  update.
+     *
+     *                                                                  If the caller does not have permission to update the
+     *                                                                  [LoggingConfig][google.cloud.retail.v2alpha.LoggingConfig], then a
+     *                                                                  PERMISSION_DENIED error is returned.
+     *
+     *                                                                  If the [LoggingConfig][google.cloud.retail.v2alpha.LoggingConfig] to update
+     *                                                                  does not exist, a NOT_FOUND error is returned.
+     * @param \Google\Protobuf\FieldMask                 $updateMask    Indicates which fields in the provided
+     *                                                                  [LoggingConfig][google.cloud.retail.v2alpha.LoggingConfig] to update. The
+     *                                                                  following are the only supported fields:
+     *
+     *                                                                  * [LoggingConfig.default_log_generation_rule][google.cloud.retail.v2alpha.LoggingConfig.default_log_generation_rule]
+     *                                                                  * [LoggingConfig.service_log_generation_rules][google.cloud.retail.v2alpha.LoggingConfig.service_log_generation_rules]
+     *
+     *                                                                  If not set, all supported fields are updated.
+     *
+     * @return \Google\Cloud\Retail\V2alpha\UpdateLoggingConfigRequest
+     *
+     * @experimental
+     */
+    public static function build(\Google\Cloud\Retail\V2alpha\LoggingConfig $loggingConfig, \Google\Protobuf\FieldMask $updateMask): self
+    {
+        return (new self())
+            ->setLoggingConfig($loggingConfig)
+            ->setUpdateMask($updateMask);
+    }

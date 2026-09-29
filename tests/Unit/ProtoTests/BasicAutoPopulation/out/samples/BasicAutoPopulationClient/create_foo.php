@@ -24,7 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START autopopulation_generated_BasicAutoPopulation_CreateFoo_sync]
 use Google\ApiCore\ApiException;
-use Testing\BasicAutoPopulation\BasicAutoPopulationClient;
+use Testing\BasicAutoPopulation\Client\BasicAutoPopulationClient;
+use Testing\BasicAutoPopulation\Request;
 use Testing\BasicAutoPopulation\Response;
 
 /** @param string $aField  */
@@ -33,10 +34,14 @@ function create_foo_sample(string $aField): void
     // Create a client.
     $basicAutoPopulationClient = new BasicAutoPopulationClient();
 
+    // Prepare the request message.
+    $request = (new Request())
+        ->setAField($aField);
+
     // Call the API and handle any network failures.
     try {
         /** @var Response $response */
-        $response = $basicAutoPopulationClient->createFoo($aField);
+        $response = $basicAutoPopulationClient->createFoo($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

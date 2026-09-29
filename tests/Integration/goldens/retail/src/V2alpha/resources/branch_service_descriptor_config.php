@@ -22,6 +22,35 @@
 
 return [
     'interfaces' => [
-        'google.cloud.retail.v2alpha.BranchService' => [],
+        'google.cloud.retail.v2alpha.BranchService' => [
+            'GetBranch' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\Retail\V2alpha\Branch',
+                'headerParams' => [
+                    [
+                        'keyName' => 'name',
+                        'fieldAccessors' => [
+                            'getName',
+                        ],
+                    ],
+                ],
+            ],
+            'ListBranches' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\Retail\V2alpha\ListBranchesResponse',
+                'headerParams' => [
+                    [
+                        'keyName' => 'parent',
+                        'fieldAccessors' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
+            'templateMap' => [
+                'branch' => 'projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}',
+                'catalog' => 'projects/{project}/locations/{location}/catalogs/{catalog}',
+            ],
+        ],
     ],
 ];

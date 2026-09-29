@@ -8,7 +8,7 @@
         "BasicBidiStreaming": {
             "clients": {
                 "grpc": {
-                    "libraryClient": "BasicBidiStreamingGapicClient",
+                    "libraryClient": "BasicBidiStreamingClient",
                     "rpcs": {
                         "MethodBidi": {
                             "methods": [

@@ -8,7 +8,7 @@
         "HeuristicPaginationClient": {
             "clients": {
                 "grpc": {
-                    "libraryClient": "HeuristicPaginationClientGapicClient",
+                    "libraryClient": "HeuristicPaginationClientClient",
                     "rpcs": {
                         "ListMethod": {
                             "methods": [

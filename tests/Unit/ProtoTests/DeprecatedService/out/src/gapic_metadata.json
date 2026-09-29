@@ -8,7 +8,7 @@
         "DeprecatedService": {
             "clients": {
                 "grpc": {
-                    "libraryClient": "DeprecatedServiceGapicClient",
+                    "libraryClient": "DeprecatedServiceClient",
                     "rpcs": {
                         "FastFibonacci": {
                             "methods": [

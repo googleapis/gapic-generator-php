@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START dataproc_v1_generated_SessionController_GetSession_sync]
 use Google\ApiCore\ApiException;
+use Google\Cloud\Dataproc\V1\Client\SessionControllerClient;
+use Google\Cloud\Dataproc\V1\GetSessionRequest;
 use Google\Cloud\Dataproc\V1\Session;
-use Google\Cloud\Dataproc\V1\SessionControllerClient;
 
 /**
  * Gets the resource representation for an interactive session.
@@ -38,10 +39,14 @@ function get_session_sample(string $formattedName): void
     // Create a client.
     $sessionControllerClient = new SessionControllerClient();
 
+    // Prepare the request message.
+    $request = (new GetSessionRequest())
+        ->setName($formattedName);
+
     // Call the API and handle any network failures.
     try {
         /** @var Session $response */
-        $response = $sessionControllerClient->getSession($formattedName);
+        $response = $sessionControllerClient->getSession($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

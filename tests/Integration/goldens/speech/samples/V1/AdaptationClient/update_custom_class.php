@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START speech_v1_generated_Adaptation_UpdateCustomClass_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Speech\V1\AdaptationClient;
+use Google\Cloud\Speech\V1\Client\AdaptationClient;
 use Google\Cloud\Speech\V1\CustomClass;
+use Google\Cloud\Speech\V1\UpdateCustomClassRequest;
 
 /**
  * Update a custom class.
@@ -41,13 +42,15 @@ function update_custom_class_sample(): void
     // Create a client.
     $adaptationClient = new AdaptationClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $customClass = new CustomClass();
+    $request = (new UpdateCustomClassRequest())
+        ->setCustomClass($customClass);
 
     // Call the API and handle any network failures.
     try {
         /** @var CustomClass $response */
-        $response = $adaptationClient->updateCustomClass($customClass);
+        $response = $adaptationClient->updateCustomClass($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

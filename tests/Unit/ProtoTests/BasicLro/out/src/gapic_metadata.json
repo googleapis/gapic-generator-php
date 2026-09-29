@@ -8,7 +8,7 @@
         "BasicLro": {
             "clients": {
                 "grpc": {
-                    "libraryClient": "BasicLroGapicClient",
+                    "libraryClient": "BasicLroClient",
                     "rpcs": {
                         "Method1": {
                             "methods": [

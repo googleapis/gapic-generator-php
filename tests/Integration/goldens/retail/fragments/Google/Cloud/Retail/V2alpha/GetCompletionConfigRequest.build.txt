@@ -1,0 +1,15 @@
+
+    /**
+     * @param string $name Required. Full CompletionConfig resource name. Format:
+     *                     `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/completionConfig`
+     *                     Please see {@see CatalogServiceClient::completionConfigName()} for help formatting this field.
+     *
+     * @return \Google\Cloud\Retail\V2alpha\GetCompletionConfigRequest
+     *
+     * @experimental
+     */
+    public static function build(string $name): self
+    {
+        return (new self())
+            ->setName($name);
+    }

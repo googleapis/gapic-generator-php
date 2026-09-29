@@ -25,8 +25,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START dataproc_v1_generated_SessionController_ListSessions_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\PagedListResponse;
+use Google\Cloud\Dataproc\V1\Client\SessionControllerClient;
+use Google\Cloud\Dataproc\V1\ListSessionsRequest;
 use Google\Cloud\Dataproc\V1\Session;
-use Google\Cloud\Dataproc\V1\SessionControllerClient;
 
 /**
  * Lists interactive sessions.
@@ -39,10 +40,14 @@ function list_sessions_sample(string $formattedParent): void
     // Create a client.
     $sessionControllerClient = new SessionControllerClient();
 
+    // Prepare the request message.
+    $request = (new ListSessionsRequest())
+        ->setParent($formattedParent);
+
     // Call the API and handle any network failures.
     try {
         /** @var PagedListResponse $response */
-        $response = $sessionControllerClient->listSessions($formattedParent);
+        $response = $sessionControllerClient->listSessions($request);
 
         /** @var Session $element */
         foreach ($response as $element) {

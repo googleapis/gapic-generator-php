@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START retail_v2alpha_generated_MerchantCenterAccountLinkService_ListMerchantCenterAccountLinks_sync]
 use Google\ApiCore\ApiException;
+use Google\Cloud\Retail\V2alpha\Client\MerchantCenterAccountLinkServiceClient;
+use Google\Cloud\Retail\V2alpha\ListMerchantCenterAccountLinksRequest;
 use Google\Cloud\Retail\V2alpha\ListMerchantCenterAccountLinksResponse;
-use Google\Cloud\Retail\V2alpha\MerchantCenterAccountLinkServiceClient;
 
 /**
  * Lists all
@@ -42,12 +43,14 @@ function list_merchant_center_account_links_sample(string $formattedParent): voi
     // Create a client.
     $merchantCenterAccountLinkServiceClient = new MerchantCenterAccountLinkServiceClient();
 
+    // Prepare the request message.
+    $request = (new ListMerchantCenterAccountLinksRequest())
+        ->setParent($formattedParent);
+
     // Call the API and handle any network failures.
     try {
         /** @var ListMerchantCenterAccountLinksResponse $response */
-        $response = $merchantCenterAccountLinkServiceClient->listMerchantCenterAccountLinks(
-            $formattedParent
-        );
+        $response = $merchantCenterAccountLinkServiceClient->listMerchantCenterAccountLinks($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

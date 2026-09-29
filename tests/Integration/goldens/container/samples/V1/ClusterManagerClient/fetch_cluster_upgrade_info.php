@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START container_v1_generated_ClusterManager_FetchClusterUpgradeInfo_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Container\V1\ClusterManagerClient;
+use Google\Cloud\Container\V1\Client\ClusterManagerClient;
 use Google\Cloud\Container\V1\ClusterUpgradeInfo;
+use Google\Cloud\Container\V1\FetchClusterUpgradeInfoRequest;
 
 /**
  * Fetch upgrade information of a specific cluster.
@@ -39,10 +40,14 @@ function fetch_cluster_upgrade_info_sample(string $name): void
     // Create a client.
     $clusterManagerClient = new ClusterManagerClient();
 
+    // Prepare the request message.
+    $request = (new FetchClusterUpgradeInfoRequest())
+        ->setName($name);
+
     // Call the API and handle any network failures.
     try {
         /** @var ClusterUpgradeInfo $response */
-        $response = $clusterManagerClient->fetchClusterUpgradeInfo($name);
+        $response = $clusterManagerClient->fetchClusterUpgradeInfo($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

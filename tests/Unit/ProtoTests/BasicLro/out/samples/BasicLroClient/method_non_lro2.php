@@ -24,7 +24,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START lro_generated_BasicLro_MethodNonLro2_sync]
 use Google\ApiCore\ApiException;
-use Testing\BasicLro\BasicLroClient;
+use Testing\BasicLro\Client\BasicLroClient;
 use Testing\BasicLro\Request;
 
 /**
@@ -39,10 +39,13 @@ function method_non_lro2_sample(): void
     // Create a client.
     $basicLroClient = new BasicLroClient();
 
+    // Prepare the request message.
+    $request = new Request();
+
     // Call the API and handle any network failures.
     try {
         /** @var Request $response */
-        $response = $basicLroClient->methodNonLro2();
+        $response = $basicLroClient->methodNonLro2($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

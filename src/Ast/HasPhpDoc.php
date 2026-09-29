@@ -20,6 +20,8 @@ namespace Google\Generator\Ast;
 
 trait HasPhpDoc
 {
+    private $phpDoc;
+
     /**
      * Create a version of this ast element with PHP doc.
      *

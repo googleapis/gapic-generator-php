@@ -22,6 +22,72 @@
 
 return [
     'interfaces' => [
-        'google.cloud.retail.v2alpha.GenerativeQuestionService' => [],
+        'google.cloud.retail.v2alpha.GenerativeQuestionService' => [
+            'BatchUpdateGenerativeQuestionConfigs' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\Retail\V2alpha\BatchUpdateGenerativeQuestionConfigsResponse',
+                'headerParams' => [
+                    [
+                        'keyName' => 'parent',
+                        'fieldAccessors' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
+            'GetGenerativeQuestionsFeatureConfig' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\Retail\V2alpha\GenerativeQuestionsFeatureConfig',
+                'headerParams' => [
+                    [
+                        'keyName' => 'catalog',
+                        'fieldAccessors' => [
+                            'getCatalog',
+                        ],
+                    ],
+                ],
+            ],
+            'ListGenerativeQuestionConfigs' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\Retail\V2alpha\ListGenerativeQuestionConfigsResponse',
+                'headerParams' => [
+                    [
+                        'keyName' => 'parent',
+                        'fieldAccessors' => [
+                            'getParent',
+                        ],
+                    ],
+                ],
+            ],
+            'UpdateGenerativeQuestionConfig' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\Retail\V2alpha\GenerativeQuestionConfig',
+                'headerParams' => [
+                    [
+                        'keyName' => 'generative_question_config.catalog',
+                        'fieldAccessors' => [
+                            'getGenerativeQuestionConfig',
+                            'getCatalog',
+                        ],
+                    ],
+                ],
+            ],
+            'UpdateGenerativeQuestionsFeatureConfig' => [
+                'callType' => \Google\ApiCore\Call::UNARY_CALL,
+                'responseType' => 'Google\Cloud\Retail\V2alpha\GenerativeQuestionsFeatureConfig',
+                'headerParams' => [
+                    [
+                        'keyName' => 'generative_questions_feature_config.catalog',
+                        'fieldAccessors' => [
+                            'getGenerativeQuestionsFeatureConfig',
+                            'getCatalog',
+                        ],
+                    ],
+                ],
+            ],
+            'templateMap' => [
+                'catalog' => 'projects/{project}/locations/{location}/catalogs/{catalog}',
+            ],
+        ],
     ],
 ];

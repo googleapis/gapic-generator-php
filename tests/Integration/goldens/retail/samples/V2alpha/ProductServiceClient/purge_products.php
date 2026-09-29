@@ -25,7 +25,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_ProductService_PurgeProducts_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
-use Google\Cloud\Retail\V2alpha\ProductServiceClient;
+use Google\Cloud\Retail\V2alpha\Client\ProductServiceClient;
+use Google\Cloud\Retail\V2alpha\PurgeProductsRequest;
 use Google\Cloud\Retail\V2alpha\PurgeProductsResponse;
 use Google\Rpc\Status;
 
@@ -98,10 +99,15 @@ function purge_products_sample(string $formattedParent, string $filter): void
     // Create a client.
     $productServiceClient = new ProductServiceClient();
 
+    // Prepare the request message.
+    $request = (new PurgeProductsRequest())
+        ->setParent($formattedParent)
+        ->setFilter($filter);
+
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $productServiceClient->purgeProducts($formattedParent, $filter);
+        $response = $productServiceClient->purgeProducts($request);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

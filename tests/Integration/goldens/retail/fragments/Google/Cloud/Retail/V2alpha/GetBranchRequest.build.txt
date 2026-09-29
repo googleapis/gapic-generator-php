@@ -1,0 +1,19 @@
+
+    /**
+     * @param string $name Required. The name of the branch to retrieve.
+     *                     Format:
+     *                     `projects/&#42;/locations/global/catalogs/default_catalog/branches/some_branch_id`.
+     *
+     *                     "default_branch" can be used as a special branch_id, it returns the
+     *                     default branch that has been set for the catalog. Please see
+     *                     {@see BranchServiceClient::branchName()} for help formatting this field.
+     *
+     * @return \Google\Cloud\Retail\V2alpha\GetBranchRequest
+     *
+     * @experimental
+     */
+    public static function build(string $name): self
+    {
+        return (new self())
+            ->setName($name);
+    }

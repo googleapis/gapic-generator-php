@@ -8,7 +8,7 @@
         "BasicAutoPopulation": {
             "clients": {
                 "grpc": {
-                    "libraryClient": "BasicAutoPopulationGapicClient",
+                    "libraryClient": "BasicAutoPopulationClient",
                     "rpcs": {
                         "CreateFoo": {
                             "methods": [

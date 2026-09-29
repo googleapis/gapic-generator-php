@@ -24,7 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START retail_v2alpha_generated_MerchantCenterAccountLinkService_DeleteMerchantCenterAccountLink_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Retail\V2alpha\MerchantCenterAccountLinkServiceClient;
+use Google\Cloud\Retail\V2alpha\Client\MerchantCenterAccountLinkServiceClient;
+use Google\Cloud\Retail\V2alpha\DeleteMerchantCenterAccountLinkRequest;
 
 /**
  * Deletes a
@@ -42,9 +43,13 @@ function delete_merchant_center_account_link_sample(string $formattedName): void
     // Create a client.
     $merchantCenterAccountLinkServiceClient = new MerchantCenterAccountLinkServiceClient();
 
+    // Prepare the request message.
+    $request = (new DeleteMerchantCenterAccountLinkRequest())
+        ->setName($formattedName);
+
     // Call the API and handle any network failures.
     try {
-        $merchantCenterAccountLinkServiceClient->deleteMerchantCenterAccountLink($formattedName);
+        $merchantCenterAccountLinkServiceClient->deleteMerchantCenterAccountLink($request);
         printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

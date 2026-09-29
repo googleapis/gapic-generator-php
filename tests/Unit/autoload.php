@@ -16,6 +16,19 @@
  */
 declare(strict_types=1);
 
+use function Opis\Closure\{serialize, unserialize};
+
+if (!isset($GLOBALS['gapic_php_test_temp_files'])) {
+    $GLOBALS['gapic_php_test_temp_files'] = [];
+    register_shutdown_function(function () {
+        foreach ($GLOBALS['gapic_php_test_temp_files'] as $file) {
+            if (file_exists($file)) {
+                unlink($file);
+            }
+        }
+    });
+}
+
 /** class that can fake any proto message sufficiently well for testing. */
 class FakeMessage extends \Google\Protobuf\Internal\Message
 {
@@ -89,10 +102,21 @@ function protosOnDemandLoader($class)
 
         // if a "build" fragment exists, create an anonymous class with the build method
         if (file_exists($fragment)) {
-            $classAlias = get_class(eval(sprintf(
-                'return new class() extends FakeMessage { %s };',
-                file_get_contents($fragment)
-            )));
+            // NOTE: Using a temporary file instead of 'eval' is a workaround for
+            // a limitation in 'opis/closure' which can fail to serialize
+            // a closure that is created within an 'eval'.
+            $className = 'gapic_php_test_' . md5($fragment);
+            if (!class_exists($className, false)) {
+                $tmpFile = tempnam(sys_get_temp_dir(), 'gapic-php-test-');
+                $GLOBALS['gapic_php_test_temp_files'][] = $tmpFile;
+                file_put_contents($tmpFile, sprintf(
+                    '<?php class %s extends \FakeMessage { %s }',
+                    $className,
+                    file_get_contents($fragment)
+                ));
+                require_once $tmpFile;
+            }
+            $classAlias = $className;
         }
         class_alias($classAlias, $class);
     }

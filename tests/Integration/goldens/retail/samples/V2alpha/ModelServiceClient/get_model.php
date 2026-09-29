@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START retail_v2alpha_generated_ModelService_GetModel_sync]
 use Google\ApiCore\ApiException;
+use Google\Cloud\Retail\V2alpha\Client\ModelServiceClient;
+use Google\Cloud\Retail\V2alpha\GetModelRequest;
 use Google\Cloud\Retail\V2alpha\Model;
-use Google\Cloud\Retail\V2alpha\ModelServiceClient;
 
 /**
  * Gets a model.
@@ -40,10 +41,14 @@ function get_model_sample(string $formattedName): void
     // Create a client.
     $modelServiceClient = new ModelServiceClient();
 
+    // Prepare the request message.
+    $request = (new GetModelRequest())
+        ->setName($formattedName);
+
     // Call the API and handle any network failures.
     try {
         /** @var Model $response */
-        $response = $modelServiceClient->getModel($formattedName);
+        $response = $modelServiceClient->getModel($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

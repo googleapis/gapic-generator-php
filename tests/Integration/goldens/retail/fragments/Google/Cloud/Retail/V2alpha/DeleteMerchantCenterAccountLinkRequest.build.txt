@@ -1,0 +1,15 @@
+
+    /**
+     * @param string $name Required. Full resource name. Format:
+     *                     `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/merchantCenterAccountLinks/{merchant_center_account_link_id}`
+     *                     Please see {@see MerchantCenterAccountLinkServiceClient::merchantCenterAccountLinkName()} for help formatting this field.
+     *
+     * @return \Google\Cloud\Retail\V2alpha\DeleteMerchantCenterAccountLinkRequest
+     *
+     * @experimental
+     */
+    public static function build(string $name): self
+    {
+        return (new self())
+            ->setName($name);
+    }

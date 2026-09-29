@@ -1,0 +1,19 @@
+
+    /**
+     * @param string $project   Project ID for this request.
+     * @param string $region    Name of the region for this request.
+     * @param string $foo       The foo from the initial request.
+     * @param string $operation Name of the Operations resource to return.
+     *
+     * @return \Testing\CustomLro\GetOperationRequest
+     *
+     * @experimental
+     */
+    public static function build(string $project, string $region, string $foo, string $operation): self
+    {
+        return (new self())
+            ->setProject($project)
+            ->setRegion($region)
+            ->setFoo($foo)
+            ->setOperation($operation);
+    }

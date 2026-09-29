@@ -24,7 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START speech_v1_generated_Adaptation_DeleteCustomClass_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Speech\V1\AdaptationClient;
+use Google\Cloud\Speech\V1\Client\AdaptationClient;
+use Google\Cloud\Speech\V1\DeleteCustomClassRequest;
 
 /**
  * Delete a custom class.
@@ -45,9 +46,13 @@ function delete_custom_class_sample(string $formattedName): void
     // Create a client.
     $adaptationClient = new AdaptationClient();
 
+    // Prepare the request message.
+    $request = (new DeleteCustomClassRequest())
+        ->setName($formattedName);
+
     // Call the API and handle any network failures.
     try {
-        $adaptationClient->deleteCustomClass($formattedName);
+        $adaptationClient->deleteCustomClass($request);
         printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

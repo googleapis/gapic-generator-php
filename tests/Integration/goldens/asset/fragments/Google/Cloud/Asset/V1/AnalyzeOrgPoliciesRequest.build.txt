@@ -1,0 +1,32 @@
+
+    /**
+     * @param string $scope      Required. The organization to scope the request. Only organization
+     *                           policies within the scope will be analyzed.
+     *
+     *                           * organizations/{ORGANIZATION_NUMBER} (e.g., "organizations/123456")
+     * @param string $constraint Required. The name of the constraint to analyze organization policies for.
+     *                           The response only contains analyzed organization policies for the provided
+     *                           constraint.
+     * @param string $filter     The expression to filter
+     *                           [AnalyzeOrgPoliciesResponse.org_policy_results][google.cloud.asset.v1.AnalyzeOrgPoliciesResponse.org_policy_results].
+     *                           Filtering is currently available for bare literal values and the following
+     *                           fields:
+     *                           * consolidated_policy.attached_resource
+     *                           * consolidated_policy.rules.enforce
+     *
+     *                           When filtering by a specific field, the only supported operator is `=`.
+     *                           For example, filtering by
+     *                           consolidated_policy.attached_resource="//cloudresourcemanager.googleapis.com/folders/001"
+     *                           will return all the Organization Policy results attached to "folders/001".
+     *
+     * @return \Google\Cloud\Asset\V1\AnalyzeOrgPoliciesRequest
+     *
+     * @experimental
+     */
+    public static function build(string $scope, string $constraint, string $filter): self
+    {
+        return (new self())
+            ->setScope($scope)
+            ->setConstraint($constraint)
+            ->setFilter($filter);
+    }

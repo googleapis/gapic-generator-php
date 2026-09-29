@@ -24,9 +24,10 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START retail_v2alpha_generated_GenerativeQuestionService_BatchUpdateGenerativeQuestionConfigs_sync]
 use Google\ApiCore\ApiException;
+use Google\Cloud\Retail\V2alpha\BatchUpdateGenerativeQuestionConfigsRequest;
 use Google\Cloud\Retail\V2alpha\BatchUpdateGenerativeQuestionConfigsResponse;
+use Google\Cloud\Retail\V2alpha\Client\GenerativeQuestionServiceClient;
 use Google\Cloud\Retail\V2alpha\GenerativeQuestionConfig;
-use Google\Cloud\Retail\V2alpha\GenerativeQuestionServiceClient;
 use Google\Cloud\Retail\V2alpha\UpdateGenerativeQuestionConfigRequest;
 
 /**
@@ -43,18 +44,20 @@ function batch_update_generative_question_configs_sample(
     // Create a client.
     $generativeQuestionServiceClient = new GenerativeQuestionServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $requestsGenerativeQuestionConfig = (new GenerativeQuestionConfig())
         ->setCatalog($requestsGenerativeQuestionConfigCatalog)
         ->setFacet($requestsGenerativeQuestionConfigFacet);
     $updateGenerativeQuestionConfigRequest = (new UpdateGenerativeQuestionConfigRequest())
         ->setGenerativeQuestionConfig($requestsGenerativeQuestionConfig);
     $requests = [$updateGenerativeQuestionConfigRequest,];
+    $request = (new BatchUpdateGenerativeQuestionConfigsRequest())
+        ->setRequests($requests);
 
     // Call the API and handle any network failures.
     try {
         /** @var BatchUpdateGenerativeQuestionConfigsResponse $response */
-        $response = $generativeQuestionServiceClient->batchUpdateGenerativeQuestionConfigs($requests);
+        $response = $generativeQuestionServiceClient->batchUpdateGenerativeQuestionConfigs($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

@@ -25,7 +25,6 @@
 namespace Google\Cloud\SecurityCenter\V1\Client;
 
 use Google\ApiCore\ApiException;
-use Google\ApiCore\LongRunning\OperationsClient;
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\PagedListResponse;
 use Google\ApiCore\RetrySettings;
@@ -114,6 +113,7 @@ use Google\Cloud\SecurityCenter\V1\UpdateSourceRequest;
 use Google\Cloud\SecurityCenter\V1\ValidateEventThreatDetectionCustomModuleRequest;
 use Google\Cloud\SecurityCenter\V1\ValidateEventThreatDetectionCustomModuleResponse;
 use Google\Cloud\SecurityCenter\V1\ValuedResource;
+use Google\LongRunning\Client\OperationsClient;
 use Google\LongRunning\Operation;
 use GuzzleHttp\Promise\PromiseInterface;
 

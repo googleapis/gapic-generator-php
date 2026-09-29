@@ -1,0 +1,17 @@
+
+    /**
+     * @param \Google\Cloud\Retail\V2alpha\Model $model      Required. The body of the updated
+     *                                                       [Model][google.cloud.retail.v2alpha.Model].
+     * @param \Google\Protobuf\FieldMask         $updateMask Optional. Indicates which fields in the provided 'model' to
+     *                                                       update. If not set, by default updates all fields.
+     *
+     * @return \Google\Cloud\Retail\V2alpha\UpdateModelRequest
+     *
+     * @experimental
+     */
+    public static function build(\Google\Cloud\Retail\V2alpha\Model $model, \Google\Protobuf\FieldMask $updateMask): self
+    {
+        return (new self())
+            ->setModel($model)
+            ->setUpdateMask($updateMask);
+    }

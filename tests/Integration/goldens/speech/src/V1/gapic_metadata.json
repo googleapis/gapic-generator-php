@@ -8,7 +8,7 @@
         "Speech": {
             "clients": {
                 "grpc": {
-                    "libraryClient": "SpeechGapicClient",
+                    "libraryClient": "SpeechClient",
                     "rpcs": {
                         "LongRunningRecognize": {
                             "methods": [
@@ -32,7 +32,7 @@
         "Adaptation": {
             "clients": {
                 "grpc": {
-                    "libraryClient": "AdaptationGapicClient",
+                    "libraryClient": "AdaptationClient",
                     "rpcs": {
                         "CreateCustomClass": {
                             "methods": [

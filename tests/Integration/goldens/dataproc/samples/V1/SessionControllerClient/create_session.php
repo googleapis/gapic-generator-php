@@ -25,8 +25,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START dataproc_v1_generated_SessionController_CreateSession_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
+use Google\Cloud\Dataproc\V1\Client\SessionControllerClient;
+use Google\Cloud\Dataproc\V1\CreateSessionRequest;
 use Google\Cloud\Dataproc\V1\Session;
-use Google\Cloud\Dataproc\V1\SessionControllerClient;
 use Google\Rpc\Status;
 
 /**
@@ -49,14 +50,18 @@ function create_session_sample(
     // Create a client.
     $sessionControllerClient = new SessionControllerClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $session = (new Session())
         ->setName($sessionName);
+    $request = (new CreateSessionRequest())
+        ->setParent($formattedParent)
+        ->setSession($session)
+        ->setSessionId($sessionId);
 
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $sessionControllerClient->createSession($formattedParent, $session, $sessionId);
+        $response = $sessionControllerClient->createSession($request);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

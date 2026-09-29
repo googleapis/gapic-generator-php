@@ -1,5 +1,66 @@
 # Changelog
 
+## [1.25.0](https://github.com/googleapis/gapic-generator-php/compare/v1.24.0...v1.25.0) (2026-08-15)
+
+
+### Features
+
+* Resumable Uploads ([#852](https://github.com/googleapis/gapic-generator-php/issues/852)) ([65d7456](https://github.com/googleapis/gapic-generator-php/commit/65d74564ac3fdd1a0b965eab3e8b4386af56cf7d))
+
+
+### Bug Fixes
+
+* Gracefully handle missing proto/src directories in ProtobufNoCheckInHeaderProcessor ([#855](https://github.com/googleapis/gapic-generator-php/issues/855)) ([1361453](https://github.com/googleapis/gapic-generator-php/commit/13614537036f5372566282a75d455258ab29c45c))
+
+## [1.24.0](https://github.com/googleapis/gapic-generator-php/compare/v1.23.1...v1.24.0) (2026-07-31)
+
+
+### Miscellaneous Chores
+
+* Remove V1 surface ([#834](https://github.com/googleapis/gapic-generator-php/issues/834)) ([b7d6c86](https://github.com/googleapis/gapic-generator-php/commit/b7d6c861d3e61af00f13290d7b34f4c63c4c20eb))
+
+## [1.23.1](https://github.com/googleapis/gapic-generator-php/compare/v1.23.0...v1.23.1) (2026-07-30)
+
+
+### Bug Fixes
+
+* Avoid passing null as an array offset in resumeOperation ([#842](https://github.com/googleapis/gapic-generator-php/issues/842)) ([1022342](https://github.com/googleapis/gapic-generator-php/commit/1022342a43cb2c0de1797e878b4bbae440e86ade))
+* Parent resource lookups for resources more than two levels deep ([#847](https://github.com/googleapis/gapic-generator-php/issues/847)) ([8039c59](https://github.com/googleapis/gapic-generator-php/commit/8039c59fac10d5821e3dd48384c5c4e1781c8f96))
+
+## [1.23.0](https://github.com/googleapis/gapic-generator-php/compare/v1.22.0...v1.23.0) (2026-07-21)
+
+
+### Features
+
+* Add internal tag to generated $serviceScopes property ([#841](https://github.com/googleapis/gapic-generator-php/issues/841)) ([6b44606](https://github.com/googleapis/gapic-generator-php/commit/6b44606cf340f32a169c9f0f882b7365673701b0))
+
+
+### Bug Fixes
+
+* Handle extra whitespace in valid YAML ([#845](https://github.com/googleapis/gapic-generator-php/issues/845)) ([1abff8d](https://github.com/googleapis/gapic-generator-php/commit/1abff8dd1c87153c94973e9484730afe5f9f7d48))
+
+## [1.22.0](https://github.com/googleapis/gapic-generator-php/compare/v1.21.2...v1.22.0) (2026-07-17)
+
+
+### Features
+
+* Support method signatures with a dotted notation. ([#838](https://github.com/googleapis/gapic-generator-php/issues/838)) ([eeca5ca](https://github.com/googleapis/gapic-generator-php/commit/eeca5cabbb148c86adcdcd73e58a4d35d2facfba))
+
+## [1.21.2](https://github.com/googleapis/gapic-generator-php/compare/v1.21.1...v1.21.2) (2026-06-08)
+
+
+### Bug Fixes
+
+* Clean spaces from method_signatures ([#828](https://github.com/googleapis/gapic-generator-php/issues/828)) ([f679226](https://github.com/googleapis/gapic-generator-php/commit/f67922670dc1a4709693d7abcdda138de91f6d23))
+
+## [1.21.1](https://github.com/googleapis/gapic-generator-php/compare/v1.21.0...v1.21.1) (2026-06-08)
+
+
+### Bug Fixes
+
+* Mulitline phpdoc for mixins ([#815](https://github.com/googleapis/gapic-generator-php/issues/815)) ([4d1d27f](https://github.com/googleapis/gapic-generator-php/commit/4d1d27ff4115d2831c562debd360276994dbfac9))
+* Update PHP to 8.2, symplify/coding-standard to 13 ([#822](https://github.com/googleapis/gapic-generator-php/issues/822)) ([1171a6f](https://github.com/googleapis/gapic-generator-php/commit/1171a6fde0cc9d271dcb281c6486048026d798e0))
+
 ## [1.21.0](https://github.com/googleapis/gapic-generator-php/compare/v1.20.4...v1.21.0) (2026-03-12)
 
 

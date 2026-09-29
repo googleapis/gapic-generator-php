@@ -24,7 +24,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START jobs_v4beta1_generated_CompanyService_DeleteCompany_sync]
 use Google\ApiCore\ApiException;
-use Google\Cloud\Talent\V4beta1\CompanyServiceClient;
+use Google\Cloud\Talent\V4beta1\Client\CompanyServiceClient;
+use Google\Cloud\Talent\V4beta1\DeleteCompanyRequest;
 
 /**
  * Deletes specified company.
@@ -45,9 +46,13 @@ function delete_company_sample(string $formattedName): void
     // Create a client.
     $companyServiceClient = new CompanyServiceClient();
 
+    // Prepare the request message.
+    $request = (new DeleteCompanyRequest())
+        ->setName($formattedName);
+
     // Call the API and handle any network failures.
     try {
-        $companyServiceClient->deleteCompany($formattedName);
+        $companyServiceClient->deleteCompany($request);
         printf('Call completed successfully.' . PHP_EOL);
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

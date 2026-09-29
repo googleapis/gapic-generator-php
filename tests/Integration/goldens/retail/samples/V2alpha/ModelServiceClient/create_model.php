@@ -25,8 +25,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // [START retail_v2alpha_generated_ModelService_CreateModel_sync]
 use Google\ApiCore\ApiException;
 use Google\ApiCore\OperationResponse;
+use Google\Cloud\Retail\V2alpha\Client\ModelServiceClient;
+use Google\Cloud\Retail\V2alpha\CreateModelRequest;
 use Google\Cloud\Retail\V2alpha\Model;
-use Google\Cloud\Retail\V2alpha\ModelServiceClient;
 use Google\Rpc\Status;
 
 /**
@@ -71,16 +72,19 @@ function create_model_sample(
     // Create a client.
     $modelServiceClient = new ModelServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $model = (new Model())
         ->setName($modelName)
         ->setDisplayName($modelDisplayName)
         ->setType($modelType);
+    $request = (new CreateModelRequest())
+        ->setParent($formattedParent)
+        ->setModel($model);
 
     // Call the API and handle any network failures.
     try {
         /** @var OperationResponse $response */
-        $response = $modelServiceClient->createModel($formattedParent, $model);
+        $response = $modelServiceClient->createModel($request);
         $response->pollUntilComplete();
 
         if ($response->operationSucceeded()) {

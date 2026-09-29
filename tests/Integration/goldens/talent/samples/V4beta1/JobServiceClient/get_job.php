@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START jobs_v4beta1_generated_JobService_GetJob_sync]
 use Google\ApiCore\ApiException;
+use Google\Cloud\Talent\V4beta1\Client\JobServiceClient;
+use Google\Cloud\Talent\V4beta1\GetJobRequest;
 use Google\Cloud\Talent\V4beta1\Job;
-use Google\Cloud\Talent\V4beta1\JobServiceClient;
 
 /**
  * Retrieves the specified job, whose status is OPEN or recently EXPIRED
@@ -46,10 +47,14 @@ function get_job_sample(string $formattedName): void
     // Create a client.
     $jobServiceClient = new JobServiceClient();
 
+    // Prepare the request message.
+    $request = (new GetJobRequest())
+        ->setName($formattedName);
+
     // Call the API and handle any network failures.
     try {
         /** @var Job $response */
-        $response = $jobServiceClient->getJob($formattedName);
+        $response = $jobServiceClient->getJob($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

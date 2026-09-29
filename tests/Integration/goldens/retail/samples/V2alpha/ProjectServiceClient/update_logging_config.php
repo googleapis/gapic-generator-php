@@ -24,8 +24,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START retail_v2alpha_generated_ProjectService_UpdateLoggingConfig_sync]
 use Google\ApiCore\ApiException;
+use Google\Cloud\Retail\V2alpha\Client\ProjectServiceClient;
 use Google\Cloud\Retail\V2alpha\LoggingConfig;
-use Google\Cloud\Retail\V2alpha\ProjectServiceClient;
+use Google\Cloud\Retail\V2alpha\UpdateLoggingConfigRequest;
 
 /**
  * Updates the [LoggingConfig][google.cloud.retail.v2alpha.LoggingConfig] of
@@ -39,14 +40,16 @@ function update_logging_config_sample(string $loggingConfigName): void
     // Create a client.
     $projectServiceClient = new ProjectServiceClient();
 
-    // Prepare any non-scalar elements to be passed along with the request.
+    // Prepare the request message.
     $loggingConfig = (new LoggingConfig())
         ->setName($loggingConfigName);
+    $request = (new UpdateLoggingConfigRequest())
+        ->setLoggingConfig($loggingConfig);
 
     // Call the API and handle any network failures.
     try {
         /** @var LoggingConfig $response */
-        $response = $projectServiceClient->updateLoggingConfig($loggingConfig);
+        $response = $projectServiceClient->updateLoggingConfig($request);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());
