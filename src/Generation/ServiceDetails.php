@@ -51,6 +51,9 @@ class ServiceDetails
     /** @var Type *Readonly* The type of the service client class. */
     public Type $gapicClientType;
 
+    /** @var Type *Readonly* The type of the service client interface. */
+    public Type $gapicClientInterfaceType;
+
     /** @var Type *Readonly* The type of the gRPC client. */
     public Type $grpcClientType;
 
@@ -162,6 +165,7 @@ class ServiceDetails
         $this->serviceYamlConfig = $serviceYamlConfig;
         $this->apiVersion = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_API_VERSION);
         $this->gapicClientType = Type::fromName("{$namespace}\\Client\\{$desc->getName()}Client");
+        $this->gapicClientInterfaceType = Type::fromName("{$namespace}\\Client\\{$desc->getName()}ClientInterface");
         $this->grpcClientType = Type::fromName("{$namespace}\\{$desc->getName()}GrpcClient");
         $nsVersionAndSuffix = Helpers::nsVersionAndSuffixPath($namespace);
         $unitTestNs = $nsVersionAndSuffix === '' ?

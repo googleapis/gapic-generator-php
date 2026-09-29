@@ -43,11 +43,15 @@ final class PhpClass extends AST
         public bool $abstract
     ) {
         $this->traits = Set::new();
+        $this->interfaces = Set::new();
         $this->members = Vector::new();
     }
 
     /** @var Set *Readonly* Set of ResolvedType; the traits used by this class. */
     public Set $traits;
+
+    /** @var Set *Readonly* Set of ResolvedType; the interfaces implemented by this class. */
+    public Set $interfaces;
 
     /** @var Vector *Readonly* Vector of PhpClassMember; all members of this class. */
     public Vector $members;
@@ -69,6 +73,24 @@ final class PhpClass extends AST
             throw new Exception('Only classes (traits) may be used as a trait.');
         }
         return $this->clone(fn ($clone) => $clone->traits = $clone->traits->add($trait));
+    }
+    /**
+     * Create a class with an additional interface.
+     *
+     * @param ?ResolvedType $interface Interface to add. Must be a type which is an interface.
+     *
+     * @return PhpClass
+     */
+    public function withInterface(?ResolvedType $interface): PhpClass
+    {
+        // No-op, just return the same class.
+        if (is_null($interface)) {
+            return $this;
+        }
+        if (!$interface->type->isClass()) {
+            throw new Exception('Only classes (interfaces) may be used as an interface.');
+        }
+        return $this->clone(fn ($clone) => $clone->interfaces = $clone->interfaces->add($interface));
     }
 
     /**
@@ -120,8 +142,10 @@ final class PhpClass extends AST
 
         return
             $this->phpDocToCode() .
-            "{$class} {$this->type->name}{$extends}\n" .
-            "{\n" .
+            "{$class} {$this->type->name}{$extends}" .
+            (count($this->interfaces) >= 1 ? ' implements ' : '') .
+            $this->interfaces->toVector()->map(fn ($x) => "{$x->toCode()}")->join(', ') .
+            "\n{\n" .
             $this->traits->toVector()->map(fn ($x) => "use {$x->toCode()};\n")->join() .
             (count($this->traits) >= 1 ? "\n" : '') .
             $this->members->map(fn ($x) => $x->toCode() . "\n")->join() .

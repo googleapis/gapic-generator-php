@@ -77,7 +77,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<PagedListResponse> searchJobsForAlertAsync(SearchJobsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<Job> updateJobAsync(UpdateJobRequest $request, array $optionalArgs = [])
  */
-final class JobServiceClient
+final class JobServiceClient implements JobServiceClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

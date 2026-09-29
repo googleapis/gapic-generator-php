@@ -64,7 +64,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<PagedListResponse> listCompaniesAsync(ListCompaniesRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<Company> updateCompanyAsync(UpdateCompanyRequest $request, array $optionalArgs = [])
  */
-final class CompanyServiceClient
+final class CompanyServiceClient implements CompanyServiceClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

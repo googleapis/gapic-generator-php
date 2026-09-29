@@ -48,7 +48,7 @@ use Testing\Deprecated\FibonacciRequest;
  * @method PromiseInterface<void> fastFibonacciAsync(FibonacciRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<void> slowFibonacciAsync(FibonacciRequest $request, array $optionalArgs = [])
  */
-final class DeprecatedServiceClient
+final class DeprecatedServiceClient implements DeprecatedServiceClientInterface
 {
     use GapicClientTrait;
 

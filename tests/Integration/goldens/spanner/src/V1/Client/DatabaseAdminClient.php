@@ -128,7 +128,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<OperationResponse> updateDatabaseAsync(UpdateDatabaseRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<OperationResponse> updateDatabaseDdlAsync(UpdateDatabaseDdlRequest $request, array $optionalArgs = [])
  */
-final class DatabaseAdminClient
+final class DatabaseAdminClient implements DatabaseAdminClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

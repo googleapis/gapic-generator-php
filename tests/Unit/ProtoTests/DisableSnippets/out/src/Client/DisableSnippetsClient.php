@@ -45,7 +45,7 @@ use Testing\DisableSnippets\Response;
  *
  * @method PromiseInterface<Response> method1Async(Request $request, array $optionalArgs = [])
  */
-final class DisableSnippetsClient
+final class DisableSnippetsClient implements DisableSnippetsClientInterface
 {
     use GapicClientTrait;
 

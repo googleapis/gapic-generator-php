@@ -58,7 +58,7 @@ use Psr\Log\LoggerInterface;
  *
  * @method PromiseInterface<PagedListResponse> searchAsync(SearchRequest $request, array $optionalArgs = [])
  */
-final class SearchServiceClient
+final class SearchServiceClient implements SearchServiceClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

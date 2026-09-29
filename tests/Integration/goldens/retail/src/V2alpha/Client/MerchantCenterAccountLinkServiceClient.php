@@ -63,7 +63,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<void> deleteMerchantCenterAccountLinkAsync(DeleteMerchantCenterAccountLinkRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<ListMerchantCenterAccountLinksResponse> listMerchantCenterAccountLinksAsync(ListMerchantCenterAccountLinksRequest $request, array $optionalArgs = [])
  */
-final class MerchantCenterAccountLinkServiceClient
+final class MerchantCenterAccountLinkServiceClient implements MerchantCenterAccountLinkServiceClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

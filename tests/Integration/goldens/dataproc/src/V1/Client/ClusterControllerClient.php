@@ -80,7 +80,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<Policy> setIamPolicyAsync(SetIamPolicyRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<TestIamPermissionsResponse> testIamPermissionsAsync(TestIamPermissionsRequest $request, array $optionalArgs = [])
  */
-final class ClusterControllerClient
+final class ClusterControllerClient implements ClusterControllerClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

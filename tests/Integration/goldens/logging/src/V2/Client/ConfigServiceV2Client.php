@@ -122,7 +122,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<LogSink> updateSinkAsync(UpdateSinkRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<LogView> updateViewAsync(UpdateViewRequest $request, array $optionalArgs = [])
  */
-final class ConfigServiceV2Client
+final class ConfigServiceV2Client implements ConfigServiceV2ClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

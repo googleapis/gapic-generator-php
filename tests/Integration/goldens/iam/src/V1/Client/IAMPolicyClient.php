@@ -74,7 +74,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<Policy> setIamPolicyAsync(SetIamPolicyRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<TestIamPermissionsResponse> testIamPermissionsAsync(TestIamPermissionsRequest $request, array $optionalArgs = [])
  */
-final class IAMPolicyClient
+final class IAMPolicyClient implements IAMPolicyClientInterface
 {
     use GapicClientTrait;
 
