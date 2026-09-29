@@ -20,6 +20,7 @@
  * This file was automatically generated - do not edit!
  */
 
+declare(strict_types=1);
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START localhost:7469_generated_DeprecatedService_FastFibonacci_sync]

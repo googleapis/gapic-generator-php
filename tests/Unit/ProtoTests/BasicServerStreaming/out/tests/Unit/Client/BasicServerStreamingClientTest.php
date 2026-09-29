@@ -20,6 +20,8 @@
  * This file was automatically generated - do not edit!
  */
 
+declare(strict_types=1);
+
 namespace Testing\BasicServerStreaming\Tests\Unit\Client;
 
 use Google\ApiCore\ApiException;

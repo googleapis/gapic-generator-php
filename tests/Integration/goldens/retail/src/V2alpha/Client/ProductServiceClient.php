@@ -24,6 +24,8 @@
  * @experimental
  */
 
+declare(strict_types=1);
+
 namespace Google\Cloud\Retail\V2alpha\Client;
 
 use Google\ApiCore\ApiException;

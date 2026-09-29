@@ -22,6 +22,8 @@
  * Updates to the above are reflected here through a refresh process.
  */
 
+declare(strict_types=1);
+
 namespace Testing\Basicgrpconly\Client;
 
 use Google\ApiCore\GapicClientTrait;

@@ -20,6 +20,8 @@
  * This file was automatically generated - do not edit!
  */
 
+declare(strict_types=1);
+
 namespace Testing\BasicClientStreaming\Tests\Unit\Client;
 
 use Google\ApiCore\InsecureCredentialsWrapper;

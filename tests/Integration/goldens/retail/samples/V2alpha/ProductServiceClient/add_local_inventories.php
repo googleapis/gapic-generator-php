@@ -20,6 +20,7 @@
  * This file was automatically generated - do not edit!
  */
 
+declare(strict_types=1);
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START retail_v2alpha_generated_ProductService_AddLocalInventories_sync]
