@@ -21,12 +21,16 @@ namespace Google\Generator\Generation;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
+use Google\ApiCore\HeaderCredentialsInterface;
+use Google\ApiCore\IamProviderInterface;
+use Google\ApiCore\LongRunningOperationProviderInterface;
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\Options\ClientOptions;
 use Google\ApiCore\PathTemplate;
 use Google\ApiCore\RequestParamsHeaderDescriptor;
 use Google\ApiCore\ResourceHelperTrait;
 use Google\ApiCore\RetrySettings;
+use Google\ApiCore\ServiceInterface;
 use Google\ApiCore\Transport\GrpcTransport;
 use Google\ApiCore\Transport\RestTransport;
 use Google\ApiCore\Transport\TransportInterface;
@@ -106,9 +110,7 @@ class GapicClientGenerator
 
     private function generateClass(): PhpClass
     {
-        return AST::class(
-            $this->serviceDetails->gapicClientType,
-            final: true)
+        return AST::class($this->serviceDetails->gapicClientType, final: true)
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::preFormattedText(
                     $this->serviceDetails->docLines->skip(1)
@@ -139,6 +141,17 @@ class GapicClientGenerator
                 !$this->serviceDetails->isDeprecated ? null : PhpDoc::deprecated(ServiceDetails::DEPRECATED_MSG),
                 $this->serviceDetails->streamingOnly ? null : $this->magicAsyncDocs(),
             ))
+            ->withInterface($this->ctx->type(Type::fromName(ServiceInterface::class)))
+            ->withInterface(
+                $this->serviceDetails->hasLro
+                    ? $this->ctx->type(Type::fromName(LongRunningOperationProviderInterface::class))
+                    : null
+            )
+            ->withInterface(
+                $this->serviceDetails->hasIamMethods()
+                    ? $this->ctx->type(Type::fromName(IamProviderInterface::class))
+                    : null
+            )
             ->withTrait($this->ctx->type(Type::fromName(GapicClientTrait::class)))
             ->withTrait(
                 $this->serviceDetails->hasResources ? $this->ctx->type(Type::fromName(ResourceHelperTrait::class)): null
@@ -264,9 +277,9 @@ class GapicClientGenerator
 
         // params
         $methodVar = AST::var('method');
-        $methodParam = AST::param(null, $methodVar);
+        $methodParam = AST::param(ResolvedType::string(), $methodVar);
         $argsVar = AST::var('args');
-        $argsParam = AST::param(null, $argsVar);
+        $argsParam = AST::param(ResolvedType::array(), $argsVar);
         $triggerError = AST::call(AST::TRIGGER_ERROR)(AST::concat('Call to undefined method ', AST::__CLASS__, AST::interpolatedString('::$method()')), AST::E_USER_ERROR);
 
         return AST::method('__call')
@@ -309,6 +322,7 @@ class GapicClientGenerator
         // getOperationsClient returns the operation client instance.
         $getOperationsClient = AST::method('getOperationsClient')
             ->withAccess(Access::PUBLIC)
+            ->withReturnType($this->ctx->type($ctype))
             ->withBody(AST::block(
                 AST::return(AST::access(AST::THIS, $this->operationsClient()))
             ))
@@ -330,6 +344,7 @@ class GapicClientGenerator
                 : AST::array([]);
             $getDefaultOperationDescriptor = AST::method('getDefaultOperationDescriptor')
                 ->withAccess(Access::PRIVATE)
+                ->withReturnType(ResolvedType::array())
                 ->withBody(AST::block(
                     AST::return($defaultOperationDescriptor)
                 ))
@@ -347,7 +362,11 @@ class GapicClientGenerator
         $operation = AST::var('operation');
         $resumeOperation = AST::method('resumeOperation')
             ->withAccess(Access::PUBLIC)
-            ->withParams(AST::param(null, $operationName), AST::param(null, $methodName, AST::NULL))
+            ->withParams(
+                AST::param(ResolvedType::string(), $operationName),
+                AST::param(ResolvedType::string(true), $methodName, AST::NULL)
+            )
+            ->withReturnType($this->ctx->type(Type::fromName(OperationResponse::class)))
             ->withBody(AST::block(
                 AST::assign($options, AST::ternary(
                     AST::binaryOp(
@@ -387,39 +406,38 @@ class GapicClientGenerator
             ));
         $methods = $methods->append($resumeOperation);
 
-        // write createOperationsClient method for new surface clients
-        // @TODO: Remove this once GAX V2 is released
-        $operationsClientType = $this->serviceDetails->hasCustomOp
-            ? $this->ctx->type($this->serviceDetails->customOperationServiceClientType)
-            : $this->ctx->type(Type::fromName(OperationsClient::class));
-        $createOperationsClient = AST::method('createOperationsClient')
-            ->withAccess(Access::PRIVATE)
-            ->withParams(AST::param(ResolvedType::array(), $options))
-            ->withBody(AST::block(
-                '// Unset client-specific configuration options',
-                AST::call(AST::method('unset'))(
-                    AST::index($options, 'serviceName'),
-                    AST::index($options, 'clientConfig'),
-                    AST::index($options, 'descriptorsConfigPath'),
-                ),
-                PHP_EOL,
-                AST::if(
-                    AST::call(AST::method('isset'))(AST::index($options, 'operationsClient'))
-                )->then(AST::return(AST::index($options, 'operationsClient'))),
-                PHP_EOL,
-                AST::return(AST::new($operationsClientType)($options))
-            ))
-            ->withPhpDoc(PhpDoc::block(
-                PhpDoc::text(
-                    'Create the default operation client for the service.',
-                ),
-                PhpDoc::param(
-                    AST::param(ResolvedType::array(), $options),
-                    PhpDoc::text('ClientOptions for the client.')
-                ),
-                PhpDoc::return($operationsClientType)
-            ));
-        $methods = $methods->append($createOperationsClient);
+        if ($this->serviceDetails->hasCustomOp) {
+            $operationsClientType = $this->ctx->type($this->serviceDetails->customOperationServiceClientType);
+            $createOperationsClient = AST::method('createOperationsClient')
+                ->withAccess(Access::PRIVATE)
+                ->withParams(AST::param(ResolvedType::array(), $options))
+                ->withReturnType($operationsClientType)
+                ->withBody(AST::block(
+                    '// Unset client-specific configuration options',
+                    AST::call(AST::method('unset'))(
+                        AST::index($options, 'serviceName'),
+                        AST::index($options, 'clientConfig'),
+                        AST::index($options, 'descriptorsConfigPath'),
+                    ),
+                    PHP_EOL,
+                    AST::if(
+                        AST::call(AST::method('isset'))(AST::index($options, 'operationsClient'))
+                    )->then(AST::return(AST::index($options, 'operationsClient'))),
+                    PHP_EOL,
+                    AST::return(AST::new($operationsClientType)($options))
+                ))
+                ->withPhpDoc(PhpDoc::block(
+                    PhpDoc::text(
+                        'Create the default operation client for the service.',
+                    ),
+                    PhpDoc::param(
+                        AST::param(ResolvedType::array(), $options),
+                        PhpDoc::text('ClientOptions for the client.')
+                    ),
+                    PhpDoc::return($operationsClientType)
+                ));
+            $methods = $methods->append($createOperationsClient);
+        }
 
         return $methods;
     }
@@ -498,13 +516,6 @@ class GapicClientGenerator
             'descriptorsConfigPath' => AST::concat(AST::__DIR__, "/../resources/$descriptorConfigFilename"),
         ];
 
-        // TODO: Consolidate setting all the known array values together.
-        // We do this here to maintain the existing sensible ordering.
-        if ($this->serviceDetails->transportType !== Transport::REST) {
-            $clientDefaultValues['gcpApiConfigPath'] =
-                AST::concat(AST::__DIR__, "/../resources/{$this->serviceDetails->grpcConfigFilename}");
-        }
-
         $credentialsConfig = [
             'defaultScopes' => AST::access(AST::SELF, $this->serviceScopes()),
         ];
@@ -524,6 +535,7 @@ class GapicClientGenerator
 
         return AST::method('getClientDefaults')
             ->withAccess(Access::PRIVATE, Access::STATIC)
+            ->withReturnType(ResolvedType::array())
             ->withBody(AST::block(
                 AST::return(AST::array($clientDefaultValues))
             ));
@@ -537,6 +549,7 @@ class GapicClientGenerator
         return AST::method('defaultTransport')
             ->withPhpDocText('Implements GapicClientTrait::defaultTransport.')
             ->withAccess(Access::PRIVATE, Access::STATIC)
+            ->withReturnType(ResolvedType::string())
             ->withBody(AST::block(
                 AST::return(AST::literal("'rest'"))
             ));
@@ -548,6 +561,7 @@ class GapicClientGenerator
             return AST::method('supportedTransports')
                 ->withPhpDocText('Implements ClientOptionsTrait::supportedTransports.')
                 ->withAccess(Access::PRIVATE, Access::STATIC)
+                ->withReturnType(ResolvedType::array())
                 ->withBody(AST::block(
                     AST::return(AST::array(['rest']))
                 ));
@@ -557,6 +571,7 @@ class GapicClientGenerator
             return AST::method('supportedTransports')
                 ->withPhpDocText('Implements ClientOptionsTrait::supportedTransports.')
                 ->withAccess(Access::PRIVATE, Access::STATIC)
+                ->withReturnType(ResolvedType::array())
                 ->withBody(AST::block(
                     AST::return(AST::array(['grpc', 'grpc-fallback']))
                 ));
@@ -678,14 +693,14 @@ class GapicClientGenerator
                     PhpDoc::type(
                         Vector::new([
                             $ctx->type(Type::fromName(FetchAuthTokenInterface::class)),
-                            $ctx->type(Type::fromName(CredentialsWrapper::class))
+                            $ctx->type(Type::fromName(HeaderCredentialsInterface::class))
                         ]),
                         'credentials',
                         PhpDoc::text(
                             'This option should only be used with a pre-constructed',
                             $ctx->type(Type::fromName(FetchAuthTokenInterface::class)),
                             'or',
-                            $ctx->type(Type::fromName(CredentialsWrapper::class)),
+                            $ctx->type(Type::fromName(HeaderCredentialsInterface::class)),
                             'object. Note that when one of these objects are provided, any settings in $credentialsConfig',
                             'will be ignored.',
                             PhpDoc::newLine(),

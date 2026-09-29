@@ -23,7 +23,7 @@
 namespace Google\Cloud\Asset\Tests\Unit\V1\Client;
 
 use Google\ApiCore\ApiException;
-use Google\ApiCore\CredentialsWrapper;
+use Google\ApiCore\InsecureCredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\Cloud\Asset\V1\AnalyzeIamPolicyLongrunningRequest;
@@ -101,10 +101,10 @@ class AssetServiceClientTest extends GeneratedTest
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /** @return InsecureCredentialsWrapper */
     private function createCredentials()
     {
-        return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
+        return new InsecureCredentialsWrapper();
     }
 
     /** @return AssetServiceClient */

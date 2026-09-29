@@ -25,13 +25,16 @@
 namespace Google\Cloud\Dataproc\V1\Client;
 
 use Google\ApiCore\ApiException;
-use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
+use Google\ApiCore\HeaderCredentialsInterface;
+use Google\ApiCore\IamProviderInterface;
+use Google\ApiCore\LongRunningOperationProviderInterface;
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\Options\ClientOptions;
 use Google\ApiCore\PagedListResponse;
 use Google\ApiCore\ResourceHelperTrait;
 use Google\ApiCore\RetrySettings;
+use Google\ApiCore\ServiceInterface;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
@@ -69,7 +72,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<Policy> setIamPolicyAsync(SetIamPolicyRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<TestIamPermissionsResponse> testIamPermissionsAsync(TestIamPermissionsRequest $request, array $optionalArgs = [])
  */
-final class BatchControllerClient
+final class BatchControllerClient implements ServiceInterface, LongRunningOperationProviderInterface, IamProviderInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;
@@ -104,14 +107,13 @@ final class BatchControllerClient
 
     private $operationsClient;
 
-    private static function getClientDefaults()
+    private static function getClientDefaults(): array
     {
         return [
             'serviceName' => self::SERVICE_NAME,
             'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
             'clientConfig' => __DIR__ . '/../resources/batch_controller_client_config.json',
             'descriptorsConfigPath' => __DIR__ . '/../resources/batch_controller_descriptor_config.php',
-            'gcpApiConfigPath' => __DIR__ . '/../resources/batch_controller_grpc_config.json',
             'credentialsConfig' => [
                 'defaultScopes' => self::$serviceScopes,
             ],
@@ -128,7 +130,7 @@ final class BatchControllerClient
      *
      * @return OperationsClient
      */
-    public function getOperationsClient()
+    public function getOperationsClient(): OperationsClient
     {
         return $this->operationsClient;
     }
@@ -144,31 +146,12 @@ final class BatchControllerClient
      *
      * @return OperationResponse
      */
-    public function resumeOperation($operationName, $methodName = null)
+    public function resumeOperation(string $operationName, ?string $methodName = null): OperationResponse
     {
         $options = $methodName && isset($this->descriptors[$methodName]['longRunning']) ? $this->descriptors[$methodName]['longRunning'] : [];
         $operation = new OperationResponse($operationName, $this->getOperationsClient(), $options);
         $operation->reload();
         return $operation;
-    }
-
-    /**
-     * Create the default operation client for the service.
-     *
-     * @param array $options ClientOptions for the client.
-     *
-     * @return OperationsClient
-     */
-    private function createOperationsClient(array $options)
-    {
-        // Unset client-specific configuration options
-        unset($options['serviceName'], $options['clientConfig'], $options['descriptorsConfigPath']);
-
-        if (isset($options['operationsClient'])) {
-            return $options['operationsClient'];
-        }
-
-        return new OperationsClient($options);
     }
 
     /**
@@ -261,11 +244,11 @@ final class BatchControllerClient
      *     @type string $apiEndpoint
      *           The address of the API remote host. May optionally include the port, formatted
      *           as "<uri>:<port>". Default 'dataproc.googleapis.com:443'.
-     *     @type FetchAuthTokenInterface|CredentialsWrapper $credentials
+     *     @type FetchAuthTokenInterface|HeaderCredentialsInterface $credentials
      *           This option should only be used with a pre-constructed
-     *           {@see FetchAuthTokenInterface} or {@see CredentialsWrapper} object. Note that
-     *           when one of these objects are provided, any settings in $credentialsConfig will
-     *           be ignored.
+     *           {@see FetchAuthTokenInterface} or {@see HeaderCredentialsInterface} object. Note
+     *           that when one of these objects are provided, any settings in $credentialsConfig
+     *           will be ignored.
      *           **Important**: If you are providing a path to a credentials file, or a decoded
      *           credentials file as a PHP array, this usage is now DEPRECATED. Providing an
      *           unvalidated credential configuration to Google APIs can compromise the security
@@ -328,7 +311,7 @@ final class BatchControllerClient
     }
 
     /** Handles execution of the async variants for each documented method. */
-    public function __call($method, $args)
+    public function __call(string $method, array $args)
     {
         if (substr($method, -5) !== 'Async') {
             trigger_error('Call to undefined method ' . __CLASS__ . "::$method()", E_USER_ERROR);

@@ -25,13 +25,15 @@
 namespace Testing\BasicDiregapic\Client;
 
 use Google\ApiCore\ApiException;
-use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
+use Google\ApiCore\HeaderCredentialsInterface;
+use Google\ApiCore\LongRunningOperationProviderInterface;
 use Google\ApiCore\OperationResponse;
 use Google\ApiCore\Options\ClientOptions;
 use Google\ApiCore\PagedListResponse;
 use Google\ApiCore\ResourceHelperTrait;
 use Google\ApiCore\RetrySettings;
+use Google\ApiCore\ServiceInterface;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
@@ -132,7 +134,7 @@ use Testing\BasicDiregapic\UpdateBookRequest;
  * @method PromiseInterface<BookResponse> updateBookAsync(UpdateBookRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<void> updateBookIndexAsync(UpdateBookIndexRequest $request, array $optionalArgs = [])
  */
-final class LibraryClient
+final class LibraryClient implements ServiceInterface, LongRunningOperationProviderInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;
@@ -168,7 +170,7 @@ final class LibraryClient
 
     private $operationsClient;
 
-    private static function getClientDefaults()
+    private static function getClientDefaults(): array
     {
         return [
             'serviceName' => self::SERVICE_NAME,
@@ -188,13 +190,13 @@ final class LibraryClient
     }
 
     /** Implements GapicClientTrait::defaultTransport. */
-    private static function defaultTransport()
+    private static function defaultTransport(): string
     {
         return 'rest';
     }
 
     /** Implements ClientOptionsTrait::supportedTransports. */
-    private static function supportedTransports()
+    private static function supportedTransports(): array
     {
         return [
             'rest',
@@ -206,7 +208,7 @@ final class LibraryClient
      *
      * @return OperationsClient
      */
-    public function getOperationsClient()
+    public function getOperationsClient(): OperationsClient
     {
         return $this->operationsClient;
     }
@@ -222,31 +224,12 @@ final class LibraryClient
      *
      * @return OperationResponse
      */
-    public function resumeOperation($operationName, $methodName = null)
+    public function resumeOperation(string $operationName, ?string $methodName = null): OperationResponse
     {
         $options = $methodName && isset($this->descriptors[$methodName]['longRunning']) ? $this->descriptors[$methodName]['longRunning'] : [];
         $operation = new OperationResponse($operationName, $this->getOperationsClient(), $options);
         $operation->reload();
         return $operation;
-    }
-
-    /**
-     * Create the default operation client for the service.
-     *
-     * @param array $options ClientOptions for the client.
-     *
-     * @return OperationsClient
-     */
-    private function createOperationsClient(array $options)
-    {
-        // Unset client-specific configuration options
-        unset($options['serviceName'], $options['clientConfig'], $options['descriptorsConfigPath']);
-
-        if (isset($options['operationsClient'])) {
-            return $options['operationsClient'];
-        }
-
-        return new OperationsClient($options);
     }
 
     /**
@@ -593,11 +576,11 @@ final class LibraryClient
      *     @type string $apiEndpoint
      *           The address of the API remote host. May optionally include the port, formatted
      *           as "<uri>:<port>". Default 'library-example.googleapis.com:1234:443'.
-     *     @type FetchAuthTokenInterface|CredentialsWrapper $credentials
+     *     @type FetchAuthTokenInterface|HeaderCredentialsInterface $credentials
      *           This option should only be used with a pre-constructed
-     *           {@see FetchAuthTokenInterface} or {@see CredentialsWrapper} object. Note that
-     *           when one of these objects are provided, any settings in $credentialsConfig will
-     *           be ignored.
+     *           {@see FetchAuthTokenInterface} or {@see HeaderCredentialsInterface} object. Note
+     *           that when one of these objects are provided, any settings in $credentialsConfig
+     *           will be ignored.
      *           **Important**: If you are providing a path to a credentials file, or a decoded
      *           credentials file as a PHP array, this usage is now DEPRECATED. Providing an
      *           unvalidated credential configuration to Google APIs can compromise the security
@@ -657,7 +640,7 @@ final class LibraryClient
     }
 
     /** Handles execution of the async variants for each documented method. */
-    public function __call($method, $args)
+    public function __call(string $method, array $args)
     {
         if (substr($method, -5) !== 'Async') {
             trigger_error('Call to undefined method ' . __CLASS__ . "::$method()", E_USER_ERROR);

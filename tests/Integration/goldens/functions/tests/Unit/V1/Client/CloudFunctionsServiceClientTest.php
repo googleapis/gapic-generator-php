@@ -23,7 +23,7 @@
 namespace Google\Cloud\Functions\Tests\Unit\V1\Client;
 
 use Google\ApiCore\ApiException;
-use Google\ApiCore\CredentialsWrapper;
+use Google\ApiCore\InsecureCredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\Cloud\Functions\V1\CallFunctionRequest;
@@ -66,10 +66,10 @@ class CloudFunctionsServiceClientTest extends GeneratedTest
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /** @return InsecureCredentialsWrapper */
     private function createCredentials()
     {
-        return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
+        return new InsecureCredentialsWrapper();
     }
 
     /** @return CloudFunctionsServiceClient */

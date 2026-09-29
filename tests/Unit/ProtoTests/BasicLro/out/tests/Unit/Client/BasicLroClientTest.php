@@ -23,7 +23,7 @@
 namespace Testing\BasicLro\Tests\Unit\Client;
 
 use Google\ApiCore\ApiException;
-use Google\ApiCore\CredentialsWrapper;
+use Google\ApiCore\InsecureCredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\LongRunning\Client\OperationsClient;
@@ -49,10 +49,10 @@ class BasicLroClientTest extends GeneratedTest
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /** @return InsecureCredentialsWrapper */
     private function createCredentials()
     {
-        return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
+        return new InsecureCredentialsWrapper();
     }
 
     /** @return BasicLroClient */

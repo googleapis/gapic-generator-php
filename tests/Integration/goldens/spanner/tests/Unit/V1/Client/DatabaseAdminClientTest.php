@@ -23,7 +23,7 @@
 namespace Google\Cloud\Spanner\Admin\Database\Tests\Unit\V1\Client;
 
 use Google\ApiCore\ApiException;
-use Google\ApiCore\CredentialsWrapper;
+use Google\ApiCore\InsecureCredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\Cloud\Iam\V1\GetIamPolicyRequest;
@@ -92,10 +92,10 @@ class DatabaseAdminClientTest extends GeneratedTest
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /** @return InsecureCredentialsWrapper */
     private function createCredentials()
     {
-        return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
+        return new InsecureCredentialsWrapper();
     }
 
     /** @return DatabaseAdminClient */
