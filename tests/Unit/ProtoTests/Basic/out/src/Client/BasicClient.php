@@ -244,7 +244,7 @@ final class BasicClient implements ServiceInterface
     }
 
     /** Configure the gapic configuration to use a service emulator. */
-    private function setDefaultEmulatorConfig(array $options): array
+    private function setDefaultEmulatorConfig(array|ClientOptions $options): array|ClientOptions
     {
         $emulatorHost = getenv('BASIC_EMULATOR_HOST');
         if (empty($emulatorHost)) {

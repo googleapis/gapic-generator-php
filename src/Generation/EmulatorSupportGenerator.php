@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Google\ApiCore\Options\ClientOptions;
 use Google\Generator\Ast\Access;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpDoc;
@@ -54,6 +55,10 @@ class EmulatorSupportGenerator
         $schemeVar = AST::var('scheme');
         $searchVar = AST::var('search');
         $optionsVar = AST::var('options');
+        $optionsType = ResolvedType::union(
+            Type::array(),
+            Type::fromName(ClientOptions::class)
+        );
         $transportConfigIndexVar = AST::index(AST::index(AST::index(AST::index(
             $optionsVar,
             'transportConfig'
@@ -65,7 +70,7 @@ class EmulatorSupportGenerator
 
         return AST::method(self::DEFAULT_EMULATOR_CONFIG_FN)
             ->withAccess(Access::PRIVATE)
-            ->withParams(AST::param(ResolvedType::array(), $optionsVar))
+            ->withParams(AST::param($optionsType, $optionsVar))
             ->withBody(AST::block(
                 AST::assign($emulatorHostVar, AST::call(AST::GET_ENV)(self::$emulatorSupportClients[$fullClassName])),
                 AST::if(AST::call(AST::EMPTY)($emulatorHostVar))->then(AST::return($optionsVar)),
@@ -93,7 +98,7 @@ class EmulatorSupportGenerator
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::text('Configure the gapic configuration to use a service emulator.')
             ))
-            ->withReturnType($ctx->type(Type::array()));
+            ->withReturnType($optionsType);
     }
 
     public static function generateEmulatorOptions(ServiceDetails $serviceDetails, AST $options)

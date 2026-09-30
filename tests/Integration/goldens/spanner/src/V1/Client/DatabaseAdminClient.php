@@ -1312,7 +1312,7 @@ final class DatabaseAdminClient implements ServiceInterface, LongRunningOperatio
     }
 
     /** Configure the gapic configuration to use a service emulator. */
-    private function setDefaultEmulatorConfig(array $options): array
+    private function setDefaultEmulatorConfig(array|ClientOptions $options): array|ClientOptions
     {
         $emulatorHost = getenv('SPANNER_EMULATOR_HOST');
         if (empty($emulatorHost)) {
