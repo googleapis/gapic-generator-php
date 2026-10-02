@@ -20,11 +20,9 @@ namespace Google\Generator\Utils;
 
 use Google\Generator\Collections\Vector;
 use PhpCsFixer\Fixer;
+use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\WhitespacesFixerConfig;
-use Symplify\CodingStandard\Fixer as SymplifyFixer;
-use Symplify\CodingStandard\TokenAnalyzer;
-use Symplify\CodingStandard\TokenRunner;
 
 class Formatter
 {
@@ -161,53 +159,209 @@ class Formatter
         return $pre->concat($usings)->concat($post)->join("\n");
     }
 
-    // TODO: Investigate if there are more succinct ways to build out this fixer
-    private static function buildLineLengthFixer(int $lineLength)
+    private static function buildLineLengthFixer(int $lineLength): object
     {
-        $blockFinder = new TokenRunner\Analyzer\FixerAnalyzer\BlockFinder();
-        $tokenSkipper = new TokenRunner\Analyzer\FixerAnalyzer\TokenSkipper(
-            $blockFinder
-        );
-        $callAnalyzer = new TokenRunner\Analyzer\FixerAnalyzer\CallAnalyzer();
-        $whitespacesFixerConfig = new WhitespacesFixerConfig();
+        return new class($lineLength) {
+            public function __construct(private int $lineLength)
+            {
+            }
 
-        $fixer = new SymplifyFixer\LineLength\LineLengthFixer(
-            new TokenRunner\Transformer\FixerTransformer\LineLengthTransformer(
-                new TokenRunner\Transformer\FixerTransformer\LineLengthResolver(),
-                new TokenRunner\Transformer\FixerTransformer\TokensInliner(
-                    $tokenSkipper
-                ),
-                new TokenRunner\Transformer\FixerTransformer\FirstLineLengthResolver(
-                    new TokenRunner\ValueObjectFactory\LineLengthAndPositionFactory()
-                ),
-                new TokenRunner\Transformer\FixerTransformer\TokensNewliner(
-                    new TokenRunner\Transformer\FixerTransformer\LineLengthCloserTransformer(
-                        $callAnalyzer,
-                        new TokenRunner\TokenFinder()
-                    ),
-                    $tokenSkipper,
-                    new TokenRunner\Transformer\FixerTransformer\LineLengthOpenerTransformer(
-                        $callAnalyzer
-                    ),
-                    $whitespacesFixerConfig,
-                    new TokenRunner\Whitespace\IndentResolver(
-                        new TokenRunner\Analyzer\FixerAnalyzer\IndentDetector(
-                            $whitespacesFixerConfig
-                        ),
-                        $whitespacesFixerConfig
-                    )
-                )
-            ),
-            $blockFinder,
-            new TokenAnalyzer\FunctionCallNameMatcher(),
-            new TokenAnalyzer\Naming\MethodNameResolver(),
-            new TokenAnalyzer\HeredocAnalyzer(),
-        );
+            public function fix(\SplFileInfo $fileInfo, Tokens $tokens): void
+            {
+                for ($position = count($tokens) - 1; $position >= 0; --$position) {
+                    $token = $tokens[$position];
 
-        $fixer->configure([
-            'line_length' => $lineLength
-        ]);
+                    if ($token->equals(')')) {
+                        $this->processMethodCall($tokens, $position);
+                        continue;
+                    }
 
-        return $fixer;
+                    if ($token->isGivenKind([T_FUNCTION, CT::T_USE_LAMBDA, T_NEW])) {
+                        $openIndex = $tokens->getNextTokenOfKind($position, ['(', ';']);
+                        if ($openIndex === null || $tokens[$openIndex]->equals(';')) {
+                            continue;
+                        }
+                        $nextMeaningful = $tokens->getNextMeaningfulToken($openIndex);
+                        if ($nextMeaningful !== null && $tokens[$nextMeaningful]->equals(')')) {
+                            continue;
+                        }
+                        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+                        $this->fixBlock($tokens, $openIndex, $closeIndex, false);
+                        continue;
+                    }
+
+                    if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
+                        $openIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $position);
+                        $this->fixBlock($tokens, $openIndex, $position, true);
+                    }
+                }
+            }
+
+            private function processMethodCall(Tokens $tokens, int $closeIndex): void
+            {
+                try {
+                    $openIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $closeIndex);
+                } catch (\Throwable) {
+                    return;
+                }
+                $nameToken = $tokens[$openIndex - 1] ?? null;
+                if ($nameToken === null || !$nameToken->isGivenKind(T_STRING)) {
+                    return;
+                }
+                $content = $nameToken->getContent();
+                if (!ctype_lower($content[0]) || $tokens[$openIndex + 1]->equals(')')) {
+                    return;
+                }
+                if ($tokens->findGivenKind(T_COMMENT, $openIndex, $closeIndex) !== []) {
+                    return;
+                }
+                $this->transformBlock($tokens, $openIndex, $closeIndex);
+            }
+
+            private function fixBlock(Tokens $tokens, int $openIndex, int $closeIndex, bool $isArray): void
+            {
+                if ($closeIndex - $openIndex <= 1) {
+                    return;
+                }
+                if (array_filter($tokens->findGivenKind([T_START_HEREDOC, T_DOUBLE_ARROW, T_COMMENT], $openIndex, $closeIndex)) !== []) {
+                    return;
+                }
+                $this->transformBlock($tokens, $openIndex, $closeIndex);
+            }
+
+            private function transformBlock(Tokens $tokens, int $openIndex, int $closeIndex): void
+            {
+                if ($this->resolveFirstLineLength($tokens, $openIndex) > $this->lineLength) {
+                    $this->breakItems($tokens, $openIndex, $closeIndex);
+                    return;
+                }
+                if ($this->resolveFullLineLength($tokens, $openIndex, $closeIndex) <= $this->lineLength) {
+                    $this->inlineItems($tokens, $openIndex, $closeIndex);
+                }
+            }
+
+            private function resolveFirstLineLength(Tokens $tokens, int $openIndex): int
+            {
+                $pos = $openIndex;
+                $len = 0;
+                while ($pos > 0 && !str_starts_with($tokens[$pos]->getContent(), "\n") && !$tokens[$pos]->isGivenKind(T_OPEN_TAG)) {
+                    $len += strlen($tokens[$pos]->getContent());
+                    --$pos;
+                }
+                $len += strlen($tokens[$pos]->getContent()) - substr_count($tokens[$pos]->getContent(), "\n");
+
+                for ($pos = $openIndex + 1; isset($tokens[$pos]); ++$pos) {
+                    if (str_starts_with($tokens[$pos]->getContent(), "\n") || $tokens[$pos]->isGivenKind(CT::T_USE_LAMBDA)) {
+                        break;
+                    }
+                    $parts = explode("\n", $tokens[$pos]->getContent(), 2);
+                    $len += strlen($parts[0]);
+                    if (count($parts) > 1) {
+                        break;
+                    }
+                }
+                return $len;
+            }
+
+            private function resolveFullLineLength(Tokens $tokens, int $openIndex, int $closeIndex): int
+            {
+                $len = 0;
+                $pos = $openIndex;
+                while ($pos > 0 && !str_starts_with($tokens[$pos]->getContent(), "\n") && !$tokens[$pos]->isGivenKind(T_OPEN_TAG)) {
+                    $len += strlen($tokens[$pos]->getContent());
+                    --$pos;
+                }
+                $len += strlen($tokens[$pos]->getContent());
+
+                for ($pos = $openIndex; $pos < $closeIndex && isset($tokens[$pos]); ++$pos) {
+                    $len += $tokens[$pos]->isGivenKind(T_WHITESPACE) ? 1 : strlen($tokens[$pos]->getContent());
+                }
+                for ($pos = $closeIndex; isset($tokens[$pos]) && !str_starts_with($tokens[$pos]->getContent(), "\n"); ++$pos) {
+                    $len += strlen($tokens[$pos]->getContent());
+                }
+                return $len;
+            }
+
+            private function detectIndentLevel(Tokens $tokens, int $startIndex): int
+            {
+                for ($i = $startIndex; $i > 0; --$i) {
+                    $content = $tokens[$i]->getContent();
+                    $lastNewlinePos = strrpos($content, "\n");
+                    if ($tokens[$i]->isWhitespace() && trim($content, ' ') !== '') {
+                        return substr_count($content, '    ', (int) $lastNewlinePos);
+                    }
+                    if ($lastNewlinePos !== false) {
+                        return substr_count($content, '    ', $lastNewlinePos);
+                    }
+                }
+                return 0;
+            }
+
+            private function breakItems(Tokens $tokens, int $openIndex, int $closeIndex): void
+            {
+                $indentLevel = $this->detectIndentLevel($tokens, $openIndex);
+                $closingIndent = "\n" . str_repeat('    ', $indentLevel);
+                $itemIndent = "\n" . str_repeat('    ', $indentLevel + 1);
+
+                $tokens->ensureWhitespaceAtIndex($closeIndex - 1, 1, $closingIndent);
+
+                for ($i = $closeIndex - 1; $i >= $openIndex; --$i) {
+                    $token = $tokens[$i];
+                    if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
+                        $i = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $i);
+                        continue;
+                    }
+                    if ($token->equals(')')) {
+                        $i = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $i);
+                        continue;
+                    }
+                    if ($token->getContent() === ',') {
+                        if (str_contains($tokens[$i + 1]->getContent(), "\n")) {
+                            continue;
+                        }
+                        if ($tokens[$i + 2]->isComment()) {
+                            continue;
+                        }
+                        $tokens->ensureWhitespaceAtIndex($i + 1, 0, $itemIndent);
+                    }
+                }
+
+                if ($tokens[$openIndex + 1]->isGivenKind(T_WHITESPACE)) {
+                    $tokens->ensureWhitespaceAtIndex($openIndex + 1, 0, $itemIndent);
+                } else {
+                    $tokens->ensureWhitespaceAtIndex($openIndex, 1, $itemIndent);
+                }
+            }
+
+            private function inlineItems(Tokens $tokens, int $openIndex, int $closeIndex): void
+            {
+                for ($i = $openIndex + 1; $i < $closeIndex; ++$i) {
+                    $currentToken = $tokens[$i];
+                    if ($currentToken->getContent() === '{') {
+                        $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $i);
+                    } elseif ($currentToken->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+                        $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $i);
+                    } elseif ($currentToken->isGivenKind(T_ARRAY)) {
+                        $next = $tokens->getNextMeaningfulToken($i);
+                        if ($next !== null) {
+                            $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $next);
+                        }
+                    }
+                    if (!$currentToken->isGivenKind(T_WHITESPACE)) {
+                        continue;
+                    }
+                    $prev = $tokens[$i - 1];
+                    $next = $tokens[$i + 1];
+                    if ($prev->isGivenKind([T_START_HEREDOC, T_END_HEREDOC])) {
+                        continue;
+                    }
+                    if (in_array($prev->getContent(), ['(', '['], true) || in_array($next->getContent(), [')', ']'], true)) {
+                        $tokens->clearAt($i);
+                        continue;
+                    }
+                    $tokens[$i] = new Token([T_WHITESPACE, ' ']);
+                }
+            }
+        };
     }
 }
