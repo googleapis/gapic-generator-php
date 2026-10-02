@@ -64,7 +64,7 @@ class FakeMessage extends \Google\Protobuf\Internal\Message
         }
     }
 
-    public function serializeToString()
+    public function serializeToString($recursion_limit = \Google\Protobuf\Internal\CodedInputStream::DEFAULT_RECURSION_LIMIT)
     {
         // This serialization does not need to be compatible with real proto serialization.
         $result = '';
@@ -75,7 +75,7 @@ class FakeMessage extends \Google\Protobuf\Internal\Message
         return $result;
     }
 
-    public function mergeFromString($s)
+    public function mergeFromString($s, $recursion_limit = \Google\Protobuf\Internal\CodedInputStream::DEFAULT_RECURSION_LIMIT)
     {
         $pos = 0;
         while ($pos < strlen($s)) {
