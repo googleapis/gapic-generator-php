@@ -19,16 +19,15 @@ declare(strict_types=1);
 namespace Google\PostProcessor;
 
 use LogicException;
-use Microsoft\PhpParser\DiagnosticsProvider;
-use Microsoft\PhpParser\Node\MethodDeclaration;
-use Microsoft\PhpParser\Node\Statement\ClassDeclaration;
-use Microsoft\PhpParser\Parser;
-use Microsoft\PhpParser\PositionUtilities;
 use ParseError;
+use PhpToken;
 
 class FragmentInjectionProcessor implements ProcessorInterface
 {
-    private ClassDeclaration $classNode;
+    private string $contents;
+    /** @var array<string, int> */
+    private array $methods;
+    private int $classEndLine;
 
     public static function run(string $inputDir): void
     {
@@ -62,26 +61,89 @@ class FragmentInjectionProcessor implements ProcessorInterface
         print("Fragment written to $classFile\n");
     }
 
-    private static function fromCode(string $contents): ClassDeclaration
+    /**
+     * @return array{array<string, int>, int}
+     */
+    private static function parseClass(string $contents): array
     {
-        $parser = new Parser();
-        $astNode = $parser->parseSourceFile($contents);
-        if ($errors = DiagnosticsProvider::getDiagnostics($astNode)) {
-            throw new ParseError('Provided contents contains a PHP syntax error');
+        try {
+            $tokens = PhpToken::tokenize($contents, TOKEN_PARSE);
+        } catch (ParseError $e) {
+            throw new ParseError('Provided contents contains a PHP syntax error', 0, $e);
         }
 
-        foreach ($astNode->getDescendantNodes() as $childNode) {
-            if ($childNode instanceof ClassDeclaration) {
-                return $childNode;
+        $count = count($tokens);
+        $inClass = false;
+        $depth = 0;
+        $memberStartLine = null;
+        $methods = [];
+        $classEndLine = null;
+
+        for ($i = 0; $i < $count; $i++) {
+            $token = $tokens[$i];
+            if (!$inClass) {
+                if ($token->id === T_CLASS) {
+                    $prev = $i - 1;
+                    while ($prev >= 0 && $tokens[$prev]->id === T_WHITESPACE) {
+                        $prev--;
+                    }
+                    if ($prev < 0 || ($tokens[$prev]->id !== T_DOUBLE_COLON && $tokens[$prev]->id !== T_NEW)) {
+                        $inClass = true;
+                    }
+                }
+                continue;
+            }
+
+            if ($token->text === '{' || $token->id === T_CURLY_OPEN || $token->id === T_DOLLAR_OPEN_CURLY_BRACES) {
+                $depth++;
+                if ($depth === 1) {
+                    $memberStartLine = null;
+                }
+                continue;
+            }
+
+            if ($token->text === '}') {
+                $depth--;
+                if ($depth === 1) {
+                    $memberStartLine = null;
+                } elseif ($depth === 0) {
+                    $classEndLine = $token->line;
+                    break;
+                }
+                continue;
+            }
+
+            if ($depth === 1) {
+                if ($token->text === ';') {
+                    $memberStartLine = null;
+                    continue;
+                }
+                if ($memberStartLine === null && $token->id !== T_WHITESPACE) {
+                    $memberStartLine = $token->line;
+                }
+                if ($token->id === T_FUNCTION) {
+                    $j = $i + 1;
+                    while ($j < $count && ($tokens[$j]->id === T_WHITESPACE || $tokens[$j]->text === '&')) {
+                        $j++;
+                    }
+                    if ($j < $count && $tokens[$j]->id === T_STRING) {
+                        $methods[$tokens[$j]->text] = $memberStartLine ?? $token->line;
+                    }
+                }
             }
         }
 
-        throw new LogicException('Provided contents does not contain a PHP class');
+        if (!$inClass || $classEndLine === null) {
+            throw new LogicException('Provided contents does not contain a PHP class');
+        }
+
+        return [$methods, $classEndLine];
     }
 
     public function __construct(string $contents)
     {
-        $this->classNode = self::fromCode($contents);
+        [$this->methods, $this->classEndLine] = self::parseClass($contents);
+        $this->contents = $contents;
     }
 
     /**
@@ -94,44 +156,31 @@ class FragmentInjectionProcessor implements ProcessorInterface
             ? $this->getInsertLineBeforeMethod($insertBeforeMethod)
             : $this->getInsertLineBeforeFirstMethod();
 
-        $lines = explode(PHP_EOL, $this->classNode->getFileContents());
+        $lines = explode(PHP_EOL, $this->contents);
         array_splice($lines, $insertLine, 0, $newContent);
         $contents = implode(PHP_EOL, $lines);
-        $this->classNode = self::fromCode($contents);
+        [$this->methods, $this->classEndLine] = self::parseClass($contents);
+        $this->contents = $contents;
     }
 
     public function getContents(): string
     {
-        return $this->classNode->getFileContents();
-    }
-
-    private function getLineNumberFromPosition(int $startPosition): int
-    {
-        return PositionUtilities::getLineCharacterPositionFromPosition(
-            $startPosition,
-            $this->classNode->getFileContents()
-        )->line;
+        return $this->contents;
     }
 
     private function getInsertLineBeforeFirstMethod(): int
     {
-        foreach ($this->classNode->getDescendantNodes() as $childNode) {
-            if ($childNode instanceof MethodDeclaration) {
-                return $this->getLineNumberFromPosition($childNode->getFullStartPosition()) + 1;
-            }
+        if (!empty($this->methods)) {
+            return reset($this->methods) - 1;
         }
         // if there are no methods in the file, insert fragment before the end of the class
-        return $this->getLineNumberFromPosition($this->classNode->getEndPosition());
+        return $this->classEndLine - 1;
     }
 
     private function getInsertLineBeforeMethod(string $insertBeforeMethod): int
     {
-        foreach ($this->classNode->getDescendantNodes() as $childNode) {
-            if ($childNode instanceof MethodDeclaration) {
-                if ($childNode->getName() === $insertBeforeMethod) {
-                    return $this->getLineNumberFromPosition($childNode->getFullStartPosition()) + 1;
-                }
-            }
+        if (isset($this->methods[$insertBeforeMethod])) {
+            return $this->methods[$insertBeforeMethod] - 1;
         }
 
         throw new LogicException(
