@@ -24,10 +24,20 @@ use PhpToken;
 
 class FragmentInjectionProcessor implements ProcessorInterface
 {
+    private const METHOD_PREFIX_TOKENS = [
+        T_PUBLIC,
+        T_PROTECTED,
+        T_PRIVATE,
+        T_STATIC,
+        T_FINAL,
+        T_ABSTRACT,
+        T_DOC_COMMENT,
+        T_COMMENT,
+    ];
+
     private string $contents;
-    /** @var array<string, int> */
-    private array $methods;
-    private int $classEndLine;
+    /** @var PhpToken[] */
+    private array $tokens;
 
     public static function run(string $inputDir): void
     {
@@ -62,9 +72,9 @@ class FragmentInjectionProcessor implements ProcessorInterface
     }
 
     /**
-     * @return array{array<string, int>, int}
+     * @return PhpToken[]
      */
-    private static function parseClass(string $contents): array
+    private static function fromCode(string $contents): array
     {
         try {
             $tokens = PhpToken::tokenize($contents, TOKEN_PARSE);
@@ -72,77 +82,18 @@ class FragmentInjectionProcessor implements ProcessorInterface
             throw new ParseError('Provided contents contains a PHP syntax error', 0, $e);
         }
 
-        $count = count($tokens);
-        $inClass = false;
-        $depth = 0;
-        $memberStartLine = null;
-        $methods = [];
-        $classEndLine = null;
-
-        for ($i = 0; $i < $count; $i++) {
-            $token = $tokens[$i];
-            if (!$inClass) {
-                if ($token->id === T_CLASS) {
-                    $prev = $i - 1;
-                    while ($prev >= 0 && $tokens[$prev]->id === T_WHITESPACE) {
-                        $prev--;
-                    }
-                    if ($prev < 0 || ($tokens[$prev]->id !== T_DOUBLE_COLON && $tokens[$prev]->id !== T_NEW)) {
-                        $inClass = true;
-                    }
-                }
-                continue;
-            }
-
-            if ($token->text === '{' || $token->id === T_CURLY_OPEN || $token->id === T_DOLLAR_OPEN_CURLY_BRACES) {
-                $depth++;
-                if ($depth === 1) {
-                    $memberStartLine = null;
-                }
-                continue;
-            }
-
-            if ($token->text === '}') {
-                $depth--;
-                if ($depth === 1) {
-                    $memberStartLine = null;
-                } elseif ($depth === 0) {
-                    $classEndLine = $token->line;
-                    break;
-                }
-                continue;
-            }
-
-            if ($depth === 1) {
-                if ($token->text === ';') {
-                    $memberStartLine = null;
-                    continue;
-                }
-                if ($memberStartLine === null && $token->id !== T_WHITESPACE) {
-                    $memberStartLine = $token->line;
-                }
-                if ($token->id === T_FUNCTION) {
-                    $j = $i + 1;
-                    while ($j < $count && ($tokens[$j]->id === T_WHITESPACE || $tokens[$j]->text === '&')) {
-                        $j++;
-                    }
-                    if ($j < $count && $tokens[$j]->id === T_STRING) {
-                        $methods[$tokens[$j]->text] = $memberStartLine ?? $token->line;
-                    }
-                }
+        foreach ($tokens as $token) {
+            if ($token->is(T_CLASS)) {
+                return $tokens;
             }
         }
 
-        if (!$inClass || $classEndLine === null) {
-            throw new LogicException('Provided contents does not contain a PHP class');
-        }
-
-        return [$methods, $classEndLine];
+        throw new LogicException('Provided contents does not contain a PHP class');
     }
 
     public function __construct(string $contents)
     {
-        [$this->methods, $this->classEndLine] = self::parseClass($contents);
+        $this->tokens = self::fromCode($contents);
         $this->contents = $contents;
     }
 
@@ -159,7 +110,7 @@ class FragmentInjectionProcessor implements ProcessorInterface
         $lines = explode(PHP_EOL, $this->contents);
         array_splice($lines, $insertLine, 0, $newContent);
         $contents = implode(PHP_EOL, $lines);
-        [$this->methods, $this->classEndLine] = self::parseClass($contents);
+        $this->tokens = self::fromCode($contents);
         $this->contents = $contents;
     }
 
@@ -170,21 +121,68 @@ class FragmentInjectionProcessor implements ProcessorInterface
 
     private function getInsertLineBeforeFirstMethod(): int
     {
-        if (!empty($this->methods)) {
-            return reset($this->methods) - 1;
+        if (null !== $methodIndex = $this->findMethodTokenIndex()) {
+            return $this->getMethodStartLine($methodIndex) - 1;
         }
+
         // if there are no methods in the file, insert fragment before the end of the class
-        return $this->classEndLine - 1;
+        return $this->getClassEndLine() - 1;
     }
 
     private function getInsertLineBeforeMethod(string $insertBeforeMethod): int
     {
-        if (isset($this->methods[$insertBeforeMethod])) {
-            return $this->methods[$insertBeforeMethod] - 1;
+        if (null !== $methodIndex = $this->findMethodTokenIndex($insertBeforeMethod)) {
+            return $this->getMethodStartLine($methodIndex) - 1;
         }
 
         throw new LogicException(
             'Provided contents does not contain method ' . $insertBeforeMethod
         );
+    }
+
+    private function findMethodTokenIndex(?string $methodName = null): ?int
+    {
+        foreach ($this->tokens as $i => $token) {
+            if (!$token->is(T_FUNCTION)) {
+                continue;
+            }
+            $nameToken = $this->tokens[$i + 2] ?? null;
+            if ($nameToken && $nameToken->is(T_STRING)) {
+                if ($methodName === null || $nameToken->text === $methodName) {
+                    return $i;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private function getMethodStartLine(int $functionTokenIndex): int
+    {
+        $startLine = $this->tokens[$functionTokenIndex]->line;
+        for ($i = $functionTokenIndex - 1; $i >= 0; $i--) {
+            $token = $this->tokens[$i];
+            if ($token->is(T_WHITESPACE)) {
+                continue;
+            }
+            if ($token->is(self::METHOD_PREFIX_TOKENS)) {
+                $startLine = $token->line;
+                continue;
+            }
+            break;
+        }
+
+        return $startLine;
+    }
+
+    private function getClassEndLine(): int
+    {
+        for ($i = count($this->tokens) - 1; $i >= 0; $i--) {
+            if ($this->tokens[$i]->text === '}') {
+                return $this->tokens[$i]->line;
+            }
+        }
+
+        throw new LogicException('Provided contents does not contain a PHP class');
     }
 }
