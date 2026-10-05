@@ -516,7 +516,12 @@ abstract class AST
             {
                 $args = $this->args->map(fn ($x) => static::toPhp($x))->join(', ');
                 if (is_null($this->callee)) {
-                    return static::toPhp($this->obj) . "({$args})";
+                    $fnCall = static::toPhp($this->obj) . "({$args})";
+                    if (count($this->args) > 1 && !str_contains($fnCall, "\n") && strlen($fnCall) > 95) {
+                        $args = $this->args->map(fn ($x) => static::toPhp($x))->join(",\n");
+                        return static::toPhp($this->obj) . "(\n{$args}\n)";
+                    }
+                    return $fnCall;
                 } else {
                     // Handle calling a function directly on a constructor.
                     // We assume that a constructor call will always start with `new `.

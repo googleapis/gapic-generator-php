@@ -40,8 +40,8 @@ function find_related_books_sample(
     $libraryClient = new LibraryClient();
 
     // Prepare the request message.
-    $formattedNames = [$formattedNamesElement,];
-    $formattedShelves = [$formattedShelvesElement,];
+    $formattedNames = [$formattedNamesElement];
+    $formattedShelves = [$formattedShelvesElement];
     $request = (new FindRelatedBooksRequest())
         ->setNames($formattedNames)
         ->setShelves($formattedShelves);
