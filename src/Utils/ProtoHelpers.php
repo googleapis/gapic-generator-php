@@ -388,30 +388,18 @@ class ProtoHelpers
         return $repeated ? Vector::new($values) : null;
     }
 
-    private static function conformMessage($message): Message
-    {
-        if (isset($message->underlyingProto)) {
-            $message = $message->underlyingProto;
-        }
-        if (!($message instanceof Message)) {
-            throw new Exception('Can only get custom option of Message or HasPublicDescriptorTrait');
-        }
-        return $message;
-    }
-
     /**
      * Get a non-repeated custom option. The option can be of any type, which determines the return type.
      *
-     * @param mixed $message The message containing the custom option. Must be of type Message, or
-     *     a descriptor with an `underlyingProto` property.
+     * @param Message $message The message containing the custom option.
      * @param int $optionId The option-id of the option to get.
      * @param ?string $msgClass Optional; to return a proto msg, set this to the PHP class of the msg.
      *
      * @return mixed Will be null if the option does not exist.
      */
-    public static function getCustomOption($message, int $optionId, ?string $msgClass = null)
+    public static function getCustomOption(Message $message, int $optionId, ?string $msgClass = null)
     {
-        $result = static::getCustomOptionRaw(static::conformMessage($message), $optionId, false);
+        $result = static::getCustomOptionRaw($message, $optionId, false);
         if (!is_null($msgClass) && !is_null($result)) {
             $msg = new $msgClass();
             $msg->mergeFromString($result);
@@ -423,15 +411,14 @@ class ProtoHelpers
     /**
      * Get a repeated custom option. The option can be of any type, which determines to content of the returned Vector.
      *
-     * @param mixed $message The message containing the custom option. Must be of type Message, or
-     *     a descriptor with an `underlyingProto` property.
+     * @param Message $message The message containing the custom option.
      * @param int $optionId The option-id of the option to get.
      *
      * @return Vector Will be an empty Vector if the option does not exist.
      */
-    public static function getCustomOptionRepeated($message, int $optionId, ?string $msgClass = null): Vector
+    public static function getCustomOptionRepeated(Message $message, int $optionId, ?string $msgClass = null): Vector
     {
-        $result = static::getCustomOptionRaw(static::conformMessage($message), $optionId, true);
+        $result = static::getCustomOptionRaw($message, $optionId, true);
         if (!is_null($msgClass)) {
             $result = $result->map(function ($x) use ($msgClass) {
                 $msg = new $msgClass();
