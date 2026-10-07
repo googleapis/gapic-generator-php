@@ -19,6 +19,8 @@ declare(strict_types=1);
 namespace Google\Generator\Tests\Tools;
 
 use Google\Generator\CodeGenerator;
+use Google\Generator\Collections\Vector;
+use Google\Protobuf\Internal\FileDescriptorSet;
 
 class GeneratorUtils
 {
@@ -65,5 +67,43 @@ class GeneratorUtils
             $generateSnippets,
         );
         return $codeIterator;
+    }
+
+    /**
+     * Runs the generator for an integration test configuration and returns the produced sources.
+     *
+     * @param array $config Integration test configuration.
+     *
+     * @return array[] [0] (string) is relative path; [1] (string) is file content.
+     */
+    public static function generateIntegration(array $config): array
+    {
+        $protos = glob($config['protoDir'] . '/*.proto');
+        $extraProtos = [
+            'googleapis/google/cloud/common_resources.proto',
+            'googleapis/google/cloud/location/locations.proto',
+            'googleapis/google/iam/v1/iam_policy.proto',
+            'googleapis/google/iam/v1/policy.proto',
+            'googleapis/google/iam/v1/options.proto',
+        ];
+        $allProtos = array_values(array_unique(array_merge($protos, $extraProtos)));
+        $filesToGenerate = array_map(fn ($p) => preg_replace('#^googleapis/#', '', $p), $allProtos);
+        $descBytes = ProtoLoader::loadDescriptorBytesFromPaths($allProtos);
+        $descSet = new FileDescriptorSet();
+        $descSet->mergeFromString($descBytes);
+        $fileDescs = Vector::new($descSet->getFile());
+
+        return CodeGenerator::generate(
+            $fileDescs,
+            Vector::new($filesToGenerate),
+            $config['transport'] ?? 'grpc+rest',
+            true,
+            isset($config['grpcServiceConfig']) ? file_get_contents($config['grpcServiceConfig']) : null,
+            isset($config['gapicYaml']) ? file_get_contents($config['gapicYaml']) : null,
+            isset($config['serviceYaml']) ? file_get_contents($config['serviceYaml']) : null,
+            $config['numericEnums'] ?? false,
+            2026, // Avoid updating tests all the time.
+            true,
+        );
     }
 }
