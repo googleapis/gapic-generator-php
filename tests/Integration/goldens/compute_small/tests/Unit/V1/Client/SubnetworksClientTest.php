@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -40,19 +41,25 @@ use stdClass;
  */
 class SubnetworksClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return SubnetworksClient */
+    /**
+     * @return SubnetworksClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -61,7 +68,9 @@ class SubnetworksClientTest extends GeneratedTest
         return new SubnetworksClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listUsableTest()
     {
         $transport = $this->createTransport();
@@ -104,7 +113,9 @@ class SubnetworksClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listUsableExceptionTest()
     {
         $transport = $this->createTransport();
@@ -139,7 +150,9 @@ class SubnetworksClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listUsableAsyncTest()
     {
         $transport = $this->createTransport();

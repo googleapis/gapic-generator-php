@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -53,19 +54,25 @@ use stdClass;
  */
 class SessionControllerClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return SessionControllerClient */
+    /**
+     * @return SessionControllerClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -74,7 +81,9 @@ class SessionControllerClientTest extends GeneratedTest
         return new SessionControllerClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createSessionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -160,7 +169,9 @@ class SessionControllerClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createSessionExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -223,7 +234,9 @@ class SessionControllerClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteSessionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -299,7 +312,9 @@ class SessionControllerClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteSessionExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -356,7 +371,9 @@ class SessionControllerClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getSessionTest()
     {
         $transport = $this->createTransport();
@@ -395,7 +412,9 @@ class SessionControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getSessionExceptionTest()
     {
         $transport = $this->createTransport();
@@ -430,7 +449,9 @@ class SessionControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listSessionsTest()
     {
         $transport = $this->createTransport();
@@ -467,7 +488,9 @@ class SessionControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listSessionsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -502,7 +525,9 @@ class SessionControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function terminateSessionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -578,7 +603,9 @@ class SessionControllerClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function terminateSessionExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -635,7 +662,9 @@ class SessionControllerClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getIamPolicyTest()
     {
         $transport = $this->createTransport();
@@ -666,7 +695,9 @@ class SessionControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getIamPolicyExceptionTest()
     {
         $transport = $this->createTransport();
@@ -701,7 +732,9 @@ class SessionControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function setIamPolicyTest()
     {
         $transport = $this->createTransport();
@@ -736,7 +769,9 @@ class SessionControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function setIamPolicyExceptionTest()
     {
         $transport = $this->createTransport();
@@ -773,7 +808,9 @@ class SessionControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function testIamPermissionsTest()
     {
         $transport = $this->createTransport();
@@ -804,7 +841,9 @@ class SessionControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function testIamPermissionsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -841,7 +880,9 @@ class SessionControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createSessionAsyncTest()
     {
         $operationsTransport = $this->createTransport();

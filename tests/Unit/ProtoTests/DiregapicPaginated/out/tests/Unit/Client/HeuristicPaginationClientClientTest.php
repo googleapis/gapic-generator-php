@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2022 Google LLC
  *
@@ -43,19 +44,25 @@ use stdClass;
  */
 class HeuristicPaginationClientClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return HeuristicPaginationClientClient */
+    /**
+     * @return HeuristicPaginationClientClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -64,7 +71,9 @@ class HeuristicPaginationClientClientTest extends GeneratedTest
         return new HeuristicPaginationClientClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listMethodTest()
     {
         $transport = $this->createTransport();
@@ -96,7 +105,9 @@ class HeuristicPaginationClientClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listMethodExceptionTest()
     {
         $transport = $this->createTransport();
@@ -128,7 +139,9 @@ class HeuristicPaginationClientClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function mapMethodTest()
     {
         $transport = $this->createTransport();
@@ -161,7 +174,9 @@ class HeuristicPaginationClientClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function mapMethodExceptionTest()
     {
         $transport = $this->createTransport();
@@ -193,7 +208,9 @@ class HeuristicPaginationClientClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function multipleListMethodTest()
     {
         $transport = $this->createTransport();
@@ -225,7 +242,9 @@ class HeuristicPaginationClientClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function multipleListMethodExceptionTest()
     {
         $transport = $this->createTransport();
@@ -257,7 +276,9 @@ class HeuristicPaginationClientClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function nonPaginatedMethodTest()
     {
         $transport = $this->createTransport();
@@ -281,7 +302,9 @@ class HeuristicPaginationClientClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function nonPaginatedMethodExceptionTest()
     {
         $transport = $this->createTransport();
@@ -313,7 +336,9 @@ class HeuristicPaginationClientClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listMethodAsyncTest()
     {
         $transport = $this->createTransport();

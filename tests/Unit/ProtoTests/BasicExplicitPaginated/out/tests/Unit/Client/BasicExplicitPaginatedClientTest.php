@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2022 Google LLC
  *
@@ -39,19 +40,25 @@ use stdClass;
  */
 class BasicExplicitPaginatedClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return BasicExplicitPaginatedClient */
+    /**
+     * @return BasicExplicitPaginatedClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -60,7 +67,9 @@ class BasicExplicitPaginatedClientTest extends GeneratedTest
         return new BasicExplicitPaginatedClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function methodExplicitPaginatedTest()
     {
         $transport = $this->createTransport();
@@ -113,7 +122,9 @@ class BasicExplicitPaginatedClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function methodExplicitPaginatedExceptionTest()
     {
         $transport = $this->createTransport();
@@ -152,7 +163,9 @@ class BasicExplicitPaginatedClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function methodExplicitPaginatedAsyncTest()
     {
         $transport = $this->createTransport();

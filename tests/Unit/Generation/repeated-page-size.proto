@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package testing.repeatedpagesize;
+
+option php_namespace = "Testing\\RepeatedPageSize";
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+
+service RepeatedPageSize {
+  option (google.api.default_host) = "paginated.example.com";
+  option (google.api.oauth_scopes) = "scope1,scope2";
+
+  rpc MethodPaginated(Request) returns(Response) {
+    option (google.api.http) = {
+      post: "/path:methodPaginated"
+      body: "*"
+    };
+  }
+}
+
+message Request {
+  string a_field = 1 [(google.api.field_behavior) = REQUIRED];
+  // A repeated page_size is not a page size. The generator must reject it rather than
+  // emit a client that treats a RepeatedField as an int.
+  repeated int32 page_size = 2;
+  string page_token = 3 [(google.api.field_behavior) = REQUIRED];
+}
+
+message Response {
+  repeated string the_results = 1;
+  string next_page_token = 2;
+}

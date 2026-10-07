@@ -44,6 +44,14 @@ class ObjEq implements Equality
     }
 }
 
+class ObjEqStringable extends ObjEq
+{
+    public function __toString(): string
+    {
+        return "ObjEq({$this->id})";
+    }
+}
+
 final class MapTest extends TestCase
 {
     public function testNew(): void
@@ -147,6 +155,46 @@ final class MapTest extends TestCase
         $this->assertCount(2, $v);
         $this->assertContains('one', $v);
         $this->assertContains('two', $v);
+    }
+
+    public function testMissingObjectKeyExceptionMessage(): void
+    {
+        // Keys need only support equality, not string conversion. Interpolating the key
+        // directly raised "object could not be converted to string", masking this message.
+        $m = Map::new();
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Key <' . Obj::class . '> does not exist');
+        $m[new Obj()];
+    }
+
+    public function testMissingStringableObjectKeyExceptionMessage(): void
+    {
+        $m = Map::new();
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Key ObjEq(7) does not exist');
+        $m[new ObjEqStringable(7)];
+    }
+
+    public function testMissingScalarKeyExceptionMessage(): void
+    {
+        $m = Map::new();
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Key 3 does not exist');
+        $m[3];
+    }
+
+    public function testDuplicateObjectKeyExceptionMessage(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Cannot add two items with the same key <' . ObjEq::class . '>');
+        Map::fromPairs([[new ObjEq(1), 'one'], [new ObjEq(1), 'uno']]);
+    }
+
+    public function testDuplicateScalarKeyExceptionMessage(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Cannot add two items with the same key 1');
+        Map::fromPairs([[1, 'one'], [1, 'uno']]);
     }
 
     public function testToAssociativeArray(): void

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -50,19 +51,25 @@ use stdClass;
  */
 class NodeGroupControllerClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return NodeGroupControllerClient */
+    /**
+     * @return NodeGroupControllerClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -71,7 +78,9 @@ class NodeGroupControllerClientTest extends GeneratedTest
         return new NodeGroupControllerClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createNodeGroupTest()
     {
         $operationsTransport = $this->createTransport();
@@ -143,7 +152,9 @@ class NodeGroupControllerClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createNodeGroupExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -204,7 +215,9 @@ class NodeGroupControllerClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getNodeGroupTest()
     {
         $transport = $this->createTransport();
@@ -233,7 +246,9 @@ class NodeGroupControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getNodeGroupExceptionTest()
     {
         $transport = $this->createTransport();
@@ -268,7 +283,9 @@ class NodeGroupControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function resizeNodeGroupTest()
     {
         $operationsTransport = $this->createTransport();
@@ -338,7 +355,9 @@ class NodeGroupControllerClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function resizeNodeGroupExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -397,7 +416,9 @@ class NodeGroupControllerClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getIamPolicyTest()
     {
         $transport = $this->createTransport();
@@ -428,7 +449,9 @@ class NodeGroupControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getIamPolicyExceptionTest()
     {
         $transport = $this->createTransport();
@@ -463,7 +486,9 @@ class NodeGroupControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function setIamPolicyTest()
     {
         $transport = $this->createTransport();
@@ -498,7 +523,9 @@ class NodeGroupControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function setIamPolicyExceptionTest()
     {
         $transport = $this->createTransport();
@@ -535,7 +562,9 @@ class NodeGroupControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function testIamPermissionsTest()
     {
         $transport = $this->createTransport();
@@ -566,7 +595,9 @@ class NodeGroupControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function testIamPermissionsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -603,7 +634,9 @@ class NodeGroupControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createNodeGroupAsyncTest()
     {
         $operationsTransport = $this->createTransport();

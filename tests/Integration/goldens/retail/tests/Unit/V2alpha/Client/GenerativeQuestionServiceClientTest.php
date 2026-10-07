@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -46,19 +47,25 @@ use stdClass;
  */
 class GenerativeQuestionServiceClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return GenerativeQuestionServiceClient */
+    /**
+     * @return GenerativeQuestionServiceClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -67,7 +74,9 @@ class GenerativeQuestionServiceClientTest extends GeneratedTest
         return new GenerativeQuestionServiceClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function batchUpdateGenerativeQuestionConfigsTest()
     {
         $transport = $this->createTransport();
@@ -94,7 +103,9 @@ class GenerativeQuestionServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function batchUpdateGenerativeQuestionConfigsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -129,7 +140,9 @@ class GenerativeQuestionServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getGenerativeQuestionsFeatureConfigTest()
     {
         $transport = $this->createTransport();
@@ -162,7 +175,9 @@ class GenerativeQuestionServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getGenerativeQuestionsFeatureConfigExceptionTest()
     {
         $transport = $this->createTransport();
@@ -197,7 +212,9 @@ class GenerativeQuestionServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listGenerativeQuestionConfigsTest()
     {
         $transport = $this->createTransport();
@@ -224,7 +241,9 @@ class GenerativeQuestionServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listGenerativeQuestionConfigsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -259,7 +278,9 @@ class GenerativeQuestionServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateGenerativeQuestionConfigTest()
     {
         $transport = $this->createTransport();
@@ -302,7 +323,9 @@ class GenerativeQuestionServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateGenerativeQuestionConfigExceptionTest()
     {
         $transport = $this->createTransport();
@@ -341,7 +364,9 @@ class GenerativeQuestionServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateGenerativeQuestionsFeatureConfigTest()
     {
         $transport = $this->createTransport();
@@ -376,7 +401,9 @@ class GenerativeQuestionServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateGenerativeQuestionsFeatureConfigExceptionTest()
     {
         $transport = $this->createTransport();
@@ -413,7 +440,9 @@ class GenerativeQuestionServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function batchUpdateGenerativeQuestionConfigsAsyncTest()
     {
         $transport = $this->createTransport();

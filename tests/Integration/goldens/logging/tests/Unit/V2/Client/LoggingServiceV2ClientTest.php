@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -52,19 +53,25 @@ use stdClass;
  */
 class LoggingServiceV2ClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return LoggingServiceV2Client */
+    /**
+     * @return LoggingServiceV2Client
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -73,7 +80,9 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         return new LoggingServiceV2Client($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteLogTest()
     {
         $transport = $this->createTransport();
@@ -99,7 +108,9 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteLogExceptionTest()
     {
         $transport = $this->createTransport();
@@ -134,7 +145,9 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listLogEntriesTest()
     {
         $transport = $this->createTransport();
@@ -173,7 +186,9 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listLogEntriesExceptionTest()
     {
         $transport = $this->createTransport();
@@ -210,7 +225,9 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listLogsTest()
     {
         $transport = $this->createTransport();
@@ -247,7 +264,9 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listLogsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -282,7 +301,9 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listMonitoredResourceDescriptorsTest()
     {
         $transport = $this->createTransport();
@@ -314,7 +335,9 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listMonitoredResourceDescriptorsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -346,7 +369,9 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function tailLogEntriesTest()
     {
         $transport = $this->createTransport();
@@ -407,7 +432,9 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function tailLogEntriesExceptionTest()
     {
         $transport = $this->createTransport();
@@ -440,7 +467,9 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function writeLogEntriesTest()
     {
         $transport = $this->createTransport();
@@ -467,7 +496,9 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function writeLogEntriesExceptionTest()
     {
         $transport = $this->createTransport();
@@ -502,7 +533,9 @@ class LoggingServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteLogAsyncTest()
     {
         $transport = $this->createTransport();

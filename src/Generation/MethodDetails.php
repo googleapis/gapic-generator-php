@@ -199,7 +199,7 @@ abstract class MethodDetails
 
         // Leverage short-circuting.
         if ($resourceFieldValid && !$isDireGapic) {
-            $resourceFieldValid &= !ProtoHelpers::isMap($catalog, $resources)
+            $resourceFieldValid = !ProtoHelpers::isMap($catalog, $resources)
                 && $resourceByNumber[0] === $resourceByPosition[0];
         }
 
@@ -209,9 +209,10 @@ abstract class MethodDetails
 
         $isValidPageSize = !$pageSize->isRepeated();
         if ($isDireGapic) {
-            $isValidPageSize = $pageSize->getType() === GPBType::UINT32 || $pageSize->getType() === GPBType::INT32;
+            $isValidPageSize = $isValidPageSize
+                && ($pageSize->getType() === GPBType::UINT32 || $pageSize->getType() === GPBType::INT32);
         } else {
-            $isValidPageSize = $pageSize->getType() === GPBType::INT32;
+            $isValidPageSize = $isValidPageSize && $pageSize->getType() === GPBType::INT32;
         }
         if (!$isValidPageSize) {
             throw new Exception('page_size field must be of type ' . ($isDireGapic ? 'uint32 or int32' : 'int32') . '.');
@@ -221,12 +222,6 @@ abstract class MethodDetails
         }
         if ($nextPageToken->isRepeated() || $nextPageToken->getType() !== GPBType::STRING) {
             throw new Exception('next_page_token field must be of type string.');
-        }
-        if (!$resourceFieldValid) {
-            if ($isDireGapic) {
-                throw new Exception('Item resources field must a map or repeated field.');
-            }
-            throw new Exception('Item resources field must be the first repeated field by number and position.');
         }
         return new class($svc, $desc, $outputMsg, $pageSize, $pageToken, $nextPageToken, $resources) extends MethodDetails {
             public function __construct($svc, $desc, $outputMsg, $pageSize, $pageToken, $nextPageToken, $resources)

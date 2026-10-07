@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -71,7 +72,9 @@ final class GenerativeQuestionServiceClient
     use GapicClientTrait;
     use ResourceHelperTrait;
 
-    /** The name of the service. */
+    /**
+     * The name of the service.
+     */
     private const SERVICE_NAME = 'google.cloud.retail.v2alpha.GenerativeQuestionService';
 
     /**
@@ -81,13 +84,19 @@ final class GenerativeQuestionServiceClient
      */
     private const SERVICE_ADDRESS = 'retail.googleapis.com';
 
-    /** The address template of the service. */
+    /**
+     * The address template of the service.
+     */
     private const SERVICE_ADDRESS_TEMPLATE = 'retail.UNIVERSE_DOMAIN';
 
-    /** The default port of the service. */
+    /**
+     * The default port of the service.
+     */
     private const DEFAULT_SERVICE_PORT = 443;
 
-    /** The name of the code generator, to be included in the agent header. */
+    /**
+     * The name of the code generator, to be included in the agent header.
+     */
     private const CODEGEN_NAME = 'gapic';
 
     /**
@@ -241,7 +250,9 @@ final class GenerativeQuestionServiceClient
         $this->setClientOptions($clientOptions);
     }
 
-    /** Handles execution of the async variants for each documented method. */
+    /**
+     * Handles execution of the async variants for each documented method.
+     */
     public function __call($method, $args)
     {
         if (substr($method, -5) !== 'Async') {

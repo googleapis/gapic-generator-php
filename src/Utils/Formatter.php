@@ -72,7 +72,7 @@ class Formatter
             $fixers[] = self::buildLineLengthFixer($lineLength);
         }
 
-        $fixers += [
+        $fixers = array_merge($fixers, [
             new Fixer\FunctionNotation\NoSpacesAfterFunctionNameFixer(), // 2, PSR2
             new Fixer\Comment\NoEmptyCommentFixer(), // 2
             new Fixer\Whitespace\NoSpacesInsideParenthesisFixer(), // 2, PSR2
@@ -98,7 +98,7 @@ class Formatter
             new Fixer\Whitespace\ArrayIndentationFixer(), // -31
             new Fixer\Whitespace\MethodChainingIndentationFixer(), // -34
             new Fixer\Whitespace\SingleBlankLineAtEofFixer(), // -50, PSR2 (must run last)
-        ];
+        ]);
 
         // Fixer temporarily removed:
         // new Fixer\Whitespace\BlankLineBeforeStatementFixer(), // -21

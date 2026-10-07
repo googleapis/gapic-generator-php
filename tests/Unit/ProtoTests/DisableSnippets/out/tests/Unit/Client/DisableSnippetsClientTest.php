@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2022 Google LLC
  *
@@ -39,19 +40,25 @@ use stdClass;
  */
 class DisableSnippetsClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return DisableSnippetsClient */
+    /**
+     * @return DisableSnippetsClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -60,7 +67,9 @@ class DisableSnippetsClientTest extends GeneratedTest
         return new DisableSnippetsClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function method1Test()
     {
         $transport = $this->createTransport();
@@ -87,7 +96,9 @@ class DisableSnippetsClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function method1ExceptionTest()
     {
         $transport = $this->createTransport();
@@ -122,7 +133,9 @@ class DisableSnippetsClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function method1AsyncTest()
     {
         $transport = $this->createTransport();

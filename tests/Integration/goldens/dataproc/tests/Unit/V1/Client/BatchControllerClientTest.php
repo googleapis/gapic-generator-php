@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -53,19 +54,25 @@ use stdClass;
  */
 class BatchControllerClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return BatchControllerClient */
+    /**
+     * @return BatchControllerClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -74,7 +81,9 @@ class BatchControllerClientTest extends GeneratedTest
         return new BatchControllerClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createBatchTest()
     {
         $operationsTransport = $this->createTransport();
@@ -152,7 +161,9 @@ class BatchControllerClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createBatchExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -211,7 +222,9 @@ class BatchControllerClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteBatchTest()
     {
         $transport = $this->createTransport();
@@ -237,7 +250,9 @@ class BatchControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteBatchExceptionTest()
     {
         $transport = $this->createTransport();
@@ -272,7 +287,9 @@ class BatchControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getBatchTest()
     {
         $transport = $this->createTransport();
@@ -309,7 +326,9 @@ class BatchControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getBatchExceptionTest()
     {
         $transport = $this->createTransport();
@@ -344,7 +363,9 @@ class BatchControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listBatchesTest()
     {
         $transport = $this->createTransport();
@@ -381,7 +402,9 @@ class BatchControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listBatchesExceptionTest()
     {
         $transport = $this->createTransport();
@@ -416,7 +439,9 @@ class BatchControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getIamPolicyTest()
     {
         $transport = $this->createTransport();
@@ -447,7 +472,9 @@ class BatchControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getIamPolicyExceptionTest()
     {
         $transport = $this->createTransport();
@@ -482,7 +509,9 @@ class BatchControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function setIamPolicyTest()
     {
         $transport = $this->createTransport();
@@ -517,7 +546,9 @@ class BatchControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function setIamPolicyExceptionTest()
     {
         $transport = $this->createTransport();
@@ -554,7 +585,9 @@ class BatchControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function testIamPermissionsTest()
     {
         $transport = $this->createTransport();
@@ -585,7 +618,9 @@ class BatchControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function testIamPermissionsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -622,7 +657,9 @@ class BatchControllerClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createBatchAsyncTest()
     {
         $operationsTransport = $this->createTransport();

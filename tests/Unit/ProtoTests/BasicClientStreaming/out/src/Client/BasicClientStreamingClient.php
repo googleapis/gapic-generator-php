@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2022 Google LLC
  *
@@ -44,16 +45,24 @@ final class BasicClientStreamingClient
 {
     use GapicClientTrait;
 
-    /** The name of the service. */
+    /**
+     * The name of the service.
+     */
     private const SERVICE_NAME = 'testing.basicclientstreaming.BasicClientStreaming';
 
-    /** The default address of the service. */
+    /**
+     * The default address of the service.
+     */
     private const SERVICE_ADDRESS = 'clientstreaming.example.com';
 
-    /** The default port of the service. */
+    /**
+     * The default port of the service.
+     */
     private const DEFAULT_SERVICE_PORT = 443;
 
-    /** The name of the code generator, to be included in the agent header. */
+    /**
+     * The name of the code generator, to be included in the agent header.
+     */
     private const CODEGEN_NAME = 'gapic';
 
     /**

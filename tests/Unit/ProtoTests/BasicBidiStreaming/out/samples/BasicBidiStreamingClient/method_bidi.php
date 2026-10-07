@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2022 Google LLC
  *
@@ -29,7 +30,9 @@ use Testing\BasicBidiStreaming\Client\BasicBidiStreamingClient;
 use Testing\BasicBidiStreaming\Request;
 use Testing\BasicBidiStreaming\Response;
 
-/** @param int $aNumber  */
+/**
+ * @param int $aNumber
+ */
 function method_bidi_sample(int $aNumber): void
 {
     // Create a client.

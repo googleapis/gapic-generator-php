@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2022 Google LLC
  *
@@ -49,16 +50,24 @@ final class CustomLroClient
 {
     use GapicClientTrait;
 
-    /** The name of the service. */
+    /**
+     * The name of the service.
+     */
     private const SERVICE_NAME = 'testing.customlro.CustomLro';
 
-    /** The default address of the service. */
+    /**
+     * The default address of the service.
+     */
     private const SERVICE_ADDRESS = 'customlro.example.com';
 
-    /** The default port of the service. */
+    /**
+     * The default port of the service.
+     */
     private const DEFAULT_SERVICE_PORT = 443;
 
-    /** The name of the code generator, to be included in the agent header. */
+    /**
+     * The name of the code generator, to be included in the agent header.
+     */
     private const CODEGEN_NAME = 'gapic';
 
     /**
@@ -92,13 +101,17 @@ final class CustomLroClient
         ];
     }
 
-    /** Implements GapicClientTrait::defaultTransport. */
+    /**
+     * Implements GapicClientTrait::defaultTransport.
+     */
     private static function defaultTransport()
     {
         return 'rest';
     }
 
-    /** Implements ClientOptionsTrait::supportedTransports. */
+    /**
+     * Implements ClientOptionsTrait::supportedTransports.
+     */
     private static function supportedTransports()
     {
         return [
@@ -116,7 +129,9 @@ final class CustomLroClient
         return $this->operationsClient;
     }
 
-    /** Return the default longrunning operation descriptor config. */
+    /**
+     * Return the default longrunning operation descriptor config.
+     */
     private function getDefaultOperationDescriptor()
     {
         return [
@@ -249,7 +264,9 @@ final class CustomLroClient
         $this->operationsClient = $this->createOperationsClient($clientOptions);
     }
 
-    /** Handles execution of the async variants for each documented method. */
+    /**
+     * Handles execution of the async variants for each documented method.
+     */
     public function __call($method, $args)
     {
         if (substr($method, -5) !== 'Async') {

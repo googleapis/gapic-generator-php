@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2022 Google LLC
  *
@@ -46,19 +47,25 @@ use stdClass;
  */
 class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return GrpcServiceConfigWithRetry1Client */
+    /**
+     * @return GrpcServiceConfigWithRetry1Client
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -67,7 +74,9 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
         return new GrpcServiceConfigWithRetry1Client($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function method1ATest()
     {
         $transport = $this->createTransport();
@@ -89,7 +98,9 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function method1AExceptionTest()
     {
         $transport = $this->createTransport();
@@ -121,7 +132,9 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function method1BLroTest()
     {
         $operationsTransport = $this->createTransport();
@@ -180,7 +193,9 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function method1BLroExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -234,7 +249,9 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function method1BidiStreamingTest()
     {
         $transport = $this->createTransport();
@@ -289,7 +306,9 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function method1BidiStreamingExceptionTest()
     {
         $transport = $this->createTransport();
@@ -322,7 +341,9 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function method1CServiceLevelRetryTest()
     {
         $transport = $this->createTransport();
@@ -344,7 +365,9 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function method1CServiceLevelRetryExceptionTest()
     {
         $transport = $this->createTransport();
@@ -376,7 +399,9 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function method1DTimeoutOnlyRetryTest()
     {
         $transport = $this->createTransport();
@@ -398,7 +423,9 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function method1DTimeoutOnlyRetryExceptionTest()
     {
         $transport = $this->createTransport();
@@ -430,7 +457,9 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function method1ServerStreamingTest()
     {
         $transport = $this->createTransport();
@@ -463,7 +492,9 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function method1ServerStreamingExceptionTest()
     {
         $transport = $this->createTransport();
@@ -498,7 +529,9 @@ class GrpcServiceConfigWithRetry1ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function method1AAsyncTest()
     {
         $transport = $this->createTransport();

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -43,19 +44,25 @@ use stdClass;
  */
 class VideoIntelligenceServiceClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return VideoIntelligenceServiceClient */
+    /**
+     * @return VideoIntelligenceServiceClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -64,7 +71,9 @@ class VideoIntelligenceServiceClientTest extends GeneratedTest
         return new VideoIntelligenceServiceClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function annotateVideoTest()
     {
         $operationsTransport = $this->createTransport();
@@ -123,7 +132,9 @@ class VideoIntelligenceServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function annotateVideoExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -177,7 +188,9 @@ class VideoIntelligenceServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function annotateVideoAsyncTest()
     {
         $operationsTransport = $this->createTransport();

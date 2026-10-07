@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -40,19 +41,25 @@ use stdClass;
  */
 class ConversationalSearchServiceClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return ConversationalSearchServiceClient */
+    /**
+     * @return ConversationalSearchServiceClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -61,7 +68,9 @@ class ConversationalSearchServiceClientTest extends GeneratedTest
         return new ConversationalSearchServiceClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function conversationalSearchTest()
     {
         $transport = $this->createTransport();
@@ -118,7 +127,9 @@ class ConversationalSearchServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function conversationalSearchExceptionTest()
     {
         $transport = $this->createTransport();

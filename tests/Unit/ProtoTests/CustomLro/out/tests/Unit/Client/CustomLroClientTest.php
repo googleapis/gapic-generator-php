@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2022 Google LLC
  *
@@ -41,19 +42,25 @@ use stdClass;
  */
 class CustomLroClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return CustomLroClient */
+    /**
+     * @return CustomLroClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -62,7 +69,9 @@ class CustomLroClientTest extends GeneratedTest
         return new CustomLroClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createFooTest()
     {
         $operationsTransport = $this->createTransport();
@@ -127,7 +136,9 @@ class CustomLroClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createFooExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -184,7 +195,9 @@ class CustomLroClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createFooAsyncTest()
     {
         $operationsTransport = $this->createTransport();

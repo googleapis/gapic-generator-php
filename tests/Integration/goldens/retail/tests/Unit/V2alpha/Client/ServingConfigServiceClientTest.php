@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -47,19 +48,25 @@ use stdClass;
  */
 class ServingConfigServiceClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return ServingConfigServiceClient */
+    /**
+     * @return ServingConfigServiceClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -68,7 +75,9 @@ class ServingConfigServiceClientTest extends GeneratedTest
         return new ServingConfigServiceClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function addControlTest()
     {
         $transport = $this->createTransport();
@@ -113,7 +122,9 @@ class ServingConfigServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function addControlExceptionTest()
     {
         $transport = $this->createTransport();
@@ -150,7 +161,9 @@ class ServingConfigServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createServingConfigTest()
     {
         $transport = $this->createTransport();
@@ -203,7 +216,9 @@ class ServingConfigServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createServingConfigExceptionTest()
     {
         $transport = $this->createTransport();
@@ -246,7 +261,9 @@ class ServingConfigServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteServingConfigTest()
     {
         $transport = $this->createTransport();
@@ -272,7 +289,9 @@ class ServingConfigServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteServingConfigExceptionTest()
     {
         $transport = $this->createTransport();
@@ -307,7 +326,9 @@ class ServingConfigServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getServingConfigTest()
     {
         $transport = $this->createTransport();
@@ -348,7 +369,9 @@ class ServingConfigServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getServingConfigExceptionTest()
     {
         $transport = $this->createTransport();
@@ -383,7 +406,9 @@ class ServingConfigServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listServingConfigsTest()
     {
         $transport = $this->createTransport();
@@ -420,7 +445,9 @@ class ServingConfigServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listServingConfigsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -455,7 +482,9 @@ class ServingConfigServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function removeControlTest()
     {
         $transport = $this->createTransport();
@@ -500,7 +529,9 @@ class ServingConfigServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function removeControlExceptionTest()
     {
         $transport = $this->createTransport();
@@ -537,7 +568,9 @@ class ServingConfigServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateServingConfigTest()
     {
         $transport = $this->createTransport();
@@ -582,7 +615,9 @@ class ServingConfigServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateServingConfigExceptionTest()
     {
         $transport = $this->createTransport();
@@ -621,7 +656,9 @@ class ServingConfigServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function addControlAsyncTest()
     {
         $transport = $this->createTransport();

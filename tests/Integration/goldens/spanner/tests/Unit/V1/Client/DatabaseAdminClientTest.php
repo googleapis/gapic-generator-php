@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -86,19 +87,25 @@ use stdClass;
  */
 class DatabaseAdminClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return DatabaseAdminClient */
+    /**
+     * @return DatabaseAdminClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -107,7 +114,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         return new DatabaseAdminClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function addSplitPointsTest()
     {
         $transport = $this->createTransport();
@@ -138,7 +147,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function addSplitPointsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -175,7 +186,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function copyBackupTest()
     {
         $operationsTransport = $this->createTransport();
@@ -263,7 +276,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function copyBackupExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -326,7 +341,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createBackupTest()
     {
         $operationsTransport = $this->createTransport();
@@ -410,7 +427,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createBackupExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -471,7 +490,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createBackupScheduleTest()
     {
         $transport = $this->createTransport();
@@ -508,7 +529,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createBackupScheduleExceptionTest()
     {
         $transport = $this->createTransport();
@@ -547,7 +570,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createDatabaseTest()
     {
         $operationsTransport = $this->createTransport();
@@ -625,7 +650,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createDatabaseExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -684,7 +711,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteBackupTest()
     {
         $transport = $this->createTransport();
@@ -710,7 +739,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteBackupExceptionTest()
     {
         $transport = $this->createTransport();
@@ -745,7 +776,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteBackupScheduleTest()
     {
         $transport = $this->createTransport();
@@ -771,7 +804,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteBackupScheduleExceptionTest()
     {
         $transport = $this->createTransport();
@@ -806,7 +841,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function dropDatabaseTest()
     {
         $transport = $this->createTransport();
@@ -832,7 +869,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function dropDatabaseExceptionTest()
     {
         $transport = $this->createTransport();
@@ -867,7 +906,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getBackupTest()
     {
         $transport = $this->createTransport();
@@ -906,7 +947,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getBackupExceptionTest()
     {
         $transport = $this->createTransport();
@@ -941,7 +984,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getBackupScheduleTest()
     {
         $transport = $this->createTransport();
@@ -970,7 +1015,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getBackupScheduleExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1005,7 +1052,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getDatabaseTest()
     {
         $transport = $this->createTransport();
@@ -1042,7 +1091,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getDatabaseExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1077,7 +1128,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getDatabaseDdlTest()
     {
         $transport = $this->createTransport();
@@ -1106,7 +1159,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getDatabaseDdlExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1141,7 +1196,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getIamPolicyTest()
     {
         $transport = $this->createTransport();
@@ -1172,7 +1229,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getIamPolicyExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1207,7 +1266,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function internalUpdateGraphOperationTest()
     {
         $transport = $this->createTransport();
@@ -1242,7 +1303,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function internalUpdateGraphOperationExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1281,7 +1344,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listBackupOperationsTest()
     {
         $transport = $this->createTransport();
@@ -1318,7 +1383,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listBackupOperationsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1353,7 +1420,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listBackupSchedulesTest()
     {
         $transport = $this->createTransport();
@@ -1390,7 +1459,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listBackupSchedulesExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1425,7 +1496,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listBackupsTest()
     {
         $transport = $this->createTransport();
@@ -1462,7 +1535,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listBackupsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1497,7 +1572,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listDatabaseOperationsTest()
     {
         $transport = $this->createTransport();
@@ -1534,7 +1611,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listDatabaseOperationsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1569,7 +1648,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listDatabaseRolesTest()
     {
         $transport = $this->createTransport();
@@ -1606,7 +1687,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listDatabaseRolesExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1641,7 +1724,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listDatabasesTest()
     {
         $transport = $this->createTransport();
@@ -1678,7 +1763,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listDatabasesExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1713,7 +1800,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function restoreDatabaseTest()
     {
         $operationsTransport = $this->createTransport();
@@ -1791,7 +1880,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function restoreDatabaseExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -1850,7 +1941,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function setIamPolicyTest()
     {
         $transport = $this->createTransport();
@@ -1885,7 +1978,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function setIamPolicyExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1922,7 +2017,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function testIamPermissionsTest()
     {
         $transport = $this->createTransport();
@@ -1953,7 +2050,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function testIamPermissionsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1990,7 +2089,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateBackupTest()
     {
         $transport = $this->createTransport();
@@ -2033,7 +2134,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateBackupExceptionTest()
     {
         $transport = $this->createTransport();
@@ -2070,7 +2173,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateBackupScheduleTest()
     {
         $transport = $this->createTransport();
@@ -2103,7 +2208,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateBackupScheduleExceptionTest()
     {
         $transport = $this->createTransport();
@@ -2140,7 +2247,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateDatabaseTest()
     {
         $operationsTransport = $this->createTransport();
@@ -2220,7 +2329,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateDatabaseExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -2281,7 +2392,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateDatabaseDdlTest()
     {
         $operationsTransport = $this->createTransport();
@@ -2349,7 +2462,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateDatabaseDdlExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -2408,7 +2523,9 @@ class DatabaseAdminClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function addSplitPointsAsyncTest()
     {
         $transport = $this->createTransport();

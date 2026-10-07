@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2022 Google LLC
  *
@@ -28,7 +29,9 @@ use Testing\BasicAutoPopulation\Client\BasicAutoPopulationClient;
 use Testing\BasicAutoPopulation\Request;
 use Testing\BasicAutoPopulation\Response;
 
-/** @param string $aField  */
+/**
+ * @param string $aField
+ */
 function get_foo_sample(string $aField): void
 {
     // Create a client.

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -55,19 +56,25 @@ use stdClass;
  */
 class ProjectServiceClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return ProjectServiceClient */
+    /**
+     * @return ProjectServiceClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -76,7 +83,9 @@ class ProjectServiceClientTest extends GeneratedTest
         return new ProjectServiceClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function acceptTermsTest()
     {
         $transport = $this->createTransport();
@@ -105,7 +114,9 @@ class ProjectServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function acceptTermsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -140,7 +151,9 @@ class ProjectServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function enrollSolutionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -208,7 +221,9 @@ class ProjectServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function enrollSolutionExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -267,7 +282,9 @@ class ProjectServiceClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getAlertConfigTest()
     {
         $transport = $this->createTransport();
@@ -296,7 +313,9 @@ class ProjectServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getAlertConfigExceptionTest()
     {
         $transport = $this->createTransport();
@@ -331,7 +350,9 @@ class ProjectServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getLoggingConfigTest()
     {
         $transport = $this->createTransport();
@@ -360,7 +381,9 @@ class ProjectServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getLoggingConfigExceptionTest()
     {
         $transport = $this->createTransport();
@@ -395,7 +418,9 @@ class ProjectServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getProjectTest()
     {
         $transport = $this->createTransport();
@@ -424,7 +449,9 @@ class ProjectServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getProjectExceptionTest()
     {
         $transport = $this->createTransport();
@@ -459,7 +486,9 @@ class ProjectServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listEnrolledSolutionsTest()
     {
         $transport = $this->createTransport();
@@ -486,7 +515,9 @@ class ProjectServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listEnrolledSolutionsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -521,7 +552,9 @@ class ProjectServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateAlertConfigTest()
     {
         $transport = $this->createTransport();
@@ -552,7 +585,9 @@ class ProjectServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateAlertConfigExceptionTest()
     {
         $transport = $this->createTransport();
@@ -589,7 +624,9 @@ class ProjectServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateLoggingConfigTest()
     {
         $transport = $this->createTransport();
@@ -620,7 +657,9 @@ class ProjectServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateLoggingConfigExceptionTest()
     {
         $transport = $this->createTransport();
@@ -657,7 +696,9 @@ class ProjectServiceClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function acceptTermsAsyncTest()
     {
         $transport = $this->createTransport();

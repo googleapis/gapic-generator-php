@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2026 Google LLC
  *
@@ -86,19 +87,25 @@ use stdClass;
  */
 class ConfigServiceV2ClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return ConfigServiceV2Client */
+    /**
+     * @return ConfigServiceV2Client
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -107,7 +114,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         return new ConfigServiceV2Client($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function copyLogEntriesTest()
     {
         $operationsTransport = $this->createTransport();
@@ -177,7 +186,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function copyLogEntriesExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -236,7 +247,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createBucketTest()
     {
         $transport = $this->createTransport();
@@ -281,7 +294,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createBucketExceptionTest()
     {
         $transport = $this->createTransport();
@@ -320,7 +335,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createBucketAsyncTest()
     {
         $operationsTransport = $this->createTransport();
@@ -402,7 +419,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createBucketAsyncExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -463,7 +482,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createExclusionTest()
     {
         $transport = $this->createTransport();
@@ -506,7 +527,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createExclusionExceptionTest()
     {
         $transport = $this->createTransport();
@@ -547,7 +570,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createLinkTest()
     {
         $operationsTransport = $this->createTransport();
@@ -623,7 +648,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createLinkExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -684,7 +711,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createSinkTest()
     {
         $transport = $this->createTransport();
@@ -733,7 +762,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createSinkExceptionTest()
     {
         $transport = $this->createTransport();
@@ -774,7 +805,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createViewTest()
     {
         $transport = $this->createTransport();
@@ -815,7 +848,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createViewExceptionTest()
     {
         $transport = $this->createTransport();
@@ -854,7 +889,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteBucketTest()
     {
         $transport = $this->createTransport();
@@ -880,7 +917,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteBucketExceptionTest()
     {
         $transport = $this->createTransport();
@@ -915,7 +954,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteExclusionTest()
     {
         $transport = $this->createTransport();
@@ -941,7 +982,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteExclusionExceptionTest()
     {
         $transport = $this->createTransport();
@@ -976,7 +1019,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteLinkTest()
     {
         $operationsTransport = $this->createTransport();
@@ -1040,7 +1085,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteLinkExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -1097,7 +1144,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteSinkTest()
     {
         $transport = $this->createTransport();
@@ -1123,7 +1172,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteSinkExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1158,7 +1209,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteViewTest()
     {
         $transport = $this->createTransport();
@@ -1184,7 +1237,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function deleteViewExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1219,7 +1274,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getBucketTest()
     {
         $transport = $this->createTransport();
@@ -1256,7 +1313,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getBucketExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1291,7 +1350,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getCmekSettingsTest()
     {
         $transport = $this->createTransport();
@@ -1321,7 +1382,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getCmekSettingsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1353,7 +1416,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getExclusionTest()
     {
         $transport = $this->createTransport();
@@ -1388,7 +1453,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getExclusionExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1423,7 +1490,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getLinkTest()
     {
         $transport = $this->createTransport();
@@ -1454,7 +1523,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getLinkExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1489,7 +1560,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getSettingsTest()
     {
         $transport = $this->createTransport();
@@ -1526,7 +1599,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getSettingsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1561,7 +1636,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getSinkTest()
     {
         $transport = $this->createTransport();
@@ -1602,7 +1679,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getSinkExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1637,7 +1716,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getViewTest()
     {
         $transport = $this->createTransport();
@@ -1670,7 +1751,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getViewExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1705,7 +1788,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listBucketsTest()
     {
         $transport = $this->createTransport();
@@ -1742,7 +1827,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listBucketsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1777,7 +1864,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listExclusionsTest()
     {
         $transport = $this->createTransport();
@@ -1814,7 +1903,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listExclusionsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1849,7 +1940,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listLinksTest()
     {
         $transport = $this->createTransport();
@@ -1886,7 +1979,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listLinksExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1921,7 +2016,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listSinksTest()
     {
         $transport = $this->createTransport();
@@ -1958,7 +2055,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listSinksExceptionTest()
     {
         $transport = $this->createTransport();
@@ -1993,7 +2092,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listViewsTest()
     {
         $transport = $this->createTransport();
@@ -2030,7 +2131,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function listViewsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -2065,7 +2168,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function undeleteBucketTest()
     {
         $transport = $this->createTransport();
@@ -2091,7 +2196,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function undeleteBucketExceptionTest()
     {
         $transport = $this->createTransport();
@@ -2126,7 +2233,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateBucketTest()
     {
         $transport = $this->createTransport();
@@ -2171,7 +2280,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateBucketExceptionTest()
     {
         $transport = $this->createTransport();
@@ -2210,7 +2321,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateBucketAsyncTest()
     {
         $operationsTransport = $this->createTransport();
@@ -2292,7 +2405,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateBucketAsyncExceptionTest()
     {
         $operationsTransport = $this->createTransport();
@@ -2353,7 +2468,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($operationsTransport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateCmekSettingsTest()
     {
         $transport = $this->createTransport();
@@ -2383,7 +2500,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateCmekSettingsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -2415,7 +2534,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateExclusionTest()
     {
         $transport = $this->createTransport();
@@ -2462,7 +2583,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateExclusionExceptionTest()
     {
         $transport = $this->createTransport();
@@ -2505,7 +2628,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateSettingsTest()
     {
         $transport = $this->createTransport();
@@ -2546,7 +2671,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateSettingsExceptionTest()
     {
         $transport = $this->createTransport();
@@ -2583,7 +2710,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateSinkTest()
     {
         $transport = $this->createTransport();
@@ -2632,7 +2761,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateSinkExceptionTest()
     {
         $transport = $this->createTransport();
@@ -2673,7 +2804,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateViewTest()
     {
         $transport = $this->createTransport();
@@ -2710,7 +2843,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function updateViewExceptionTest()
     {
         $transport = $this->createTransport();
@@ -2747,7 +2882,9 @@ class ConfigServiceV2ClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function copyLogEntriesAsyncTest()
     {
         $operationsTransport = $this->createTransport();

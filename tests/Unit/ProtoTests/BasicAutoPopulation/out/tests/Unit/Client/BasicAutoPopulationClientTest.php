@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright 2022 Google LLC
  *
@@ -39,19 +40,25 @@ use stdClass;
  */
 class BasicAutoPopulationClientTest extends GeneratedTest
 {
-    /** @return TransportInterface */
+    /**
+     * @return TransportInterface
+     */
     private function createTransport($deserialize = null)
     {
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /**
+     * @return CredentialsWrapper
+     */
     private function createCredentials()
     {
         return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
     }
 
-    /** @return BasicAutoPopulationClient */
+    /**
+     * @return BasicAutoPopulationClient
+     */
     private function createClient(array $options = [])
     {
         $options += [
@@ -60,7 +67,9 @@ class BasicAutoPopulationClientTest extends GeneratedTest
         return new BasicAutoPopulationClient($options);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createFooTest()
     {
         $transport = $this->createTransport();
@@ -87,7 +96,9 @@ class BasicAutoPopulationClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createFooExceptionTest()
     {
         $transport = $this->createTransport();
@@ -122,7 +133,9 @@ class BasicAutoPopulationClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getFooTest()
     {
         $transport = $this->createTransport();
@@ -149,7 +162,9 @@ class BasicAutoPopulationClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function getFooExceptionTest()
     {
         $transport = $this->createTransport();
@@ -184,7 +199,9 @@ class BasicAutoPopulationClientTest extends GeneratedTest
         $this->assertTrue($transport->isExhausted());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function createFooAsyncTest()
     {
         $transport = $this->createTransport();
