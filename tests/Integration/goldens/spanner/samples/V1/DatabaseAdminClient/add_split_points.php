@@ -48,10 +48,10 @@ function add_split_points_sample(string $formattedDatabase): void
     $splitPointsKeysKeyParts = new ListValue();
     $key = (new Key())
         ->setKeyParts($splitPointsKeysKeyParts);
-    $splitPointsKeys = [$key,];
+    $splitPointsKeys = [$key];
     $splitPoints = (new SplitPoints())
         ->setKeys($splitPointsKeys);
-    $splitPoints = [$splitPoints,];
+    $splitPoints = [$splitPoints];
     $request = (new AddSplitPointsRequest())
         ->setDatabase($formattedDatabase)
         ->setSplitPoints($splitPoints);
