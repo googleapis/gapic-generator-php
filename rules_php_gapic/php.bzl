@@ -16,25 +16,28 @@ def _php_binary_impl(ctx):
     run_name = "{}_run.sh".format(ctx.attr.name)
     out_dir = ctx.actions.declare_directory("out")
     out_run_sh = ctx.actions.declare_file(run_name)
-    entry_point_relative = ctx.file.entry_point.path[len(ctx.attr.entry_point.label.workspace_root):].strip("/")
+    ws_root = ctx.attr.entry_point.label.workspace_root
+    entry_point_relative = ctx.file.entry_point.path[len(ws_root):].strip("/")
 
     # I don't understand why this is required:
     entry_point_relative = entry_point_relative[len("rules_php_gapic/"):]
 
     # PHP files must be copied, as the PHP __DIR__ constant is incorrect if the src file is symlinked.
-    # Ideally this would cp with everything being symlinks except php files.
-    # However that's difficult, so copy every thing; using tar as this allows excluding of directories.
+    # Copy vendor/ from the composer install repo and source files from the workspace so that
+    # changes to src/ invalidate the Bazel action cache.
     cmd = """
 DEST="$(pwd)/{out_dir_path}/install"
 mkdir "$DEST"
-cd '{install_path}'
-tar cf - --dereference src/ generated/ googleapis/ tools/ vendor/ composer.json | (cd "$DEST" && tar xf -)
+(cd '{install_path}' && tar cf - --dereference src/ generated/ googleapis/ tools/ vendor/ composer.json) | (cd "$DEST" && tar xf -)
+rm -rf "$DEST/src" "$DEST/generated"
+(cd '{ws_root}' && tar cf - --dereference src/ generated/ composer.json) | (cd "$DEST" && tar xf -)
     """.format(
         install_path = ctx.file.php_composer_install.path,
         out_dir_path = out_dir.path,
+        ws_root = ws_root if ws_root else ".",
     )
     ctx.actions.run_shell(
-        inputs = [ctx.file.php_composer_install],
+        inputs = [ctx.file.php_composer_install] + ctx.files.srcs,
         outputs = [out_dir],
         command = cmd,
     )
@@ -82,6 +85,7 @@ php_binary = rule(
     attrs = {
         "php": attr.label(default = Label("@php_micro//:php"), allow_single_file = True, executable = True, cfg = "host"),
         "php_composer_install": attr.label(allow_single_file = True),
+        "srcs": attr.label_list(default = [Label("@gapic_generator_php//:srcs")], allow_files = True),
         "entry_point": attr.label(allow_single_file = True),
         "working_directory_flag_name": attr.string(),
     },
