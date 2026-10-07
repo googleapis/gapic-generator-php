@@ -497,6 +497,7 @@ abstract class AST
     }
 
     protected int $maxLength = 100;
+    public bool $wrap = false;
 
     protected function formatCall(string $callee, Vector $args): string
     {
@@ -546,7 +547,7 @@ abstract class AST
                         $this->maxLength = 100;
                         return $objCode . PHP_EOL . $this->formatCall($derefAndCallee, $this->args);
                     }
-                    if ($this->obj !== AST::THIS) {
+                    if ($this->wrap) {
                         return $this->formatCall($objCode . $derefAndCallee, $this->args);
                     }
                     $args = $this->args->map(fn ($x) => static::toPhp($x))->join(', ');
