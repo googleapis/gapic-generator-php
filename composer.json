@@ -49,16 +49,12 @@
     "scripts": {
         "update-all-tests": [
             "Google\\Generator\\Tests\\Unit\\ProtoTests\\GoldenUpdateMain::updateAll",
-            "Google\\Generator\\Tests\\Integration\\GoldenUpdateMain::updateAll"
+            "bash tests/scripts/run_bazel_updates.sh --expunge"
         ]
     },
     "config": {
         "platform": {
             "php": "8.2"
-        },
-        "allow-plugins": {
-            "php-http/discovery": false,
-            "tbachert/spi": false
         }
     }
 }

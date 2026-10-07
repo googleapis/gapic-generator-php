@@ -15,10 +15,6 @@
     <testsuite name="Unit Tests">
       <directory>./tests/Unit</directory>
     </testsuite>
-    <testsuite name="Integration Tests">
-      <directory>./tests/Integration</directory>
-      <exclude>./tests/Integration/goldens</exclude>
-    </testsuite>
   </testsuites>
   <php>
     <ini name="memory_limit" value="2048M"/>

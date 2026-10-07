@@ -64,29 +64,52 @@ We'll be using **PHP 7.4** for the setup.
 
 ## Running tests
 
--   All tests (unit and integration)
+-   Unit tests
 
     ```
-    ./vendor/bin/phpunit
+    ./vendor/bin/phpunit --bootstrap tests/Unit/autoload.php tests/Unit
     ```
 
     If you do not have `protoc` installed, run with `USE_TOOLS_PROTOC=true`.
 
     ```
-    USE_TOOLS_PROTOC=true ./vendor/bin/phpunit
+    USE_TOOLS_PROTOC=true ./vendor/bin/phpunit --bootstrap tests/Unit/autoload.php tests/Unit
     ```
 
     This uses the Linux-only `protoc` binary checked into the repository.
 
     If you run into an error: `Error: Call to undefined function Google\Protobuf\Internal\bccomp()`, that is because the [BC Math](https://www.php.net/manual/en/book.bc.php) extension is not always included by default (see tracking bug here: https://github.com/protocolbuffers/protobuf/issues/4465). You can get around this by installing BC Math with the command `sudo apt install php-bcmath`.
 
--   Running a specific test suite or integration case:
+-   Bazel integration tests.
 
-    ```
-    USE_TOOLS_PROTOC=true ./vendor/bin/phpunit --testsuite "Unit Tests"
-    USE_TOOLS_PROTOC=true ./vendor/bin/phpunit --testsuite "Integration Tests"
-    USE_TOOLS_PROTOC=true ./vendor/bin/phpunit --testsuite "Integration Tests" --filter asset
-    ```
+    -   Running:
+
+        ```
+        bazel test tests/Integration:asset
+        ```
+
+    -   Running all tests:
+
+        ```
+        bash tests/scripts/run_bazel_tests.sh
+        ```
+
+        _Note: Running `bazel` commands may require removing the `composer.lock` and
+        `vendor/` directory._
+
+    -  Debugging in `googleapis`:
+
+        In [`googleapis/WORKSPACE`](https://github.com/googleapis/googleapis/blob/86fa44cc5ee2136e87c312f153113d4dd8e9c4de/WORKSPACE#L397-L401),
+        replace the `http_archive` downloading the generator with a
+        `local_repository` target pointing to the locally modified version of the
+        generator:
+
+        ```
+        local_repository(
+            name = "gapic_generator_php",
+            path = "/absolute/path/to/local/generator",
+        )
+        ```
 
 ## Updating tests
 
@@ -95,7 +118,7 @@ You will need to update the golden test files if you change something in the gen
 -   Updating unit test goldens:
 
     ```
-    USE_TOOLS_PROTOC=true php tests/Unit/ProtoTests/GoldenUpdateMain.php
+    php tests/Unit/ProtoTests/GoldenUpdateMain.php
     ```
 
     Then follow the prompts for which tests to update.
@@ -105,24 +128,40 @@ You will need to update the golden test files if you change something in the gen
 -   Updating integration test goldens:
 
     ```
-    USE_TOOLS_PROTOC=true php tests/Integration/GoldenUpdateMain.php
+    bash tests/scripts/run_bazel_updates.sh --expunge
     ```
 
-    Integration tests can be updated individually by passing a filter argument:
+    Integration tests can be updated individually as well:
 
     ```
-    USE_TOOLS_PROTOC=true php tests/Integration/GoldenUpdateMain.php asset
+    bazel run tests/Integration:asset_update
     ```
 
-    __NOTE__: If a new integration test case is added, make sure to add it to `TESTS` in [IntegrationTest.php](tests/Integration/IntegrationTest.php).
+    __NOTE__: If a new integration test case is added, make sure to add it the list in [run_bazel_tests.sh](tests/scripts/run_bazel_tests.sh) and [run_bazel_updates.sh](tests/scripts/run_bazel_updates.sh).
 
 - Update all goldens (unit and integration)
 
     Run the composer script `update-all-tests` to update all goldens at once:
 
     ```
-    USE_TOOLS_PROTOC=true composer update-all-tests
+    composer update-all-tests
     ```
+
+## Rotating the bazel cache key
+
+The GitHub Actions that run the `bazel`-based integration tests hold a cache of
+the build in order to speed up testing pull requests that do not impact
+generated surface. If proposing a change that modifies the integration test
+golden files, one must also rotate the cache key using the
+[`gh` CLI](https://cli.github.com/). Use the following command before opening
+your pull request:
+
+```
+uuidgen | gh secret set CACHE_VERSION -r https://github.com/googleapis/gapic-generator-php
+```
+
+If you don't have the proper permissions to rotate the cache key, request that
+the reviewers do so and rerun the Action checks.
 
 ## Updating the `googleapis` submodule
 

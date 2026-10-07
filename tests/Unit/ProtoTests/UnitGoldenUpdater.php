@@ -35,11 +35,6 @@ class UnitGoldenUpdater
             $generateSnippets,
         );
         $outputPath = __DIR__ . '/' . dirname($protoPath) . '/out';
-        static::writeGoldens($codeIterator, $outputPath);
-    }
-
-    public static function writeGoldens(iterable $codeIterator, string $outputPath): void
-    {
         // Delete everything from the directory.
         if (is_dir($outputPath)) {
             $fileSysObjects = scandir($outputPath);
