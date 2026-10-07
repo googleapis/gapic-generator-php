@@ -1,0 +1,52 @@
+load(
+    "@gapic_generator_php//rules_php_gapic:php_gapic.bzl",
+    "php_gapic_library",
+    "php_grpc_library",
+    "php_proto_library",
+)
+load(
+    "@gapic_generator_php//rules_php_gapic:php_gapic_pkg.bzl",
+    "php_gapic_assembly_pkg",
+)
+load("//:rules_php_test/integration_test.bzl", "php_integration_test")
+
+php_integration_test(
+    name = "asset",
+    data = glob([
+        "goldens/asset/**/*.txt",
+        "goldens/asset/**/*.php",
+        "goldens/asset/**/*.json",
+    ]),
+    target = "asset_php_gapic",
+)
+
+php_proto_library(
+    name = "asset_php_proto",
+    deps = ["@com_google_googleapis//google/cloud/asset/v1:asset_proto"],
+)
+
+php_grpc_library(
+    name = "asset_php_grpc",
+    srcs = ["@com_google_googleapis//google/cloud/asset/v1:asset_proto"],
+    deps = [":asset_php_proto"],
+)
+
+php_gapic_library(
+    name = "asset_php_gapic",
+    srcs = ["@com_google_googleapis//google/cloud/asset/v1:asset_proto_with_info"],
+    grpc_service_config = "@com_google_googleapis//google/cloud/asset/v1:cloudasset_grpc_service_config.json",
+    rest_numeric_enums = True,
+    deps = [
+        ":asset_php_grpc",
+        ":asset_php_proto",
+    ],
+)
+
+php_gapic_assembly_pkg(
+    name = "google-cloud-asset-v1-php",
+    deps = [
+        ":asset_php_gapic",
+        ":asset_php_grpc",
+        ":asset_php_proto",
+    ],
+)

@@ -1,0 +1,37 @@
+permissions:
+  contents: read
+
+name: Bazel Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    container: gcr.io/gapic-images/googleapis@sha256:10f630423413f9138bd68c71f87c4734b9eeaba040675162c2a0b38410b0effc
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        submodules: 'recursive'
+        persist-credentials: false
+
+    - name: Show bazel version
+      run: |
+        bazel --version
+
+    - name: Bazel Smoke Test
+      run: |
+        bazel --batch test tests/Integration:asset --noshow_progress --cache_test_results=no --test_output=errors
+
+    - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+      if: ${{ failure() }}
+      with:
+        name: test-artifacts
+        path: ~/.cache/bazel/*/*/*/*/bazel-out/*/testlogs/*
+        retention-days: 5
