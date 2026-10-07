@@ -43,7 +43,7 @@ function method_bidi_sample(int $aNumber): void
     try {
         /** @var BidiStream $stream */
         $stream = $basicBidiStreamingClient->methodBidi();
-        $stream->writeAll([$request,]);
+        $stream->writeAll([$request]);
 
         /** @var Response $element */
         foreach ($stream->closeWriteAndReadAll() as $element) {

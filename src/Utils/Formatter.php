@@ -21,10 +21,6 @@ namespace Google\Generator\Utils;
 use Google\Generator\Collections\Vector;
 use PhpCsFixer\Fixer;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\WhitespacesFixerConfig;
-use Symplify\CodingStandard\Fixer as SymplifyFixer;
-use Symplify\CodingStandard\TokenAnalyzer;
-use Symplify\CodingStandard\TokenRunner;
 
 class Formatter
 {
@@ -36,11 +32,10 @@ class Formatter
      * formatting is done by the code generation in the AST classes.
      *
      * @param string $code Unformatted code, to be formatted.
-     * @param int $lineLength A line length to adhere the formatted code to.
      *
      * @return string The same code as passed in, but formatted.
      */
-    public static function format(string $code, ?int $lineLength = null): string
+    public static function format(string $code): string
     {
         $psr2SingleClassElementPerStatementFixer =
           new \PhpCsFixer\Fixer\ClassNotation\SingleClassElementPerStatementFixer();
@@ -67,10 +62,6 @@ class Formatter
               new Fixer\ClassNotation\ClassAttributesSeparationFixer(), // 55
               new Fixer\Whitespace\IndentationTypeFixer(), // 50, PSR2
         ];
-
-        if ($lineLength) {
-            $fixers[] = self::buildLineLengthFixer($lineLength);
-        }
 
         $fixers += [
             new Fixer\FunctionNotation\NoSpacesAfterFunctionNameFixer(), // 2, PSR2
@@ -159,55 +150,5 @@ class Formatter
         $usings = $usings->take($index)->append($line)->concat($usings->skip($index));
 
         return $pre->concat($usings)->concat($post)->join("\n");
-    }
-
-    // TODO: Investigate if there are more succinct ways to build out this fixer
-    private static function buildLineLengthFixer(int $lineLength)
-    {
-        $blockFinder = new TokenRunner\Analyzer\FixerAnalyzer\BlockFinder();
-        $tokenSkipper = new TokenRunner\Analyzer\FixerAnalyzer\TokenSkipper(
-            $blockFinder
-        );
-        $callAnalyzer = new TokenRunner\Analyzer\FixerAnalyzer\CallAnalyzer();
-        $whitespacesFixerConfig = new WhitespacesFixerConfig();
-
-        $fixer = new SymplifyFixer\LineLength\LineLengthFixer(
-            new TokenRunner\Transformer\FixerTransformer\LineLengthTransformer(
-                new TokenRunner\Transformer\FixerTransformer\LineLengthResolver(),
-                new TokenRunner\Transformer\FixerTransformer\TokensInliner(
-                    $tokenSkipper
-                ),
-                new TokenRunner\Transformer\FixerTransformer\FirstLineLengthResolver(
-                    new TokenRunner\ValueObjectFactory\LineLengthAndPositionFactory()
-                ),
-                new TokenRunner\Transformer\FixerTransformer\TokensNewliner(
-                    new TokenRunner\Transformer\FixerTransformer\LineLengthCloserTransformer(
-                        $callAnalyzer,
-                        new TokenRunner\TokenFinder()
-                    ),
-                    $tokenSkipper,
-                    new TokenRunner\Transformer\FixerTransformer\LineLengthOpenerTransformer(
-                        $callAnalyzer
-                    ),
-                    $whitespacesFixerConfig,
-                    new TokenRunner\Whitespace\IndentResolver(
-                        new TokenRunner\Analyzer\FixerAnalyzer\IndentDetector(
-                            $whitespacesFixerConfig
-                        ),
-                        $whitespacesFixerConfig
-                    )
-                )
-            ),
-            $blockFinder,
-            new TokenAnalyzer\FunctionCallNameMatcher(),
-            new TokenAnalyzer\Naming\MethodNameResolver(),
-            new TokenAnalyzer\HeredocAnalyzer(),
-        );
-
-        $fixer->configure([
-            'line_length' => $lineLength
-        ]);
-
-        return $fixer;
     }
 }
