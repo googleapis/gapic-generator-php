@@ -496,6 +496,20 @@ abstract class AST
         };
     }
 
+    protected int $maxLength = 100;
+    public bool $wrap = false;
+
+    protected function formatCall(string $callee, Vector $args): string
+    {
+        $argsStr = $args->map(fn ($x) => static::toPhp($x))->join(', ');
+        $fnCall = "{$callee}({$argsStr})";
+        if (count($args) > 0 && !str_contains($fnCall, "\n") && strlen($fnCall) >= $this->maxLength) {
+            $argsStr = $args->map(fn ($x) => static::toPhp($x))->join(",\n");
+            return "{$callee}(\n{$argsStr}\n)";
+        }
+        return $fnCall;
+    }
+
     /**
      * Create an expression to call a method. This method returns a callable into which the args are passed.
      *
@@ -514,9 +528,8 @@ abstract class AST
             }
             public function toCode(): string
             {
-                $args = $this->args->map(fn ($x) => static::toPhp($x))->join(', ');
                 if (is_null($this->callee)) {
-                    return static::toPhp($this->obj) . "({$args})";
+                    return $this->formatCall(static::toPhp($this->obj), $this->args);
                 } else {
                     // Handle calling a function directly on a constructor.
                     // We assume that a constructor call will always start with `new `.
@@ -529,11 +542,16 @@ abstract class AST
                         $calleeOnNewline = true;
                     }
 
-                    return $objCode .
-                        ($calleeOnNewline ? PHP_EOL : null) .
-                        static::deref($this->obj) .
-                        static::toPhp($this->callee) .
-                        "({$args})";
+                    $derefAndCallee = static::deref($this->obj) . static::toPhp($this->callee);
+                    if ($calleeOnNewline) {
+                        $this->maxLength = 100;
+                        return $objCode . PHP_EOL . $this->formatCall($derefAndCallee, $this->args);
+                    }
+                    if ($this->wrap) {
+                        return $this->formatCall($objCode . $derefAndCallee, $this->args);
+                    }
+                    $args = $this->args->map(fn ($x) => static::toPhp($x))->join(', ');
+                    return "{$objCode}{$derefAndCallee}({$args})";
                 }
             }
         };
@@ -558,8 +576,7 @@ abstract class AST
 
             public function toCode(): string
             {
-                $args = $this->args->map(fn ($x) => static::toPhp($x))->join(', ');
-                return static::toPhp($this->type) . '::' . static::toPhp($this->callee) . "({$args})";
+                return $this->formatCall(static::toPhp($this->type) . '::' . static::toPhp($this->callee), $this->args);
             }
         };
     }
@@ -628,7 +645,11 @@ abstract class AST
             }
             public function toCode(): string
             {
-                return static::toPhp($this->to) . ' = ' . static::toPhp($this->from);
+                $lhs = static::toPhp($this->to) . ' = ';
+                if ($this->from instanceof AST) {
+                    $this->from->maxLength = 100 - strlen($lhs);
+                }
+                return $lhs . static::toPhp($this->from);
             }
         };
     }

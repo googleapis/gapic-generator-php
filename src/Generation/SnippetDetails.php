@@ -103,7 +103,7 @@ class SnippetDetails
             )
         );
         if ($this->methodDetails->isClientStreaming() || $this->methodDetails->isBidiStreaming()) {
-            $requestVar = [$requestVar];
+            $requestVar = AST::array([$requestVar], true);
         }
         $this->rpcArguments = $this->rpcArguments->append($requestVar);
     }
@@ -191,7 +191,7 @@ class SnippetDetails
                 );
                 $value = $repeatedItemVar;
             }
-            $value = [$value];
+            $value = AST::array([$value], true);
         }
 
         $this->sampleAssignments = $this->sampleAssignments->append(
@@ -212,7 +212,7 @@ class SnippetDetails
             $this->sampleAssignments = $this->sampleAssignments->append(
                 AST::assign(
                     $fieldVar,
-                    AST::array([$arrayElementVar])
+                    AST::array([$arrayElementVar], true)
                 )
             );
         }
@@ -243,7 +243,7 @@ class SnippetDetails
         if ($field->isRepeated) {
             $arrayElementVar = AST::var("{$fieldName}Element");
             $this->sampleAssignments = $this->sampleAssignments->append(
-                AST::assign($var, [$arrayElementVar])
+                AST::assign($var, AST::array([$arrayElementVar], true))
             );
         }
 
