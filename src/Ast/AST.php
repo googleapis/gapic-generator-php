@@ -517,7 +517,7 @@ abstract class AST
                 $args = $this->args->map(fn ($x) => static::toPhp($x))->join(', ');
                 if (is_null($this->callee)) {
                     $fnCall = static::toPhp($this->obj) . "({$args})";
-                    if (count($this->args) > 1 && !str_contains($fnCall, "\n") && strlen($fnCall) > 95) {
+                    if (count($this->args) > 1 && !str_contains($fnCall, "\n") && strlen($fnCall) >= 100) {
                         $args = $this->args->map(fn ($x) => static::toPhp($x))->join(",\n");
                         return static::toPhp($this->obj) . "(\n{$args}\n)";
                     }
