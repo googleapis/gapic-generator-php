@@ -192,5 +192,26 @@ $formattedName = KeyManagementServiceClient::cryptoKeyName(
 
 EOF;
         $this->assertEquals($expectedLongAssignedStaticCall, Formatter::format("<?php\n" . $longAssignedStaticCall->toCode()));
+
+        $requestType = new ResolvedType(Type::fromName('Google\Cloud\Compute\V1\StartInstancesRegionInstanceGroupManagerRequest'), fn () => 'StartInstancesRegionInstanceGroupManagerRequest');
+        $longChainedSetter = AST::block(
+            AST::assign(
+                AST::var('request'),
+                AST::call(
+                    AST::new($requestType)(),
+                    AST::method('setRegionInstanceGroupManagersStartInstancesRequestResource')
+                )(AST::var('regionInstanceGroupManagersStartInstancesRequestResource'))
+            )
+        );
+
+        $expectedLongChainedSetter = <<<'EOF'
+<?php
+$request = (new StartInstancesRegionInstanceGroupManagerRequest())
+    ->setRegionInstanceGroupManagersStartInstancesRequestResource(
+        $regionInstanceGroupManagersStartInstancesRequestResource
+    );
+
+EOF;
+        $this->assertEquals($expectedLongChainedSetter, Formatter::format("<?php\n" . $longChainedSetter->toCode()));
     }
 }

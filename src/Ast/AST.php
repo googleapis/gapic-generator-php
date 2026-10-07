@@ -498,11 +498,11 @@ abstract class AST
 
     protected int $maxLength = 100;
 
-    protected function formatCall(string $callee, Vector $args): string
+    protected function formatCall(string $callee, Vector $args, ?int $maxLength = null): string
     {
         $argsStr = $args->map(fn ($x) => static::toPhp($x))->join(', ');
         $fnCall = "{$callee}({$argsStr})";
-        if (count($args) > 1 && !str_contains($fnCall, "\n") && strlen($fnCall) >= $this->maxLength) {
+        if (count($args) > 0 && !str_contains($fnCall, "\n") && strlen($fnCall) >= ($maxLength ?? $this->maxLength)) {
             $argsStr = $args->map(fn ($x) => static::toPhp($x))->join(",\n");
             return "{$callee}(\n{$argsStr}\n)";
         }
@@ -530,7 +530,6 @@ abstract class AST
                 if (is_null($this->callee)) {
                     return $this->formatCall(static::toPhp($this->obj), $this->args);
                 } else {
-                    $args = $this->args->map(fn ($x) => static::toPhp($x))->join(', ');
                     // Handle calling a function directly on a constructor.
                     // We assume that a constructor call will always start with `new `.
                     $objCode = static::toPhp($this->obj);
@@ -542,11 +541,15 @@ abstract class AST
                         $calleeOnNewline = true;
                     }
 
-                    return $objCode .
-                        ($calleeOnNewline ? PHP_EOL : null) .
-                        static::deref($this->obj) .
-                        static::toPhp($this->callee) .
-                        "({$args})";
+                    $derefAndCallee = static::deref($this->obj) . static::toPhp($this->callee);
+                    if ($calleeOnNewline) {
+                        return $objCode . PHP_EOL . $this->formatCall($derefAndCallee, $this->args, 101);
+                    }
+                    if ($this->obj !== AST::THIS) {
+                        return $this->formatCall($objCode . $derefAndCallee, $this->args);
+                    }
+                    $args = $this->args->map(fn ($x) => static::toPhp($x))->join(', ');
+                    return "{$objCode}{$derefAndCallee}({$args})";
                 }
             }
         };
