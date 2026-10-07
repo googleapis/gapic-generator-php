@@ -167,5 +167,30 @@ foo_sample(
 
 EOF;
         $this->assertEquals($expectedLongCall, Formatter::format("<?php\n" . $longCall->toCode()));
+
+        $clientType = new ResolvedType(Type::fromName('Google\Cloud\Kms\V1\KeyManagementServiceClient'), fn () => 'KeyManagementServiceClient');
+        $longAssignedStaticCall = AST::block(
+            AST::assign(
+                AST::var('formattedName'),
+                AST::staticCall($clientType, AST::method('cryptoKeyName'))(
+                    '[PROJECT]',
+                    '[LOCATION]',
+                    '[KEY_RING]',
+                    '[CRYPTO_KEY]'
+                )
+            )
+        );
+
+        $expectedLongAssignedStaticCall = <<<'EOF'
+<?php
+$formattedName = KeyManagementServiceClient::cryptoKeyName(
+    '[PROJECT]',
+    '[LOCATION]',
+    '[KEY_RING]',
+    '[CRYPTO_KEY]'
+);
+
+EOF;
+        $this->assertEquals($expectedLongAssignedStaticCall, Formatter::format("<?php\n" . $longAssignedStaticCall->toCode()));
     }
 }

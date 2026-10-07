@@ -81,11 +81,11 @@ jobs:
             tests/Integration:speech \
             tests/Integration:securitycenter \
             tests/Integration:talent \
-            tests/Integration:videointelligence --noshow_progress --cache_test_results=no
+            tests/Integration:videointelligence --noshow_progress --cache_test_results=no --test_output=errors
 
     - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
       if: ${{ failure() }}
       with:
         name: test-artifacts
-        path: ~/.cache/bazel/*/*/*/gapic_generator_php/bazel-out/*/testlogs/*
+        path: ~/.cache/bazel/*/*/*/*/bazel-out/*/testlogs/*
         retention-days: 5
