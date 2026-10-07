@@ -498,11 +498,11 @@ abstract class AST
 
     protected int $maxLength = 100;
 
-    protected function formatCall(string $callee, Vector $args, ?int $maxLength = null): string
+    protected function formatCall(string $callee, Vector $args): string
     {
         $argsStr = $args->map(fn ($x) => static::toPhp($x))->join(', ');
         $fnCall = "{$callee}({$argsStr})";
-        if (count($args) > 0 && !str_contains($fnCall, "\n") && strlen($fnCall) >= ($maxLength ?? $this->maxLength)) {
+        if (count($args) > 0 && !str_contains($fnCall, "\n") && strlen($fnCall) >= $this->maxLength) {
             $argsStr = $args->map(fn ($x) => static::toPhp($x))->join(",\n");
             return "{$callee}(\n{$argsStr}\n)";
         }
@@ -543,7 +543,8 @@ abstract class AST
 
                     $derefAndCallee = static::deref($this->obj) . static::toPhp($this->callee);
                     if ($calleeOnNewline) {
-                        return $objCode . PHP_EOL . $this->formatCall($derefAndCallee, $this->args, 101);
+                        $this->maxLength = 100;
+                        return $objCode . PHP_EOL . $this->formatCall($derefAndCallee, $this->args);
                     }
                     if ($this->obj !== AST::THIS) {
                         return $this->formatCall($objCode . $derefAndCallee, $this->args);
