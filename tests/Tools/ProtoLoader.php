@@ -34,8 +34,20 @@ class ProtoLoader
      */
     public static function loadDescriptorBytes(string $protoPath): string
     {
+        return static::loadDescriptorBytesFromPaths(["tests/Unit/{$protoPath}"]);
+    }
+
+    /**
+     * Load descriptor set bytes from the specified proto paths relative to the repo root directory.
+     *
+     * @param string[] $protoPaths The proto paths relative to the repo root directory.
+     *
+     * @return string
+     */
+    public static function loadDescriptorBytesFromPaths(array $protoPaths): string
+    {
         // Set up required file locations and create tmp output file for protoc invocation.
-        // Assumes test are executed from within the repo root directory.
+        // Assumes tests are executed from within the repo root directory.
         $cwd = getcwd();
         $protoc = "protoc";
         $useToolsProtoc = getenv("USE_TOOLS_PROTOC");
@@ -44,12 +56,12 @@ class ProtoLoader
         }
         $descRes = tmpfile();
         $descFilename = stream_get_meta_data($descRes)['uri'];
-        $input = "{$cwd}/tests/Unit/{$protoPath}";
+        $inputs = implode(' ', array_map(fn ($path) => escapeshellarg("{$cwd}/{$path}"), $protoPaths));
         // Invoke protoc to build the descriptor of the test proto.
         $protobuf = "{$cwd}/protobuf/src/";
         $googleapis = "{$cwd}/googleapis/";
         $protocCmdLine = "{$protoc} --include_imports --include_source_info -o {$descFilename} " .
-            "-I {$googleapis} -I {$protobuf} -I {$cwd} {$input} 2>&1";
+            "-I {$googleapis} -I {$protobuf} -I {$cwd} {$inputs} 2>&1";
         $output = [];
         $result = -1;
         exec($protocCmdLine, $output, $result);
