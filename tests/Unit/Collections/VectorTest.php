@@ -29,6 +29,32 @@ final class VectorTest extends TestCase
         $this->assertEquals(['one', 'two'], $v->toArray());
     }
 
+    public function testNewFromTraversableIgnoresKeys(): void
+    {
+        // The docblock promises keys are ignored; a Vector whose data is not a
+        // list would break every positional access.
+        $gen = (function () {
+            yield 5 => 'a';
+            yield 9 => 'b';
+        })();
+        $v = Vector::new($gen);
+        $this->assertEquals(['a', 'b'], $v->toArray());
+        $this->assertEquals('a', $v[0]);
+        $this->assertEquals('b', $v->last());
+    }
+
+    public function testNewFromTraversableWithRepeatedKeys(): void
+    {
+        // Repeated keys would collapse into a single element if keys were preserved.
+        $gen = (function () {
+            yield 0 => 'a';
+            yield 0 => 'b';
+        })();
+        $v = Vector::new($gen);
+        $this->assertCount(2, $v);
+        $this->assertEquals(['a', 'b'], $v->toArray());
+    }
+
     public function testZip(): void
     {
         $v = Vector::zip(
@@ -274,6 +300,33 @@ final class VectorTest extends TestCase
         $this->assertEquals(2, $v->last());
     }
 
+    public function testLastOnEmptyThrows(): void
+    {
+        $this->expectException(\Exception::class);
+        Vector::new([])->last();
+    }
+
+    public function testOffsetExists(): void
+    {
+        $v = Vector::new(['a', 'b']);
+        $this->assertTrue(isset($v[0]));
+        $this->assertTrue(isset($v[1]));
+        $this->assertTrue(isset($v[-1]));
+        $this->assertTrue(isset($v[-2]));
+        $this->assertFalse(isset($v[2]));
+        $this->assertFalse(isset($v[-3]));
+    }
+
+    public function testOffsetExistsForNullElement(): void
+    {
+        // An element that is present but null still exists.
+        $v = Vector::new([null]);
+        $this->assertCount(1, $v);
+        $this->assertTrue(isset($v[0]));
+        $this->assertTrue(isset($v[-1]));
+        $this->assertFalse(isset($v[1]));
+    }
+
     public function testAny(): void
     {
         $v = Vector::new([1, 2]);
@@ -320,6 +373,14 @@ final class VectorTest extends TestCase
         $this->assertTrue($s[2]);
         $this->assertTrue($s[3]);
         $this->assertFalse($s[4]);
+    }
+
+    public function testToSetWithDuplicates(): void
+    {
+        $s = Vector::new([1, 1, 2])->toSet();
+        $this->assertCount(2, $s);
+        $this->assertTrue($s[1]);
+        $this->assertTrue($s[2]);
     }
 
     public function testMax(): void

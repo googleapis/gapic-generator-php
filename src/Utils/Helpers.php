@@ -32,7 +32,7 @@ class Helpers
     {
         // Using explode/implode is how it's done internally in /Google/Protobuf/Internal/FieldDescriptor.
         $s = implode('', array_map('ucwords', explode('_', str_replace('-', '_', $s))));
-        return strtolower($s[0]) . substr($s, 1);
+        return $s === '' ? '' : strtolower($s[0]) . substr($s, 1);
     }
 
     public static function toUpperCamelCase(string $s)

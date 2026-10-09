@@ -23,6 +23,22 @@ use Google\Generator\Utils\Helpers;
 
 final class HelpersTest extends TestCase
 {
+    public function testToCamelCase(): void
+    {
+        $this->assertEquals('aField', Helpers::toCamelCase('a_field'));
+        $this->assertEquals('aField', Helpers::toCamelCase('a-field'));
+        $this->assertEquals('aField', Helpers::toCamelCase('AField'));
+    }
+
+    public function testToCamelCaseWithNoCharacters(): void
+    {
+        // Nothing to lower-case, so nothing is indexed.
+        $this->assertEquals('', Helpers::toCamelCase(''));
+        $this->assertEquals('', Helpers::toCamelCase('_'));
+        $this->assertEquals('', Helpers::toCamelCase('__'));
+        $this->assertEquals('', Helpers::toCamelCase('-'));
+    }
+
     public function testPrependDot(): void
     {
         $testString = "test";

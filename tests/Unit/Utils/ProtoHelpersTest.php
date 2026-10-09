@@ -24,6 +24,7 @@ use Google\Generator\Tests\Tools\ProtoLoader;
 use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\ProtoAugmenter;
 use Google\Generator\Utils\ProtoCatalog;
+use Google\Protobuf\Internal\FileDescriptorProto;
 
 final class ProtoHelpersTest extends TestCase
 {
@@ -56,6 +57,26 @@ final class ProtoHelpersTest extends TestCase
         $this->assertEquals(['Inner 1', 'Inner 2'], $inner->leadingComments->toArray());
         $innerField = $inner->getField()[0];
         $this->assertEquals(['Inner field 1', 'Inner field 2'], $innerField->leadingComments->toArray());
+    }
+
+    public function testGetNamespace(): void
+    {
+        $file = new FileDescriptorProto(['name' => 'a.proto', 'package' => 'foo.bar.v1']);
+        $this->assertEquals('Foo\\Bar\\V1', ProtoHelpers::getNamespace($file));
+    }
+
+    public function testGetNamespaceWithEmptyPackage(): void
+    {
+        // A proto declaring neither a package nor a php_namespace option: there is no
+        // character at position 0 to upper-case.
+        $file = new FileDescriptorProto(['name' => 'a.proto', 'package' => '']);
+        $this->assertEquals('', ProtoHelpers::getNamespace($file));
+    }
+
+    public function testGetNamespaceWithEmptyPackageSegment(): void
+    {
+        $file = new FileDescriptorProto(['name' => 'a.proto', 'package' => 'foo..bar']);
+        $this->assertEquals('Foo\\\\Bar', ProtoHelpers::getNamespace($file));
     }
 
     public function testProtoCatalog(): void

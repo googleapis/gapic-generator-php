@@ -29,6 +29,28 @@ final class SetTest extends TestCase
         $this->assertCount(2, $s);
     }
 
+    public function testNewWithDuplicates(): void
+    {
+        // Duplicates collapse; a set constructor must not reject a repeated element.
+        $s = Set::new([1, 1, 2]);
+        $this->assertCount(2, $s);
+        $this->assertTrue($s[1]);
+        $this->assertTrue($s[2]);
+    }
+
+    public function testNewWithDuplicatesFromTraversable(): void
+    {
+        $gen = (function () {
+            yield 'a';
+            yield 'a';
+            yield 'b';
+        })();
+        $s = Set::new($gen);
+        $this->assertCount(2, $s);
+        $this->assertTrue($s['a']);
+        $this->assertTrue($s['b']);
+    }
+
     public function testForeach(): void
     {
         $s = Set::new([1]);
