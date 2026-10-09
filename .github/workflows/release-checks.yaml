@@ -23,6 +23,7 @@ jobs:
 
                 // check for open PRs which contain the 'next release' label
                 const openPRs = pulls.filter(pr =>
+                  pr.number !== context.payload.pull_request.number &&
                   pr.labels.some(label => label.name === 'next release')
                 ).map(pr => `  - #${pr.number}: ${pr.title}`);
 
