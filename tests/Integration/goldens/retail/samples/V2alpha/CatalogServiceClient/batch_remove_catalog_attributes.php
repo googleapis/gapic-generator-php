@@ -49,7 +49,7 @@ function batch_remove_catalog_attributes_sample(
     $catalogServiceClient = new CatalogServiceClient();
 
     // Prepare the request message.
-    $attributeKeys = [$attributeKeysElement,];
+    $attributeKeys = [$attributeKeysElement];
     $request = (new BatchRemoveCatalogAttributesRequest())
         ->setAttributesConfig($formattedAttributesConfig)
         ->setAttributeKeys($attributeKeys);

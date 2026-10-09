@@ -49,7 +49,7 @@ function update_database_ddl_sample(string $formattedDatabase, string $statement
     $databaseAdminClient = new DatabaseAdminClient();
 
     // Prepare the request message.
-    $statements = [$statementsElement,];
+    $statements = [$statementsElement];
     $request = (new UpdateDatabaseDdlRequest())
         ->setDatabase($formattedDatabase)
         ->setStatements($statements);

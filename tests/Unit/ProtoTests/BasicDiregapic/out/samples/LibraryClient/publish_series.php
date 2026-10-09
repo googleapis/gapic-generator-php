@@ -57,9 +57,9 @@ function publish_series_sample(
         ->setName($shelfName);
     $bookResponse = (new BookResponse())
         ->setName($formattedBooksName);
-    $books = [$bookResponse,];
+    $books = [$bookResponse];
     $seriesUuid = new SeriesUuidResponse();
-    $genres = [$genresElement,];
+    $genres = [$genresElement];
     $request = (new PublishSeriesRequest())
         ->setShelf($shelf)
         ->setBooks($books)
