@@ -33,6 +33,7 @@ class FragmentInjectionProcessor implements ProcessorInterface
         T_ABSTRACT,
         T_DOC_COMMENT,
         T_COMMENT,
+        T_ATTRIBUTE,
     ];
 
     private string $contents;
@@ -164,6 +165,17 @@ class FragmentInjectionProcessor implements ProcessorInterface
             $token = $this->tokens[$i];
             if ($token->is(T_WHITESPACE)) {
                 continue;
+            }
+            if ($token->is(']')) {
+                $depth = 1;
+                while ($i > 0 && $depth > 0) {
+                    $token = $this->tokens[--$i];
+                    if ($token->is(']')) {
+                        $depth++;
+                    } elseif ($token->is(['[', T_ATTRIBUTE])) {
+                        $depth--;
+                    }
+                }
             }
             if ($token->is(self::METHOD_PREFIX_TOKENS)) {
                 $startLine = $token->line;

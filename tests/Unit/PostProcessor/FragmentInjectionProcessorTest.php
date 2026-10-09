@@ -48,6 +48,7 @@ class Bar
     /**
      * Empty method
      */
+    #[\ReturnTypeWillChange]
     public function bar()
     {
     }
@@ -66,7 +67,7 @@ EOL;
      * @runInSeparateProcess
      * @dataProvider provideAstMethodReplacer
      */
-    public function testAstMethodReplacer(string $classContents, string $insertBeforeMethod = null)
+    public function testAstMethodReplacer(string $classContents, ?string $insertBeforeMethod = null)
     {
         // the class / method to insert into
         // if no method is defined, the first method is used ("__construct" in this case)
@@ -81,6 +82,11 @@ EOL;
         // Test that the function exists as expected
         $b = new \Bar('bar');
         $this->assertEquals('bar', $b->methodOne());
+        if ($insertBeforeMethod === 'bar') {
+            $refMethod = new \ReflectionMethod(\Bar::class, 'bar');
+            $this->assertCount(1, $refMethod->getAttributes(\ReturnTypeWillChange::class));
+            $this->assertStringContainsString('Empty method', (string) $refMethod->getDocComment());
+        }
     }
 
     public function provideAstMethodReplacer()
