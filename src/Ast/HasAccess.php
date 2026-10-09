@@ -29,6 +29,8 @@ class Access
 
 trait HasAccess
 {
+    private Vector $access;
+
     /**
      * Create a version of this ast element with access modifiers.
      *

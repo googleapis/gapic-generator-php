@@ -66,7 +66,7 @@ EOL;
      * @runInSeparateProcess
      * @dataProvider provideAstMethodReplacer
      */
-    public function testAstMethodReplacer(string $classContents, string $insertBeforeMethod = null)
+    public function testAstMethodReplacer(string $classContents, ?string $insertBeforeMethod = null)
     {
         // the class / method to insert into
         // if no method is defined, the first method is used ("__construct" in this case)

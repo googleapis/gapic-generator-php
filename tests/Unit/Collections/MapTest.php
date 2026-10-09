@@ -28,9 +28,8 @@ class Obj
 
 class ObjEq implements Equality
 {
-    public function __construct($id)
+    public function __construct(private $id)
     {
-        $this->id = $id;
     }
 
     public function getHash(): int
