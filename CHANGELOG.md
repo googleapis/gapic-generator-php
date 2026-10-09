@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.25.1](https://github.com/googleapis/gapic-generator-php/compare/v1.25.0...v1.25.1) (2026-10-09)
+
+
+### Bug Fixes
+
+* Remove abandoned symplify/coding-standard dependency ([#882](https://github.com/googleapis/gapic-generator-php/issues/882)) ([6ededdc](https://github.com/googleapis/gapic-generator-php/commit/6ededdc2b58a68fb5ff867dea94caddd26d64420))
+
 ## [1.25.0](https://github.com/googleapis/gapic-generator-php/compare/v1.24.0...v1.25.0) (2026-08-15)
 
 
