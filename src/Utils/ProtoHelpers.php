@@ -342,8 +342,12 @@ class ProtoHelpers
 
     // Return type is dependant on option type. Either string, int, or Vector of string or int,
     // or null if not repeated and value doesn't exist. Repeated returns empty vector if not exists.
-    private static function getCustomOptionRaw(Message $message, int $optionId, bool $repeated)
-    {
+    private static function getCustomOptionRaw(
+        Message $message,
+        int $optionId,
+        bool $repeated,
+        int $wireType = GPBWire::WIRETYPE_LENGTH_DELIMITED
+    ) {
         static $messageUnknown;
         if (!$messageUnknown) {
             $ref = new \ReflectionClass('Google\Protobuf\Internal\Message');
@@ -362,8 +366,9 @@ class ProtoHelpers
                 // must be parsed, otherwise return the first found.
                 while (($tag = $unknownStream->readTag()) !== 0) {
                     $value = 0;
+                    $tagWireType = GPBWire::getTagWireType($tag);
                     // TODO: Handle extra option types as required.
-                    switch (GPBWire::getTagWireType($tag)) {
+                    switch ($tagWireType) {
                         case GPBWire::WIRETYPE_VARINT:
                             $unknownStream->readVarint32($value);
                             break;
@@ -377,7 +382,21 @@ class ProtoHelpers
                     }
                     if (GPBWire::getTagFieldNumber($tag) === $optionId) {
                         if ($repeated) {
-                            $values[] = $value;
+                            if (
+                                $wireType === GPBWire::WIRETYPE_VARINT
+                                && $tagWireType === GPBWire::WIRETYPE_LENGTH_DELIMITED
+                            ) {
+                                $packedStream = new CodedInputStream($value);
+                                while ($packedStream->bufferSize() > 0) {
+                                    $packedValue = 0;
+                                    if (!$packedStream->readVarint32($packedValue)) {
+                                        break;
+                                    }
+                                    $values[] = $packedValue;
+                                }
+                            } else {
+                                $values[] = $value;
+                            }
                         } else {
                             return $value;
                         }
@@ -426,12 +445,18 @@ class ProtoHelpers
      * @param mixed $message The message containing the custom option. Must be of type Message, or
      *     a descriptor with an `underlyingProto` property.
      * @param int $optionId The option-id of the option to get.
+     * @param ?string $msgClass Optional; to return a proto msg, set this to the PHP class of the msg.
+     * @param int $wireType Expected element wire type (e.g. GPBWire::WIRETYPE_VARINT for packed/unpacked int or enum options).
      *
      * @return Vector Will be an empty Vector if the option does not exist.
      */
-    public static function getCustomOptionRepeated($message, int $optionId, ?string $msgClass = null): Vector
-    {
-        $result = static::getCustomOptionRaw(static::conformMessage($message), $optionId, true);
+    public static function getCustomOptionRepeated(
+        $message,
+        int $optionId,
+        ?string $msgClass = null,
+        int $wireType = GPBWire::WIRETYPE_LENGTH_DELIMITED
+    ): Vector {
+        $result = static::getCustomOptionRaw(static::conformMessage($message), $optionId, true, $wireType);
         if (!is_null($msgClass)) {
             $result = $result->map(function ($x) use ($msgClass) {
                 $msg = new $msgClass();
@@ -454,8 +479,12 @@ class ProtoHelpers
 
     public static function isRequired(FieldDescriptorProto $field)
     {
-        return ProtoHelpers::getCustomOptionRepeated($field, CustomOptions::GOOGLE_API_FIELDBEHAVIOR)
-            ->contains(CustomOptions::GOOGLE_API_FIELDBEHAVIOR_REQUIRED);
+        return ProtoHelpers::getCustomOptionRepeated(
+            $field,
+            CustomOptions::GOOGLE_API_FIELDBEHAVIOR,
+            null,
+            GPBWire::WIRETYPE_VARINT
+        )->contains(CustomOptions::GOOGLE_API_FIELDBEHAVIOR_REQUIRED);
     }
 
     public static function fieldInfo(FieldDescriptorProto $field)
