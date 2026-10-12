@@ -446,7 +446,7 @@ class ProtoHelpers
      *     a descriptor with an `underlyingProto` property.
      * @param int $optionId The option-id of the option to get.
      * @param ?string $msgClass Optional; to return a proto msg, set this to the PHP class of the msg.
-     * @param int $wireType Expected element wire type (e.g. GPBWire::WIRETYPE_VARINT for packed/unpacked int or enum options).
+     * @param ?int $wireType Optional expected element wire type (e.g. GPBWire::WIRETYPE_VARINT for packed/unpacked int or enum options).
      *
      * @return Vector Will be an empty Vector if the option does not exist.
      */
@@ -454,8 +454,14 @@ class ProtoHelpers
         $message,
         int $optionId,
         ?string $msgClass = null,
-        int $wireType = GPBWire::WIRETYPE_LENGTH_DELIMITED
+        ?int $wireType = null
     ): Vector {
+        if ($wireType === null) {
+            $wireType = match ($optionId) {
+                CustomOptions::GOOGLE_API_FIELDBEHAVIOR => GPBWire::WIRETYPE_VARINT,
+                default => GPBWire::WIRETYPE_LENGTH_DELIMITED,
+            };
+        }
         $result = static::getCustomOptionRaw(static::conformMessage($message), $optionId, true, $wireType);
         if (!is_null($msgClass)) {
             $result = $result->map(function ($x) use ($msgClass) {
@@ -479,12 +485,8 @@ class ProtoHelpers
 
     public static function isRequired(FieldDescriptorProto $field)
     {
-        return ProtoHelpers::getCustomOptionRepeated(
-            $field,
-            CustomOptions::GOOGLE_API_FIELDBEHAVIOR,
-            null,
-            GPBWire::WIRETYPE_VARINT
-        )->contains(CustomOptions::GOOGLE_API_FIELDBEHAVIOR_REQUIRED);
+        return ProtoHelpers::getCustomOptionRepeated($field, CustomOptions::GOOGLE_API_FIELDBEHAVIOR)
+            ->contains(CustomOptions::GOOGLE_API_FIELDBEHAVIOR_REQUIRED);
     }
 
     public static function fieldInfo(FieldDescriptorProto $field)
