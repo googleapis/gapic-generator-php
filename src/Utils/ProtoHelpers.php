@@ -348,7 +348,6 @@ class ProtoHelpers
         if (!$messageUnknown) {
             $ref = new \ReflectionClass('Google\Protobuf\Internal\Message');
             $messageUnknown = $ref->getProperty('unknown');
-            $messageUnknown->setAccessible(true);
         }
 
         $values = [];
