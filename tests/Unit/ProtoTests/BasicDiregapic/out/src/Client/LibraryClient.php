@@ -145,13 +145,13 @@ final class LibraryClient
      *
      * @deprecated SERVICE_ADDRESS_TEMPLATE should be used instead.
      */
-    private const SERVICE_ADDRESS = 'library-example.googleapis.com:1234';
+    private const SERVICE_ADDRESS = 'library-example.googleapis.com';
 
     /** The address template of the service. */
-    private const SERVICE_ADDRESS_TEMPLATE = 'library-example.UNIVERSE_DOMAIN:1234';
+    private const SERVICE_ADDRESS_TEMPLATE = 'library-example.UNIVERSE_DOMAIN';
 
     /** The default port of the service. */
-    private const DEFAULT_SERVICE_PORT = 443;
+    private const DEFAULT_SERVICE_PORT = 1234;
 
     /** The name of the code generator, to be included in the agent header. */
     private const CODEGEN_NAME = 'gapic';
@@ -592,7 +592,7 @@ final class LibraryClient
      *
      *     @type string $apiEndpoint
      *           The address of the API remote host. May optionally include the port, formatted
-     *           as "<uri>:<port>". Default 'library-example.googleapis.com:1234:443'.
+     *           as "<uri>:<port>". Default 'library-example.googleapis.com:1234'.
      *     @type FetchAuthTokenInterface|CredentialsWrapper $credentials
      *           This option should only be used with a pre-constructed
      *           {@see FetchAuthTokenInterface} or {@see CredentialsWrapper} object. Note that
