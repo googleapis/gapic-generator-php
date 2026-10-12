@@ -48,7 +48,7 @@ function method_empty_sample(): void
     try {
         /** @var BidiStream $stream */
         $stream = $basicBidiStreamingClient->methodEmpty();
-        $stream->writeAll([$request,]);
+        $stream->writeAll([$request]);
 
         /** @var Response $element */
         foreach ($stream->closeWriteAndReadAll() as $element) {

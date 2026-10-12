@@ -45,7 +45,7 @@ function method_client_sample(int $aNumber): void
         $stream = $basicClientStreamingClient->methodClient();
 
         /** @var Response $response */
-        $response = $stream->writeAllAndReadResponse([$request,]);
+        $response = $stream->writeAllAndReadResponse([$request]);
         printf('Response data: %s' . PHP_EOL, $response->serializeToJsonString());
     } catch (ApiException $ex) {
         printf('Call failed with message: %s' . PHP_EOL, $ex->getMessage());

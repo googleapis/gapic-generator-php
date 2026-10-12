@@ -48,7 +48,7 @@ function method1_bidi_streaming_sample(): void
     try {
         /** @var BidiStream $stream */
         $stream = $grpcServiceConfigWithRetry1Client->method1BidiStreaming();
-        $stream->writeAll([$request,]);
+        $stream->writeAll([$request]);
 
         /** @var Response1 $element */
         foreach ($stream->closeWriteAndReadAll() as $element) {

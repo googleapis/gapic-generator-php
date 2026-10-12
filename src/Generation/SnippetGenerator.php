@@ -560,6 +560,7 @@ class SnippetGenerator
         $call = $methodDetails->isClientStreaming() || $methodDetails->isBidiStreaming()
             ? $call()
             : $call($arguments);
+        $call->wrap = true;
         return $vector->append(
             $methodDetails->hasEmptyResponse
                 ? $call
