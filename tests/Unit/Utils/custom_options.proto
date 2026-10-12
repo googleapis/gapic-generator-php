@@ -9,6 +9,7 @@ extend google.protobuf.FileOptions {
     string string_option = 2001;
     repeated int32 repeated_int_option = 2002;
     repeated string repeated_string_option = 2003;
+    repeated int32 repeated_unpacked_int_option = 2004 [packed = false];
 }
 
 option (int_option) = 42;
@@ -18,3 +19,6 @@ option (repeated_int_option) = 9;
 option (repeated_int_option) = 10;
 option (repeated_string_option) = "s1";
 option (repeated_string_option) = "s2";
+option (repeated_unpacked_int_option) = 11;
+option (repeated_unpacked_int_option) = 12;
+option (repeated_unpacked_int_option) = 13;
