@@ -21,7 +21,6 @@ namespace Google\Generator\Ast;
 use Google\Generator\Collections\Vector;
 use Google\Generator\Utils\ResolvedType;
 use Google\Generator\Utils\Type;
-use RuntimeException;
 
 /** An interface definition. */
 final class PhpInterface extends AST
@@ -29,7 +28,7 @@ final class PhpInterface extends AST
     use HasPhpDoc;
 
     /**
-     * @param Type $type *Readonly* The type of this class.
+     * @param Type $type *Readonly* The type of this interface.
      * @param ?ResolvedType $extends
      */
     public function __construct(
@@ -39,11 +38,11 @@ final class PhpInterface extends AST
         $this->members = Vector::new();
     }
 
-    /** @var Vector *Readonly* Vector of PhpClassMember; all members of this class. */
+    /** @var Vector *Readonly* Vector of PhpClassMember; all members of this interface. */
     public Vector $members;
 
     /**
-     * Create a class with an additional member.
+     * Create an interface with an additional member.
      *
      * @param ?PhpClassMember $member The member to add. Ignored if null.
      *
@@ -56,7 +55,7 @@ final class PhpInterface extends AST
     }
 
     /**
-     * Create a class with additional members.
+     * Create an interface with additional members.
      *
      * @param Vector $members Vector of PhpClassMember; the members to add.
      *
@@ -71,9 +70,7 @@ final class PhpInterface extends AST
     }
 
     /**
-     * Generates PHP code of the class.
-     *
-     * @throws RuntimeException When $abstract and $final both are set.
+     * Generates PHP code of the interface.
      */
     public function toCode(): string
     {

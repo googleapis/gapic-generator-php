@@ -107,9 +107,12 @@ final class PhpFunction extends AST implements ShouldNotApplySemicolonInterface
 
     public function toCode(): string
     {
-        $fnSignatureDeclaration =
-            "function {$this->name}({$this->params->map(fn ($x) => static::toPhp($x))->join(', ')})" .
-            ($this->returnType ? ': ' . static::toPhp($this->returnType) : null);
+        $params = $this->params->map(fn ($x) => static::toPhp($x));
+        $returnType = $this->returnType ? ': ' . static::toPhp($this->returnType) : '';
+        $fnSignatureDeclaration = "function {$this->name}({$params->join(', ')}){$returnType}";
+        if (strlen($fnSignatureDeclaration) >= 99) {
+            $fnSignatureDeclaration = "function {$this->name}(\n{$params->join(",\n")}\n){$returnType}";
+        }
 
         $code = $this->phpDocToCode() .
                 $fnSignatureDeclaration .

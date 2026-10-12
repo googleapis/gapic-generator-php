@@ -16,6 +16,7 @@
  */
 declare(strict_types=1);
 
+use Google\Protobuf\Internal\CodedInputStream;
 use function Opis\Closure\{serialize, unserialize};
 
 if (!isset($GLOBALS['gapic_php_test_temp_files'])) {
@@ -64,9 +65,8 @@ class FakeMessage extends \Google\Protobuf\Internal\Message
         }
     }
 
-    public function serializeToString(
-        $recursion_limit = \Google\Protobuf\Internal\CodedInputStream::DEFAULT_RECURSION_LIMIT
-    ) {
+    public function serializeToString($recursion_limit = CodedInputStream::DEFAULT_RECURSION_LIMIT)
+    {
         // This serialization does not need to be compatible with real proto serialization.
         $result = '';
         foreach ($this as $name => $value) {
@@ -76,10 +76,8 @@ class FakeMessage extends \Google\Protobuf\Internal\Message
         return $result;
     }
 
-    public function mergeFromString(
-        $s,
-        $recursion_limit = \Google\Protobuf\Internal\CodedInputStream::DEFAULT_RECURSION_LIMIT
-    ) {
+    public function mergeFromString($s, $recursion_limit = CodedInputStream::DEFAULT_RECURSION_LIMIT)
+    {
         $pos = 0;
         while ($pos < strlen($s)) {
             $colon1 = strpos($s, ':', $pos);

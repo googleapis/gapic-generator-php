@@ -51,7 +51,7 @@ function streaming_recognize_sample(): void
     try {
         /** @var BidiStream $stream */
         $stream = $speechClient->streamingRecognize();
-        $stream->writeAll([$request,]);
+        $stream->writeAll([$request]);
 
         /** @var StreamingRecognizeResponse $element */
         foreach ($stream->closeWriteAndReadAll() as $element) {

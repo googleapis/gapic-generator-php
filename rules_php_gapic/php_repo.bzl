@@ -124,6 +124,7 @@ def _find_ws_root(path):
     fail("Cannot find workspace root.")
 
 def _php_composer_install_impl(ctx):
+    ctx.read(ctx.attr.composer_json)
     ws_path = _find_ws_root(ctx.path(ctx.attr.composer_json).dirname)
     composer_json_relative = str(ctx.path(ctx.attr.composer_json))[len(str(ws_path)):]
     # Copy entire source workspace into the restored repo, then run `composer install`.
