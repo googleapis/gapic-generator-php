@@ -56,10 +56,10 @@ final class DeprecatedServiceClient
     private const SERVICE_NAME = 'testing.deprecated_service.DeprecatedService';
 
     /** The default address of the service. */
-    private const SERVICE_ADDRESS = 'localhost:7469';
+    private const SERVICE_ADDRESS = 'localhost';
 
     /** The default port of the service. */
-    private const DEFAULT_SERVICE_PORT = 443;
+    private const DEFAULT_SERVICE_PORT = 7469;
 
     /** The name of the code generator, to be included in the agent header. */
     private const CODEGEN_NAME = 'gapic';
@@ -100,7 +100,7 @@ final class DeprecatedServiceClient
      *
      *     @type string $apiEndpoint
      *           The address of the API remote host. May optionally include the port, formatted
-     *           as "<uri>:<port>". Default 'localhost:7469:443'.
+     *           as "<uri>:<port>". Default 'localhost:7469'.
      *     @type FetchAuthTokenInterface|CredentialsWrapper $credentials
      *           This option should only be used with a pre-constructed
      *           {@see FetchAuthTokenInterface} or {@see CredentialsWrapper} object. Note that

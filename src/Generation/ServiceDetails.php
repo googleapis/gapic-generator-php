@@ -171,8 +171,10 @@ class ServiceDetails
         $this->docLines = $desc->leadingComments;
         $this->serviceName = "{$package}.{$desc->getName()}";
         $this->shortName = $desc->getName();
-        $this->defaultHost = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_API_DEFAULTHOST);
-        $this->defaultPort = 443;
+        $defaultHost = ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_API_DEFAULTHOST);
+        $hostParts = explode(':', $defaultHost ?? '', 2);
+        $this->defaultHost = $hostParts[0];
+        $this->defaultPort = isset($hostParts[1]) ? (int) $hostParts[1] : 443;
         $this->defaultScopes =
             Vector::new(explode(',', ProtoHelpers::getCustomOption($desc, CustomOptions::GOOGLE_API_OAUTHSCOPES) ?? ''))
                 ->filter(fn ($x) => $x != '')
