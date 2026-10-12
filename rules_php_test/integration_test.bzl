@@ -1,5 +1,5 @@
 def _php_diff_integration_goldens_impl(ctx):
-    # Extract the Java source files from the generated 3 srcjars from API bazel target,
+    # Extract the source files from the generated srcjar from API bazel target,
     # and put them in the temporary folder `codegen_tmp`.
     # Compare the `codegen_tmp` with the goldens folder (e.g tests/Integration/goldens/asset)
     # and save the differences in output file `diff_output.txt`.
@@ -72,78 +72,6 @@ php_diff_integration_goldens_test = rule(
 def php_integration_test(name, target, data):
     # php_gapic_library generates only one srcjar.
     php_diff_integration_goldens_test(
-        name = name,
-        gapic_library = target,
-        srcs = data,
-    )
-
-def _php_overwrite_golden_impl(ctx):
-    # Extract source files from the srcjar generated from php_gapic_library into
-    # a temporary folder (codegen_tmp) and zip into goldens_output_zip.
-    # Overwrite the goldens dir (e.g tests/Integration/goldens/asset) with newly generated code.
-    gapic_library = ctx.attr.gapic_library
-    srcs = ctx.files.srcs
-
-    # Convert the name of bazel rules e.g. `redis_update` to `redis`
-    # because we will need to overwrite the goldens files in `redis` folder.
-    api_name = "_".join(ctx.attr.name.split("_")[:-1])
-    goldens_output_zip = ctx.outputs.goldens_output_zip
-
-    script = """
-    mkdir codegen_tmp
-    unzip {input_srcs} -d codegen_tmp
-    cd codegen_tmp
-    zip -r ../{goldens_output_zip} .
-    """.format(
-        goldens_output_zip = goldens_output_zip.path,
-        input_srcs = gapic_library[DefaultInfo].files.to_list()[0].path,
-    )
-
-    ctx.actions.run_shell(
-        inputs = srcs + [
-            gapic_library[DefaultInfo].files.to_list()[0],
-        ],
-        outputs = [goldens_output_zip],
-        command = script,
-    )
-
-    # Overwrite the goldens.
-    golden_update_script_content = """
-    cd ${{BUILD_WORKSPACE_DIRECTORY}}
-    # Filename pattern-based removal is needed to preserve the BUILD.bazel file.
-    find tests/Integration/goldens/{api_name}/ -name \\*.txt -type f -delete
-    find tests/Integration/goldens/{api_name}/ -name \\*.php -type f -delete
-    find tests/Integration/goldens/{api_name}/ -name \\*.json -type f -delete
-    unzip -ao {goldens_output_zip} -d tests/Integration/goldens/{api_name}
-    """.format(
-        goldens_output_zip = goldens_output_zip.path,
-        api_name = api_name,
-    )
-    ctx.actions.write(
-        output = ctx.outputs.golden_update_script,
-        content = golden_update_script_content,
-        is_executable = True,
-    )
-    return [DefaultInfo(executable = ctx.outputs.golden_update_script)]
-
-php_overwrite_golden = rule(
-    attrs = {
-        "gapic_library": attr.label(),
-        "srcs": attr.label_list(
-            allow_files = True,
-            mandatory = True,
-        ),
-    },
-    outputs = {
-        "goldens_output_zip": "%{name}.zip",
-        "golden_update_script": "%{name}.sh",
-    },
-    executable = True,
-    implementation = _php_overwrite_golden_impl,
-)
-
-def php_golden_update(name, target, data):
-    php_overwrite_golden(
         name = name,
         gapic_library = target,
         srcs = data,
