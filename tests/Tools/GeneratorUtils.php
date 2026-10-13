@@ -112,28 +112,22 @@ class GeneratorUtils
             true,
         );
 
-        $fragmentProtoFiles = [];
         foreach ($files as [$relativeFilename, $code]) {
-            if (str_starts_with($relativeFilename, 'fragments/') && str_ends_with($relativeFilename, '.build.txt')) {
-                $fragmentPath = $tmpDir . '/' . $relativeFilename;
-                if (!is_dir(dirname($fragmentPath))) {
-                    mkdir(dirname($fragmentPath), 0777, true);
-                }
-                file_put_contents($fragmentPath, $code);
-                $fragmentProtoFiles[] = str_replace(['fragments/', '.build.txt'], ['proto/src/', '.php'], $relativeFilename);
+            $filePath = $tmpDir . '/' . $relativeFilename;
+            if (!is_dir(dirname($filePath))) {
+                mkdir(dirname($filePath), 0777, true);
             }
+            file_put_contents($filePath, $code);
         }
 
-        if (!empty($fragmentProtoFiles)) {
-            ob_start();
-            PostProcessor::process(['base_dir' => '', 'input' => $tmpDir]);
-            ob_end_clean();
+        ob_start();
+        PostProcessor::process(['base_dir' => dirname($tmpDir), 'input' => basename($tmpDir)]);
+        $output = ob_get_clean();
 
-            foreach ($fragmentProtoFiles as $protoRelativeFilename) {
-                $protoFullPath = $tmpDir . '/' . $protoRelativeFilename;
-                if (file_exists($protoFullPath)) {
-                    $files[] = [$protoRelativeFilename, file_get_contents($protoFullPath)];
-                }
+        if (preg_match_all('/^Fragment written to (.+)$/m', $output, $matches)) {
+            foreach ($matches[1] as $protoFullPath) {
+                $protoRelativeFilename = substr($protoFullPath, strlen($tmpDir) + 1);
+                $files[] = [$protoRelativeFilename, file_get_contents($protoFullPath)];
             }
         }
 
