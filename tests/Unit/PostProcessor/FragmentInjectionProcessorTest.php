@@ -63,19 +63,52 @@ class Bar
 }
 EOL;
 
+    private $classContents3 = <<<'EOL'
+<?php
+class Bar
+{
+    /**
+     * Some property.
+     */
+    protected $foo = '';
+
+    /**
+     * The constructor
+     */
+    public function __construct(string $foo)
+    {
+        $this->foo = $foo;
+    }
+
+    /**
+     * Empty method
+     */
+    #[\ReturnTypeWillChange]
+    public function bar()
+    {
+    }
+}
+EOL;
+
     /**
      * @runInSeparateProcess
      * @dataProvider provideAstMethodReplacer
      */
-    public function testAstMethodReplacer(string $classContents, ?string $insertBeforeMethod = null)
-    {
+    public function testAstMethodReplacer(
+        string $classContents,
+        string $expectedContents,
+        ?string $insertBeforeMethod = null,
+        ?string $fragment = null
+    ) {
         // the class / method to insert into
         // if no method is defined, the first method is used ("__construct" in this case)
         $addFragmentUtil = new FragmentInjectionProcessor($classContents);
 
         // Insert the function before this one
-        $addFragmentUtil->insert($this->methodFragment, $insertBeforeMethod);
+        $addFragmentUtil->insert($fragment ?? $this->methodFragment, $insertBeforeMethod);
         $newClassContents = $addFragmentUtil->getContents();
+
+        $this->assertSame($expectedContents, $newClassContents);
 
         eval(ltrim($newClassContents, '<?php'));
 
@@ -91,10 +124,151 @@ EOL;
 
     public function provideAstMethodReplacer()
     {
+        $expected1 = <<<'EOL'
+<?php
+class Bar
+{
+    /**
+     * The fragment
+     */
+    public function methodOne(): string
+    {
+        return $this->foo;
+    }
+    /**
+     * The constructor
+     */
+    public function __construct(private string $foo)
+    {
+    }
+    /**
+     * Empty method
+     */
+    #[\ReturnTypeWillChange]
+    public function bar()
+    {
+    }
+}
+EOL;
+
+        $expected1BeforeBar = <<<'EOL'
+<?php
+class Bar
+{
+    /**
+     * The constructor
+     */
+    public function __construct(private string $foo)
+    {
+    }
+    /**
+     * The fragment
+     */
+    public function methodOne(): string
+    {
+        return $this->foo;
+    }
+    /**
+     * Empty method
+     */
+    #[\ReturnTypeWillChange]
+    public function bar()
+    {
+    }
+}
+EOL;
+
+        $expected2 = <<<'EOL'
+<?php
+class Bar
+{
+    private $foo = 'bar';
+    /**
+     * The fragment
+     */
+    public function methodOne(): string
+    {
+        return $this->foo;
+    }
+}
+EOL;
+
+        $expected3 = <<<'EOL'
+<?php
+class Bar
+{
+    /**
+     * Some property.
+     */
+    protected $foo = '';
+
+    /**
+     * The fragment
+     */
+    public function methodOne(): string
+    {
+        return $this->foo;
+    }
+
+    /**
+     * The constructor
+     */
+    public function __construct(string $foo)
+    {
+        $this->foo = $foo;
+    }
+
+    /**
+     * Empty method
+     */
+    #[\ReturnTypeWillChange]
+    public function bar()
+    {
+    }
+}
+EOL;
+
+        $expected3BeforeBar = <<<'EOL'
+<?php
+class Bar
+{
+    /**
+     * Some property.
+     */
+    protected $foo = '';
+
+    /**
+     * The constructor
+     */
+    public function __construct(string $foo)
+    {
+        $this->foo = $foo;
+    }
+
+    /**
+     * The fragment
+     */
+    public function methodOne(): string
+    {
+        return $this->foo;
+    }
+
+    /**
+     * Empty method
+     */
+    #[\ReturnTypeWillChange]
+    public function bar()
+    {
+    }
+}
+EOL;
+
         return [
-            [$this->classContents1],
-            [$this->classContents1, 'bar'],
-            [$this->classContents2],
+            [$this->classContents1, $expected1],
+            [$this->classContents1, $expected1BeforeBar, 'bar'],
+            [$this->classContents2, $expected2],
+            [$this->classContents3, $expected3, null, PHP_EOL . $this->methodFragment],
+            [$this->classContents3, $expected3BeforeBar, 'bar', PHP_EOL . $this->methodFragment],
         ];
     }
 
