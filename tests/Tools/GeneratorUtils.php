@@ -112,6 +112,11 @@ class GeneratorUtils
             true,
         );
 
+        return self::runPostProcessor($files, $tmpDir);
+    }
+
+    private static function runPostProcessor(array $files, string $tmpDir): array
+    {
         foreach ($files as [$relativeFilename, $code]) {
             $filePath = $tmpDir . '/' . $relativeFilename;
             if (!is_dir(dirname($filePath))) {
