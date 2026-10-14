@@ -67,6 +67,7 @@ final class MethodDetailsTest extends TestCase
     {
         return [
             ['CreateYouTubeVideoUpload', 'google.ads.googleads.v23.services', MethodDetails::RESUMABLE_UPLOAD],
+            ['CreateYouTubeVideoUpload', 'google.ads.googleads.v24.services', MethodDetails::RESUMABLE_UPLOAD],
             ['CreateYouTubeVideoUpload', 'testing.resumableupload', MethodDetails::RESUMABLE_UPLOAD],
             ['CreateYouTubeVideoUpload', 'google.showcase.v1beta1', MethodDetails::NORMAL],
             ['CreateYouTubeVideoUpload', 'google.example.v1', MethodDetails::NORMAL],
