@@ -181,7 +181,7 @@ class FragmentInjectionProcessor implements ProcessorInterface
                 $startLine = $token->line;
                 continue;
             }
-            break;
+            return $token->line + substr_count($token->text, "\n") + 1;
         }
 
         return $startLine;

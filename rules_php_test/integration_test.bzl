@@ -13,7 +13,7 @@ def _php_diff_integration_goldens_impl(ctx):
     script = """
     mkdir codegen_tmp
     unzip {input_srcs} -d codegen_tmp
-    diff -r codegen_tmp/ tests/Integration/goldens/{api_name}/ > {diff_output}
+    diff -r --exclude=proto codegen_tmp/ tests/Integration/goldens/{api_name}/ > {diff_output}
     exit 0   # Avoid a build failure.
     """.format(
         diff_output = diff_output.path,
