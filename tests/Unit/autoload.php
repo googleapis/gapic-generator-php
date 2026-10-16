@@ -16,6 +16,7 @@
  */
 declare(strict_types=1);
 
+use Google\Protobuf\Internal\CodedInputStream;
 use function Opis\Closure\{serialize, unserialize};
 use Google\Protobuf\Internal\CodedInputStream;
 
@@ -65,7 +66,7 @@ class FakeMessage extends \Google\Protobuf\Internal\Message
         }
     }
 
-    public function serializeToString()
+    public function serializeToString($recursion_limit = CodedInputStream::DEFAULT_RECURSION_LIMIT)
     {
         // This serialization does not need to be compatible with real proto serialization.
         $result = '';
