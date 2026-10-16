@@ -55,7 +55,7 @@ use Psr\Log\LoggerInterface;
  *
  * @method PromiseInterface<PredictResponse> predictAsync(PredictRequest $request, array $optionalArgs = [])
  */
-final class PredictionServiceClient
+final class PredictionServiceClient implements PredictionServiceClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

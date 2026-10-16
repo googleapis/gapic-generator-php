@@ -85,7 +85,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<OperationResponse> tuneModelAsync(TuneModelRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<Model> updateModelAsync(UpdateModelRequest $request, array $optionalArgs = [])
  */
-final class ModelServiceClient
+final class ModelServiceClient implements ModelServiceClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

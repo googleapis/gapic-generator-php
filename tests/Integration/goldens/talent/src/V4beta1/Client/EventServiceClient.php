@@ -55,7 +55,7 @@ use Psr\Log\LoggerInterface;
  *
  * @method PromiseInterface<ClientEvent> createClientEventAsync(CreateClientEventRequest $request, array $optionalArgs = [])
  */
-final class EventServiceClient
+final class EventServiceClient implements EventServiceClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

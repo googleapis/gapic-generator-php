@@ -60,7 +60,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<PagedListResponse> listLogMetricsAsync(ListLogMetricsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<LogMetric> updateLogMetricAsync(UpdateLogMetricRequest $request, array $optionalArgs = [])
  */
-final class MetricsServiceV2Client
+final class MetricsServiceV2Client implements MetricsServiceV2ClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

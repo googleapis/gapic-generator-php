@@ -108,7 +108,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<Feed> updateFeedAsync(UpdateFeedRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<SavedQuery> updateSavedQueryAsync(UpdateSavedQueryRequest $request, array $optionalArgs = [])
  */
-final class AssetServiceClient
+final class AssetServiceClient implements AssetServiceClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

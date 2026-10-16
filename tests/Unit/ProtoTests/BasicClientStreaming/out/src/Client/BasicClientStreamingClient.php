@@ -40,7 +40,7 @@ use Psr\Log\LoggerInterface;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  */
-final class BasicClientStreamingClient
+final class BasicClientStreamingClient implements BasicClientStreamingClientInterface
 {
     use GapicClientTrait;
 

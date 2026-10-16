@@ -49,7 +49,7 @@ use Psr\Log\LoggerInterface;
  *
  * @method PromiseInterface<OperationResponse> annotateVideoAsync(AnnotateVideoRequest $request, array $optionalArgs = [])
  */
-final class VideoIntelligenceServiceClient
+final class VideoIntelligenceServiceClient implements VideoIntelligenceServiceClientInterface
 {
     use GapicClientTrait;
 

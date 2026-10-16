@@ -200,7 +200,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<Source> updateSourceAsync(UpdateSourceRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<ValidateEventThreatDetectionCustomModuleResponse> validateEventThreatDetectionCustomModuleAsync(ValidateEventThreatDetectionCustomModuleRequest $request, array $optionalArgs = [])
  */
-final class SecurityCenterClient
+final class SecurityCenterClient implements SecurityCenterClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

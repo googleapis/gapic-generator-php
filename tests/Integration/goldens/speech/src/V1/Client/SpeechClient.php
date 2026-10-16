@@ -58,7 +58,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<OperationResponse> longRunningRecognizeAsync(LongRunningRecognizeRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<RecognizeResponse> recognizeAsync(RecognizeRequest $request, array $optionalArgs = [])
  */
-final class SpeechClient
+final class SpeechClient implements SpeechClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

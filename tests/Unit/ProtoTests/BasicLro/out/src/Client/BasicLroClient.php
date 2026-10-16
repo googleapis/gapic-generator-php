@@ -50,7 +50,7 @@ use Testing\BasicLro\Request;
  * @method PromiseInterface<Request> methodNonLro1Async(Request $request, array $optionalArgs = [])
  * @method PromiseInterface<Request> methodNonLro2Async(Request $request, array $optionalArgs = [])
  */
-final class BasicLroClient
+final class BasicLroClient implements BasicLroClientInterface
 {
     use GapicClientTrait;
 

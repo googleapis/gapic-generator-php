@@ -54,7 +54,7 @@ use Testing\DiregapicPaginated\Request;
  * @method PromiseInterface<PagedListResponse> multipleListMethodAsync(Request $request, array $optionalArgs = [])
  * @method PromiseInterface<NonPaginatedResponse> nonPaginatedMethodAsync(Request $request, array $optionalArgs = [])
  */
-final class HeuristicPaginationClientClient
+final class HeuristicPaginationClientClient implements HeuristicPaginationClientClientInterface
 {
     use GapicClientTrait;
 

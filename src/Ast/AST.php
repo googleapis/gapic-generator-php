@@ -154,11 +154,11 @@ abstract class AST
     /**
      * Create a PHP file.
      *
-     * @param ?PhpClass $class The class to be contained within this file.
+     * @param PhpClass|PhpInterface|null $class The class to be contained within this file.
      *
      * @return PhpFile
      */
-    public static function file(?PhpClass $class): PhpFile
+    public static function file(PhpClass|PhpInterface|null $class): PhpFile
     {
         return new PhpFile($class);
     }
@@ -180,6 +180,19 @@ abstract class AST
         bool $abstract = false
     ): PhpClass {
         return new PhpClass($type, $extends, $final, $abstract);
+    }
+
+    /**
+     * Create an interface.
+     *
+     * @param Type $type The type of the class to create.
+     * @param ?ResolvedType $extends
+     *
+     * @return PhpInterface
+     */
+    public static function interface(Type $type, ?ResolvedType $extends = null): PhpInterface
+    {
+        return new PhpInterface($type, $extends);
     }
 
     /**
