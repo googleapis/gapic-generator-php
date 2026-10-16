@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.25.3](https://github.com/googleapis/gapic-generator-php/compare/v1.25.2...v1.25.3) (2026-10-16)
+
+
+### Bug Fixes
+
+* Verify proto package for resumable upload method allowlist ([#895](https://github.com/googleapis/gapic-generator-php/issues/895)) ([6b11a1c](https://github.com/googleapis/gapic-generator-php/commit/6b11a1cb2fcc6e01f2fbc2bbd3c6ba854777db2c))
+
 ## [1.25.2](https://github.com/googleapis/gapic-generator-php/compare/v1.25.1...v1.25.2) (2026-10-13)
 
 
