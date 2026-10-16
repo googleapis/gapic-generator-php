@@ -18,9 +18,13 @@ declare(strict_types=1);
 
 namespace Google\Generator\Tests\Tools;
 
+use FilesystemIterator;
 use Google\Generator\CodeGenerator;
 use Google\Generator\Collections\Vector;
+use Google\PostProcessor\PostProcessor;
 use Google\Protobuf\Internal\FileDescriptorSet;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 class GeneratorUtils
 {
@@ -88,12 +92,14 @@ class GeneratorUtils
         ];
         $allProtos = array_values(array_unique(array_merge($protos, $extraProtos)));
         $filesToGenerate = array_map(fn ($p) => preg_replace('#^googleapis/#', '', $p), $allProtos);
-        $descBytes = ProtoLoader::loadDescriptorBytesFromPaths($allProtos);
+        $tmpDir = sys_get_temp_dir() . '/gapic_integration_' . uniqid('', true);
+        mkdir($tmpDir . '/proto/src', 0777, true);
+        $descBytes = ProtoLoader::loadDescriptorBytesFromPaths($allProtos, $tmpDir . '/proto/src');
         $descSet = new FileDescriptorSet();
         $descSet->mergeFromString($descBytes);
         $fileDescs = Vector::new($descSet->getFile());
 
-        return CodeGenerator::generate(
+        $files = CodeGenerator::generate(
             $fileDescs,
             Vector::new($filesToGenerate),
             $config['transport'] ?? 'grpc+rest',
@@ -105,5 +111,52 @@ class GeneratorUtils
             2026, // Avoid updating tests all the time.
             true,
         );
+
+        return self::runPostProcessor($files, $tmpDir);
+    }
+
+    private static function runPostProcessor(array $files, string $tmpDir): array
+    {
+        foreach ($files as [$relativeFilename, $code]) {
+            $filePath = $tmpDir . '/' . $relativeFilename;
+            if (!is_dir(dirname($filePath))) {
+                mkdir(dirname($filePath), 0777, true);
+            }
+            file_put_contents($filePath, $code);
+        }
+
+        ob_start();
+        PostProcessor::process(['base_dir' => dirname($tmpDir), 'input' => basename($tmpDir)]);
+        $output = ob_get_clean();
+
+        if (preg_match_all('/^Fragment written to (.+)$/m', $output, $matches)) {
+            foreach ($matches[1] as $protoFullPath) {
+                $protoRelativeFilename = substr($protoFullPath, strlen($tmpDir) + 1);
+                $files[] = [$protoRelativeFilename, file_get_contents($protoFullPath)];
+            }
+        }
+
+        self::deleteDirectory($tmpDir);
+
+        return $files;
+    }
+
+    private static function deleteDirectory(string $dir): void
+    {
+        if (!is_dir($dir)) {
+            return;
+        }
+        $items = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::CHILD_FIRST
+        );
+        foreach ($items as $item) {
+            if ($item->isDir()) {
+                rmdir($item->getPathname());
+            } else {
+                unlink($item->getPathname());
+            }
+        }
+        rmdir($dir);
     }
 }
