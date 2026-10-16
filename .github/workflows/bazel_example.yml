@@ -12,7 +12,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-26.04
-    container: gcr.io/gapic-images/googleapis@sha256:451d6555c312e790ffb591f7d65e34109de2ca710d102070b8a8a69c0429c996
+    container: gcr.io/gapic-images/googleapis@sha256:e38933fccb30e24bf8b6a3024a2125f27879fd68d0c0f7eb457c96036eb1b3de
 
     steps:
     - name: Checkout code
@@ -29,7 +29,7 @@ jobs:
       run: |
         bazel --batch test tests/Integration:asset --noshow_progress --cache_test_results=no --test_output=errors
 
-    - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+    - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
       if: ${{ failure() }}
       with:
         name: test-artifacts

@@ -84,12 +84,16 @@ abstract class MethodDetails
             return null;
         }
 
-        $isMediaUpload = false;
         if (method_exists($httpRule, 'getMediaUpload')) {
             $isMediaUpload = (bool) $httpRule->getMediaUpload()?->getEnabled();
-        } elseif ($desc->getName() === 'CreateYouTubeVideoUpload' || $desc->getName() === 'UploadMedia') {
-            // @TODO: Remove hardcoded CreateYouTubeVideoUpload method once getMediaUpload annotation is available in common-protos
-            $isMediaUpload = true;
+        } else {
+            // @TODO: Remove hardcoded RPC names once getMediaUpload annotation is available in common-protos
+            $isMediaUpload = match ($desc->getName()) {
+                'CreateYouTubeVideoUpload' => str_starts_with($svc->package, 'google.ads.googleads.')
+                    || $svc->package === 'testing.resumableupload',
+                'UploadMedia' => $svc->package === 'google.showcase.v1beta1',
+                default => false,
+            };
         }
 
         if (!$isMediaUpload) {

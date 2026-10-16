@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.25.2](https://github.com/googleapis/gapic-generator-php/compare/v1.25.1...v1.25.2) (2026-10-13)
+
+
+### Bug Fixes
+
+* Preserve blank line before injected fragments in FragmentInjectionProcessor ([#893](https://github.com/googleapis/gapic-generator-php/issues/893)) ([ed3bc4e](https://github.com/googleapis/gapic-generator-php/commit/ed3bc4e3b32cffd97b1a41caa12223c519298d04))
+
 ## [1.25.1](https://github.com/googleapis/gapic-generator-php/compare/v1.25.0...v1.25.1) (2026-10-12)
 
 

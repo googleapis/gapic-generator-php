@@ -41,10 +41,11 @@ class ProtoLoader
      * Load descriptor set bytes from the specified proto paths relative to the repo root directory.
      *
      * @param string[] $protoPaths The proto paths relative to the repo root directory.
+     * @param ?string $phpOutDir Optional directory to output generated PHP proto classes.
      *
      * @return string
      */
-    public static function loadDescriptorBytesFromPaths(array $protoPaths): string
+    public static function loadDescriptorBytesFromPaths(array $protoPaths, ?string $phpOutDir = null): string
     {
         // Set up required file locations and create tmp output file for protoc invocation.
         // Assumes tests are executed from within the repo root directory.
@@ -57,10 +58,11 @@ class ProtoLoader
         $descRes = tmpfile();
         $descFilename = stream_get_meta_data($descRes)['uri'];
         $inputs = implode(' ', array_map(fn ($path) => escapeshellarg("{$cwd}/{$path}"), $protoPaths));
+        $phpOutArg = $phpOutDir !== null ? '--php_out=' . escapeshellarg($phpOutDir) . ' ' : '';
         // Invoke protoc to build the descriptor of the test proto.
         $protobuf = "{$cwd}/protobuf/src/";
         $googleapis = "{$cwd}/googleapis/";
-        $protocCmdLine = "{$protoc} --include_imports --include_source_info -o {$descFilename} " .
+        $protocCmdLine = "{$protoc} --include_imports --include_source_info -o {$descFilename} {$phpOutArg}" .
             "-I {$googleapis} -I {$protobuf} -I {$cwd} {$inputs} 2>&1";
         $output = [];
         $result = -1;
