@@ -22,8 +22,27 @@ jobs:
 
     - name: Install PHP
       uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # v2
+      env:
+        update: true
       with:
         php-version: '8.2'
+        ini-values: session.upload_progress.enabled=0
+
+    - name: Verify PHP version
+      run: |
+        php -v
+        php -r '
+          $v = PHP_VERSION;
+          $ok = (version_compare($v, "8.2.35", ">=") && version_compare($v, "8.3.0", "<"))
+             || (version_compare($v, "8.3.36", ">=") && version_compare($v, "8.4.0", "<"))
+             || (version_compare($v, "8.4.27", ">=") && version_compare($v, "8.5.0", "<"))
+             || version_compare($v, "8.5.12", ">=");
+          if (!$ok) {
+              fwrite(STDERR, "Vulnerable PHP version detected: $v\n");
+              exit(1);
+          }
+          echo "Verified patched PHP version: $v\n";
+        '
 
     - name: Install dependencies
       run: |
