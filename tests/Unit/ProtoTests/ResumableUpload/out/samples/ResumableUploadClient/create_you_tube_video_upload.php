@@ -67,11 +67,13 @@ function create_you_tube_video_upload_sample(): void
     printf('Operation successful with response data: %s' . PHP_EOL, $result->serializeToJsonString());
 
     // Resuming across separate processes or restarts (where the original
-    // $uploader object in memory is lost): the session URL obtained via
-    // `$uploader->getUploadUrl()` can be persisted and loaded later.
+    // $uploader object in memory is lost): the session URL and actual chunk size
+    // obtained via `$uploader->getUploadUrl()` and `$uploader->getChunkSize()`
+    // can be persisted and loaded later.
     // $resumedUpload = $resumableUploadClient->resumeUpload(
     //     'https://upload.url/session123',
     //     'createYouTubeVideoUpload',
+    //     ['chunkSize' => 8 * 1024 * 1024]
     // );
     // $resumedUpload->startUpload($stream);
 }
