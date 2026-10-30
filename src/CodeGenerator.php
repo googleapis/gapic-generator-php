@@ -152,12 +152,20 @@ class CodeGenerator
         $mixinRpcNames = [];
         $serviceYamlConfig = new ServiceYamlConfig($serviceYaml);
         $transportType = Transport::parseTransport($transport);
-        foreach ($byPackage as [$_, $singlePackageFileDescs]) {
+        foreach ($byPackage as [$package, $singlePackageFileDescs]) {
+            $fileNamespaces = $singlePackageFileDescs
+              ->map(fn ($x) => sprintf('%s (%s)', $x->getName(), ProtoHelpers::getNamespace($x)));
             $namespaces = $singlePackageFileDescs
               ->map(fn ($x) => ProtoHelpers::getNamespace($x))
               ->distinct();
             if (count($namespaces) > 1) {
-                throw new Exception('All files in the same package must have the same PHP namespace');
+                throw new Exception(sprintf(
+                    'All files in the same package must have the same PHP namespace; ' .
+                    'package "%s" has mismatched namespaces [%s] from files: %s',
+                    $package,
+                    $namespaces->join(', '),
+                    $fileNamespaces->join(', ')
+                ));
             }
 
             // Full protobuf names, e.g. google.cloud.foo.Bar.
