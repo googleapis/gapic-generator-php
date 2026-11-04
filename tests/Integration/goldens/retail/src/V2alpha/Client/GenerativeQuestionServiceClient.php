@@ -66,7 +66,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<GenerativeQuestionConfig> updateGenerativeQuestionConfigAsync(UpdateGenerativeQuestionConfigRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<GenerativeQuestionsFeatureConfig> updateGenerativeQuestionsFeatureConfigAsync(UpdateGenerativeQuestionsFeatureConfigRequest $request, array $optionalArgs = [])
  */
-final class GenerativeQuestionServiceClient
+final class GenerativeQuestionServiceClient implements GenerativeQuestionServiceClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

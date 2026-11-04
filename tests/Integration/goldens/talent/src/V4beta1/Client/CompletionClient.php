@@ -55,7 +55,7 @@ use Psr\Log\LoggerInterface;
  *
  * @method PromiseInterface<CompleteQueryResponse> completeQueryAsync(CompleteQueryRequest $request, array $optionalArgs = [])
  */
-final class CompletionClient
+final class CompletionClient implements CompletionClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

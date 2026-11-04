@@ -82,7 +82,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<Catalog> updateCatalogAsync(UpdateCatalogRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<CompletionConfig> updateCompletionConfigAsync(UpdateCompletionConfigRequest $request, array $optionalArgs = [])
  */
-final class CatalogServiceClient
+final class CatalogServiceClient implements CatalogServiceClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

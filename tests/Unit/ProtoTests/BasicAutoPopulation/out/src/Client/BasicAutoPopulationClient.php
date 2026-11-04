@@ -46,7 +46,7 @@ use Testing\BasicAutoPopulation\Response;
  * @method PromiseInterface<Response> createFooAsync(Request $request, array $optionalArgs = [])
  * @method PromiseInterface<Response> getFooAsync(Request $request, array $optionalArgs = [])
  */
-final class BasicAutoPopulationClient
+final class BasicAutoPopulationClient implements BasicAutoPopulationClientInterface
 {
     use GapicClientTrait;
 

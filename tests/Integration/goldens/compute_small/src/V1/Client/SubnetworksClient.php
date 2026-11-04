@@ -45,7 +45,7 @@ use Psr\Log\LoggerInterface;
  *
  * @method PromiseInterface<PagedListResponse> listUsableAsync(ListUsableSubnetworksRequest $request, array $optionalArgs = [])
  */
-final class SubnetworksClient
+final class SubnetworksClient implements SubnetworksClientInterface
 {
     use GapicClientTrait;
 

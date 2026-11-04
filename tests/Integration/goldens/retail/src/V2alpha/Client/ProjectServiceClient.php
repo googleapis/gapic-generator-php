@@ -76,7 +76,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<AlertConfig> updateAlertConfigAsync(UpdateAlertConfigRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<LoggingConfig> updateLoggingConfigAsync(UpdateLoggingConfigRequest $request, array $optionalArgs = [])
  */
-final class ProjectServiceClient
+final class ProjectServiceClient implements ProjectServiceClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

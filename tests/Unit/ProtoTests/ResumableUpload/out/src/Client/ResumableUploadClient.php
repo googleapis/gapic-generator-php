@@ -44,7 +44,7 @@ use Testing\Resumableupload\CreateYouTubeVideoUploadRequest;
  * calls that map to API methods.
  *
  */
-final class ResumableUploadClient
+final class ResumableUploadClient implements ResumableUploadClientInterface
 {
     use GapicClientTrait;
     use ResumableUploadTrait;

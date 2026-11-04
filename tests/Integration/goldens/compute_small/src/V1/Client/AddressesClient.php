@@ -55,7 +55,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<OperationResponse> insertAsync(InsertAddressRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<PagedListResponse> listAsync(ListAddressesRequest $request, array $optionalArgs = [])
  */
-final class AddressesClient
+final class AddressesClient implements AddressesClientInterface
 {
     use GapicClientTrait;
 

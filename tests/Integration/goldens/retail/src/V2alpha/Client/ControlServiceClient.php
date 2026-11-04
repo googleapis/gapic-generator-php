@@ -64,7 +64,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<PagedListResponse> listControlsAsync(ListControlsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<Control> updateControlAsync(UpdateControlRequest $request, array $optionalArgs = [])
  */
-final class ControlServiceClient
+final class ControlServiceClient implements ControlServiceClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

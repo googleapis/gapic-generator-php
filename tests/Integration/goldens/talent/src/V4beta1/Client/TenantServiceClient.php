@@ -64,7 +64,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<PagedListResponse> listTenantsAsync(ListTenantsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<Tenant> updateTenantAsync(UpdateTenantRequest $request, array $optionalArgs = [])
  */
-final class TenantServiceClient
+final class TenantServiceClient implements TenantServiceClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

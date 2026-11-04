@@ -61,7 +61,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<PagedListResponse> listMonitoredResourceDescriptorsAsync(ListMonitoredResourceDescriptorsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<WriteLogEntriesResponse> writeLogEntriesAsync(WriteLogEntriesRequest $request, array $optionalArgs = [])
  */
-final class LoggingServiceV2Client
+final class LoggingServiceV2Client implements LoggingServiceV2ClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;
