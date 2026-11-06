@@ -351,4 +351,21 @@ class ServiceDetails
                 && $x->methodReturnType?->getFullname() === '\Google\Cloud\Iam\V1\TestIamPermissionsResponse'
         );
     }
+
+    public function hasOperationsMethods(): bool
+    {
+        return $this->methods->any(
+            fn ($x) => $x->methodName === 'getOperation'
+                && $x->requestType->getFullname() === '\Google\LongRunning\GetOperationRequest'
+                && $x->methodReturnType?->getFullname() === '\Google\LongRunning\Operation'
+        ) && $this->methods->any(
+            fn ($x) => $x->methodName === 'cancelOperation'
+                && $x->requestType->getFullname() === '\Google\LongRunning\CancelOperationRequest'
+                && $x->hasEmptyResponse
+        ) && $this->methods->any(
+            fn ($x) => $x->methodName === 'deleteOperation'
+                && $x->requestType->getFullname() === '\Google\LongRunning\DeleteOperationRequest'
+                && $x->hasEmptyResponse
+        );
+    }
 }

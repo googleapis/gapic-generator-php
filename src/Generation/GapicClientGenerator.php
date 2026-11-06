@@ -25,6 +25,7 @@ use Google\ApiCore\HeaderCredentialsInterface;
 use Google\ApiCore\IamProviderInterface;
 use Google\ApiCore\LongRunningOperationProviderInterface;
 use Google\ApiCore\OperationResponse;
+use Google\ApiCore\OperationsClientInterface;
 use Google\ApiCore\Options\ClientOptions;
 use Google\ApiCore\PathTemplate;
 use Google\ApiCore\RequestParamsHeaderDescriptor;
@@ -150,6 +151,11 @@ class GapicClientGenerator
             ->withInterface(
                 $this->serviceDetails->hasIamMethods()
                     ? $this->ctx->type(Type::fromName(IamProviderInterface::class))
+                    : null
+            )
+            ->withInterface(
+                $this->serviceDetails->hasOperationsMethods()
+                    ? $this->ctx->type(Type::fromName(OperationsClientInterface::class))
                     : null
             )
             ->withTrait($this->ctx->type(Type::fromName(GapicClientTrait::class)))
