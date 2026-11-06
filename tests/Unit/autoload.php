@@ -42,6 +42,26 @@ class FakeMessage extends \Google\Protobuf\Internal\Message
     {
     }
 
+    public function getName()
+    {
+        return $this->__call('getName', []);
+    }
+
+    public function getStatus()
+    {
+        return $this->__call('getStatus', []);
+    }
+
+    public function getHttpErrorStatusCode()
+    {
+        return $this->__call('getHttpErrorStatusCode', []);
+    }
+
+    public function getHttpErrorMessage()
+    {
+        return $this->__call('getHttpErrorMessage', []);
+    }
+
     public function __call(string $name, array $arguments)
     {
         // Implement all getters and setters; to emulate a proto message class.
