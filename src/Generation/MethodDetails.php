@@ -84,12 +84,16 @@ abstract class MethodDetails
             return null;
         }
 
-        $isMediaUpload = false;
         if (method_exists($httpRule, 'getMediaUpload')) {
             $isMediaUpload = (bool) $httpRule->getMediaUpload()?->getEnabled();
-        } elseif ($desc->getName() === 'CreateYouTubeVideoUpload' || $desc->getName() === 'UploadMedia') {
-            // @TODO: Remove hardcoded CreateYouTubeVideoUpload method once getMediaUpload annotation is available in common-protos
-            $isMediaUpload = true;
+        } else {
+            // @TODO: Remove hardcoded RPC names once getMediaUpload annotation is available in common-protos
+            $isMediaUpload = match ($desc->getName()) {
+                'CreateYouTubeVideoUpload' => str_starts_with($svc->package, 'google.ads.googleads.')
+                    || $svc->package === 'testing.resumableupload',
+                'UploadMedia' => $svc->package === 'google.showcase.v1beta1',
+                default => false,
+            };
         }
 
         if (!$isMediaUpload) {
@@ -243,7 +247,10 @@ abstract class MethodDetails
                 $this->resourcesSetter = AST::method($resources->getSetter());
                 $this->resourceType = Type::fromField($svc->catalog, $resources, false);
                 $this->resourcesFieldName = Helpers::toCamelCase($resources->getName());
-                $this->resourcesField = new FieldDetails($svc->catalog, $outputMsg, $resources->underlyingProto);
+                $resourcesProto = Vector::new($outputMsg->getField())
+                    ->filter(fn ($f) => $f->desc === $resources)
+                    ->firstOrNull();
+                $this->resourcesField = new FieldDetails($svc->catalog, $outputMsg, $resourcesProto);
                 $this->methodReturnType = Type::fromName(PagedListResponse::class);
                 // Override docs for page_size and page_token fields.
                 $this->requiredFields = $this->overrideFieldDocs($svc->catalog, $outputMsg, $this->requiredFields);

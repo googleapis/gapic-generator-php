@@ -20,6 +20,9 @@ namespace Google\Generator\Tests\Unit\Unit\Ast;
 
 use PHPUnit\Framework\TestCase;
 use Google\Generator\Ast\AST;
+use Google\Generator\Utils\Formatter;
+use Google\Generator\Utils\ResolvedType;
+use Google\Generator\Utils\Type;
 
 final class ASTTest extends TestCase
 {
@@ -91,5 +94,124 @@ final class ASTTest extends TestCase
         $xIndex = AST::index(AST::var('x'), 'foo');
         $ast = AST::nullCoalescingAssign($xIndex, 'bar');
         $this->assertEquals("\$x['foo'] ??= 'bar'", $ast->toCode());
+    }
+
+    public function testFunctionSignatureLineLength(): void
+    {
+        $stringType = new ResolvedType(Type::string(), fn () => 'string');
+        $voidType = new ResolvedType(Type::void(), fn () => 'void');
+
+        $shortFn = AST::fn('foo_sample')
+            ->withParams(
+                AST::param($stringType, AST::var('arg1')),
+                AST::param($stringType, AST::var('arg2'))
+            )
+            ->withReturnType($voidType)
+            ->withBody(AST::block());
+
+        $this->assertEquals(
+            "<?php\nfunction foo_sample(string \$arg1, string \$arg2): void\n{\n}\n",
+            Formatter::format("<?php\n" . $shortFn->toCode())
+        );
+
+        $longFn = AST::fn('foo_sample')
+            ->withParams(
+                AST::param($stringType, AST::var('firstLongParameterName')),
+                AST::param($stringType, AST::var('secondLongParameterName')),
+                AST::param($stringType, AST::var('thirdLongParameterName'))
+            )
+            ->withReturnType($voidType)
+            ->withBody(AST::block());
+
+        $expectedLongFn = <<<'EOF'
+<?php
+function foo_sample(
+    string $firstLongParameterName,
+    string $secondLongParameterName,
+    string $thirdLongParameterName
+): void {
+}
+
+EOF;
+        $this->assertEquals($expectedLongFn, Formatter::format("<?php\n" . $longFn->toCode()));
+    }
+
+    public function testFunctionCallLineLength(): void
+    {
+        $shortCall = AST::block(
+            AST::call("\0foo_sample")(AST::var('arg1'), AST::var('arg2'))
+        );
+
+        $this->assertEquals(
+            "<?php\nfoo_sample(\$arg1, \$arg2);\n",
+            Formatter::format("<?php\n" . $shortCall->toCode())
+        );
+
+        $longCall = AST::block(
+            AST::call("\0foo_sample")(
+                AST::var('firstLongArgumentName'),
+                AST::var('secondLongArgumentName'),
+                AST::var('thirdLongArgumentName'),
+                AST::var('fourthLongArgumentName')
+            )
+        );
+
+        $expectedLongCall = <<<'EOF'
+<?php
+foo_sample(
+    $firstLongArgumentName,
+    $secondLongArgumentName,
+    $thirdLongArgumentName,
+    $fourthLongArgumentName
+);
+
+EOF;
+        $this->assertEquals($expectedLongCall, Formatter::format("<?php\n" . $longCall->toCode()));
+
+        $clientType = new ResolvedType(Type::fromName('Google\Cloud\Kms\V1\KeyManagementServiceClient'), fn () => 'KeyManagementServiceClient');
+        $longAssignedStaticCall = AST::block(
+            AST::assign(
+                AST::var('formattedName'),
+                AST::staticCall($clientType, AST::method('cryptoKeyName'))(
+                    '[PROJECT]',
+                    '[LOCATION]',
+                    '[KEY_RING]',
+                    '[CRYPTO_KEY]'
+                )
+            )
+        );
+
+        $expectedLongAssignedStaticCall = <<<'EOF'
+<?php
+$formattedName = KeyManagementServiceClient::cryptoKeyName(
+    '[PROJECT]',
+    '[LOCATION]',
+    '[KEY_RING]',
+    '[CRYPTO_KEY]'
+);
+
+EOF;
+        $this->assertEquals($expectedLongAssignedStaticCall, Formatter::format("<?php\n" . $longAssignedStaticCall->toCode()));
+
+        $requestType = new ResolvedType(Type::fromName('Google\Cloud\Compute\V1\StartInstancesRegionInstanceGroupManagerRequest'), fn () => 'StartInstancesRegionInstanceGroupManagerRequest');
+        $longChainedSetter = AST::block(
+            AST::assign(
+                AST::var('request'),
+                AST::call(
+                    AST::new($requestType)(),
+                    AST::method('setRegionInstanceGroupManagersStartInstancesRequestResource')
+                )(AST::var('regionInstanceGroupManagersStartInstancesRequestResource'))
+            )
+        );
+
+        $expectedLongChainedSetter = <<<'EOF'
+<?php
+$request = (new StartInstancesRegionInstanceGroupManagerRequest())
+    ->setRegionInstanceGroupManagersStartInstancesRequestResource(
+        $regionInstanceGroupManagersStartInstancesRequestResource
+    );
+
+EOF;
+        $this->assertEquals($expectedLongChainedSetter, Formatter::format("<?php\n" . $longChainedSetter->toCode()));
     }
 }

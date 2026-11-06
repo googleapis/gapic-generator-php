@@ -49,7 +49,7 @@ function set_locations_sample(string $locationsElement): void
     $clusterManagerClient = new ClusterManagerClient();
 
     // Prepare the request message.
-    $locations = [$locationsElement,];
+    $locations = [$locationsElement];
     $request = (new SetLocationsRequest())
         ->setLocations($locations);
 

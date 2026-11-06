@@ -299,7 +299,7 @@ class CodeGenerator
 
                 foreach ($snippetFiles as $methodName => $snippetFile) {
                     $code = $snippetFile->toCode();
-                    $code = Formatter::format($code, 100);
+                    $code = Formatter::format($code);
                     yield ["samples/{$version}{$clientName}/{$methodName}.php", $code];
                 }
             }

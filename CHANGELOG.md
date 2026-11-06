@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.25.2](https://github.com/googleapis/gapic-generator-php/compare/v1.25.1...v1.25.2) (2026-10-13)
+
+
+### Bug Fixes
+
+* Preserve blank line before injected fragments in FragmentInjectionProcessor ([#893](https://github.com/googleapis/gapic-generator-php/issues/893)) ([ed3bc4e](https://github.com/googleapis/gapic-generator-php/commit/ed3bc4e3b32cffd97b1a41caa12223c519298d04))
+
+## [1.25.1](https://github.com/googleapis/gapic-generator-php/compare/v1.25.0...v1.25.1) (2026-10-12)
+
+
+### Bug Fixes
+
+* Remove abandoned symplify/coding-standard dependency ([#882](https://github.com/googleapis/gapic-generator-php/issues/882)) ([6ededdc](https://github.com/googleapis/gapic-generator-php/commit/6ededdc2b58a68fb5ff867dea94caddd26d64420))
+* Resolve dynamic property deprecations ([#886](https://github.com/googleapis/gapic-generator-php/issues/886)) ([0999919](https://github.com/googleapis/gapic-generator-php/commit/0999919286a4206137a4c604f7373a6d7453159b))
+* Split port from google.api.default_host into DEFAULT_SERVICE_PORT ([#889](https://github.com/googleapis/gapic-generator-php/issues/889)) ([1d02867](https://github.com/googleapis/gapic-generator-php/commit/1d02867f9870b8049364e771501d95fe9b04c120))
+* Support packed repeated integer/enum custom options in ProtoHelpers ([#892](https://github.com/googleapis/gapic-generator-php/issues/892)) ([4d46306](https://github.com/googleapis/gapic-generator-php/commit/4d46306c1bedd80bbb31aa4cafa3ee38c8a5e8d6))
+
 ## [1.25.0](https://github.com/googleapis/gapic-generator-php/compare/v1.24.0...v1.25.0) (2026-08-15)
 
 

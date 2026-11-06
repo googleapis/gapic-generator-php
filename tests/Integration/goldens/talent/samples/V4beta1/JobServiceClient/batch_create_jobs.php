@@ -90,7 +90,7 @@ function batch_create_jobs_sample(
         ->setRequisitionId($jobsRequisitionId)
         ->setTitle($jobsTitle)
         ->setDescription($jobsDescription);
-    $jobs = [$job,];
+    $jobs = [$job];
     $request = (new BatchCreateJobsRequest())
         ->setParent($formattedParent)
         ->setJobs($jobs);

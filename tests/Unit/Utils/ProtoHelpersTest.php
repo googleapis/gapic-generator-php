@@ -24,19 +24,27 @@ use Google\Generator\Tests\Tools\ProtoLoader;
 use Google\Generator\Utils\ProtoHelpers;
 use Google\Generator\Utils\ProtoAugmenter;
 use Google\Generator\Utils\ProtoCatalog;
+use Google\Protobuf\Internal\GPBWire;
 
 final class ProtoHelpersTest extends TestCase
 {
-    // public function testProtoCustomOptions(): void
-    // {
-    //     $file = ProtoLoader::loadDescriptor('Utils/custom_options.proto');
+    public function testProtoCustomOptions(): void
+    {
+        $file = ProtoLoader::loadDescriptor('Utils/custom_options.proto');
 
-    //     // Check custom options are loaded successfully.
-    //     $this->assertEquals(42, ProtoHelpers::getCustomOption($file, 2000));
-    //     $this->assertEquals('stringy', ProtoHelpers::getCustomOption($file, 2001));
-    //     $this->assertEquals([8, 9, 10], ProtoHelpers::getCustomOptionRepeated($file, 2002)->toArray());
-    //     $this->assertEquals(['s1', 's2'], ProtoHelpers::getCustomOptionRepeated($file, 2003)->toArray());
-    // }
+        // Check custom options are loaded successfully.
+        $this->assertEquals(42, ProtoHelpers::getCustomOption($file, 2000));
+        $this->assertEquals('stringy', ProtoHelpers::getCustomOption($file, 2001));
+        $this->assertEquals(
+            [8, 9, 10],
+            ProtoHelpers::getCustomOptionRepeated($file, 2002, null, GPBWire::WIRETYPE_VARINT)->toArray()
+        );
+        $this->assertEquals(['s1', 's2'], ProtoHelpers::getCustomOptionRepeated($file, 2003)->toArray());
+        $this->assertEquals(
+            [11, 12, 13],
+            ProtoHelpers::getCustomOptionRepeated($file, 2004, null, GPBWire::WIRETYPE_VARINT)->toArray()
+        );
+    }
 
     public function testProtoComments(): void
     {

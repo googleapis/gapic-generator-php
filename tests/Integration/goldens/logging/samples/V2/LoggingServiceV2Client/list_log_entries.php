@@ -61,7 +61,7 @@ function list_log_entries_sample(string $formattedResourceNamesElement): void
     $loggingServiceV2Client = new LoggingServiceV2Client();
 
     // Prepare the request message.
-    $formattedResourceNames = [$formattedResourceNamesElement,];
+    $formattedResourceNames = [$formattedResourceNamesElement];
     $request = (new ListLogEntriesRequest())
         ->setResourceNames($formattedResourceNames);
 

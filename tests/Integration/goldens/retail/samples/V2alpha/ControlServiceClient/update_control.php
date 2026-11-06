@@ -55,7 +55,7 @@ function update_control_sample(string $controlDisplayName, int $controlSolutionT
     $controlServiceClient = new ControlServiceClient();
 
     // Prepare the request message.
-    $controlSolutionTypes = [$controlSolutionTypesElement,];
+    $controlSolutionTypes = [$controlSolutionTypesElement];
     $control = (new Control())
         ->setDisplayName($controlDisplayName)
         ->setSolutionTypes($controlSolutionTypes);
