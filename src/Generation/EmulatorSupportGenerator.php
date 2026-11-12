@@ -55,14 +55,19 @@ class EmulatorSupportGenerator
         $schemeVar = AST::var('scheme');
         $searchVar = AST::var('search');
         $optionsVar = AST::var('options');
+        $stubOptsVar = AST::var('stubOpts');
+        $clientOptionsType = $ctx->type(Type::fromName(ClientOptions::class));
+        $channelCredentialsType = $ctx->type(Type::fromName("Grpc\ChannelCredentials"));
+        $insecureCredentialsType = $ctx->type(Type::fromName("Google\ApiCore\InsecureCredentialsWrapper"));
         $optionsType = ResolvedType::union(
             Type::array(),
             Type::fromName(ClientOptions::class)
         );
-        $transportConfigIndexVar = AST::index(AST::index(AST::index(AST::index(
-            $optionsVar,
-            'transportConfig'
-        ), 'grpc'), 'stubOpts'), 'credentials');
+        $grpcTransportOptionsExpr = AST::index(AST::index($optionsVar, 'transportConfig'), 'grpc');
+        $transportConfigIndexVar = AST::index(AST::index(
+            $grpcTransportOptionsExpr,
+            'stubOpts'
+        ), 'credentials');
 
         if (!array_key_exists($fullClassName, self::$emulatorSupportClients)) {
             return null;
@@ -79,19 +84,39 @@ class EmulatorSupportGenerator
                         AST::assign($searchVar, AST::binaryOp($schemeVar, '.', '://')),
                         AST::assign($emulatorHostVar, AST::call(AST::STRING_REPLACE)($searchVar, '', $emulatorHostVar)),
                     )),
+                AST::if(AST::binaryOp($optionsVar, 'instanceof', $clientOptionsType))
+                    ->then(AST::block(
+                        AST::assign($optionsVar, AST::literal('clone ' . $optionsVar->toCode())),
+                        AST::if(AST::not(AST::call(AST::ISSET)(AST::index($optionsVar, 'apiEndpoint'))))
+                            ->then(AST::call($optionsVar, AST::method('setApiEndpoint'))($emulatorHostVar)),
+                        AST::if(AST::call(AST::CLASS_EXISTS)(AST::access($channelCredentialsType, AST::CLS)))
+                            ->then(AST::block(
+                                AST::assign($stubOptsVar, AST::index($grpcTransportOptionsExpr, 'stubOpts')),
+                                AST::nullCoalescingAssign(
+                                    AST::index($stubOptsVar, 'credentials'),
+                                    AST::staticCall($channelCredentialsType, AST::method('createInsecure'))()
+                                ),
+                                AST::call($grpcTransportOptionsExpr, AST::method('setStubOpts'))($stubOptsVar),
+                            )),
+                        AST::if(AST::not(AST::call(AST::ISSET)(AST::index($optionsVar, 'credentials'))))
+                            ->then(AST::call($optionsVar, AST::method('setCredentials'))(
+                                AST::new($insecureCredentialsType)()
+                            )),
+                        AST::return($optionsVar),
+                    )),
                 AST::nullCoalescingAssign(AST::index($optionsVar, 'apiEndpoint'), $emulatorHostVar),
                 AST::if(AST::call(AST::CLASS_EXISTS)(
-                    AST::access($ctx->type(Type::fromName("Grpc\ChannelCredentials")), AST::CLS)
+                    AST::access($channelCredentialsType, AST::CLS)
                 ))
                     ->then(AST::block(
                         AST::nullCoalescingAssign($transportConfigIndexVar, AST::staticCall(
-                            $ctx->type((Type::fromName("Grpc\ChannelCredentials"))),
+                            $channelCredentialsType,
                             AST::method('createInsecure')
                         )()),
                     )),
                 AST::nullCoalescingAssign(
                     AST::index($optionsVar, 'credentials'),
-                    AST::new($ctx->type((Type::fromName("Google\ApiCore\InsecureCredentialsWrapper"))))()
+                    AST::new($insecureCredentialsType)()
                 ),
                 AST::return($optionsVar)
             ), AST::return(AST::array([])))

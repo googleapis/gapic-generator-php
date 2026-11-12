@@ -256,6 +256,25 @@ final class BasicClient implements ServiceInterface
             $emulatorHost = str_replace($search, '', $emulatorHost);
         }
 
+        if ($options instanceof ClientOptions) {
+            $options = clone $options;
+            if (!isset($options['apiEndpoint'])) {
+                $options->setApiEndpoint($emulatorHost);
+            }
+
+            if (class_exists(ChannelCredentials::class)) {
+                $stubOpts = $options['transportConfig']['grpc']['stubOpts'];
+                $stubOpts['credentials'] ??= ChannelCredentials::createInsecure();
+                $options['transportConfig']['grpc']->setStubOpts($stubOpts);
+            }
+
+            if (!isset($options['credentials'])) {
+                $options->setCredentials(new InsecureCredentialsWrapper());
+            }
+
+            return $options;
+        }
+
         $options['apiEndpoint'] ??= $emulatorHost;
         if (class_exists(ChannelCredentials::class)) {
             $options['transportConfig']['grpc']['stubOpts']['credentials'] ??= ChannelCredentials::createInsecure();
