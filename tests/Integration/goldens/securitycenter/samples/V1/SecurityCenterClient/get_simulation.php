@@ -20,6 +20,7 @@
  * This file was automatically generated - do not edit!
  */
 
+declare(strict_types=1);
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START securitycenter_v1_generated_SecurityCenter_GetSimulation_sync]

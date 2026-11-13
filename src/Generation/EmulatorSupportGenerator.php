@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Google\Generator\Generation;
 
+use Google\ApiCore\Options\ClientOptions;
 use Google\Generator\Ast\Access;
 use Google\Generator\Ast\AST;
 use Google\Generator\Ast\PhpDoc;
@@ -54,10 +55,19 @@ class EmulatorSupportGenerator
         $schemeVar = AST::var('scheme');
         $searchVar = AST::var('search');
         $optionsVar = AST::var('options');
-        $transportConfigIndexVar = AST::index(AST::index(AST::index(AST::index(
-            $optionsVar,
-            'transportConfig'
-        ), 'grpc'), 'stubOpts'), 'credentials');
+        $stubOptsVar = AST::var('stubOpts');
+        $clientOptionsType = $ctx->type(Type::fromName(ClientOptions::class));
+        $channelCredentialsType = $ctx->type(Type::fromName("Grpc\ChannelCredentials"));
+        $insecureCredentialsType = $ctx->type(Type::fromName("Google\ApiCore\InsecureCredentialsWrapper"));
+        $optionsType = ResolvedType::union(
+            Type::array(),
+            Type::fromName(ClientOptions::class)
+        );
+        $grpcTransportOptionsExpr = AST::index(AST::index($optionsVar, 'transportConfig'), 'grpc');
+        $transportConfigIndexVar = AST::index(AST::index(
+            $grpcTransportOptionsExpr,
+            'stubOpts'
+        ), 'credentials');
 
         if (!array_key_exists($fullClassName, self::$emulatorSupportClients)) {
             return null;
@@ -65,7 +75,7 @@ class EmulatorSupportGenerator
 
         return AST::method(self::DEFAULT_EMULATOR_CONFIG_FN)
             ->withAccess(Access::PRIVATE)
-            ->withParams(AST::param(ResolvedType::array(), $optionsVar))
+            ->withParams(AST::param($optionsType, $optionsVar))
             ->withBody(AST::block(
                 AST::assign($emulatorHostVar, AST::call(AST::GET_ENV)(self::$emulatorSupportClients[$fullClassName])),
                 AST::if(AST::call(AST::EMPTY)($emulatorHostVar))->then(AST::return($optionsVar)),
@@ -74,26 +84,46 @@ class EmulatorSupportGenerator
                         AST::assign($searchVar, AST::binaryOp($schemeVar, '.', '://')),
                         AST::assign($emulatorHostVar, AST::call(AST::STRING_REPLACE)($searchVar, '', $emulatorHostVar)),
                     )),
+                AST::if(AST::binaryOp($optionsVar, 'instanceof', $clientOptionsType))
+                    ->then(AST::block(
+                        AST::assign($optionsVar, AST::literal('clone ' . $optionsVar->toCode())),
+                        AST::if(AST::not(AST::call(AST::ISSET)(AST::index($optionsVar, 'apiEndpoint'))))
+                            ->then(AST::call($optionsVar, AST::method('setApiEndpoint'))($emulatorHostVar)),
+                        AST::if(AST::call(AST::CLASS_EXISTS)(AST::access($channelCredentialsType, AST::CLS)))
+                            ->then(AST::block(
+                                AST::assign($stubOptsVar, AST::index($grpcTransportOptionsExpr, 'stubOpts')),
+                                AST::nullCoalescingAssign(
+                                    AST::index($stubOptsVar, 'credentials'),
+                                    AST::staticCall($channelCredentialsType, AST::method('createInsecure'))()
+                                ),
+                                AST::call($grpcTransportOptionsExpr, AST::method('setStubOpts'))($stubOptsVar),
+                            )),
+                        AST::if(AST::not(AST::call(AST::ISSET)(AST::index($optionsVar, 'credentials'))))
+                            ->then(AST::call($optionsVar, AST::method('setCredentials'))(
+                                AST::new($insecureCredentialsType)()
+                            )),
+                        AST::return($optionsVar),
+                    )),
                 AST::nullCoalescingAssign(AST::index($optionsVar, 'apiEndpoint'), $emulatorHostVar),
                 AST::if(AST::call(AST::CLASS_EXISTS)(
-                    AST::access($ctx->type(Type::fromName("Grpc\ChannelCredentials")), AST::CLS)
+                    AST::access($channelCredentialsType, AST::CLS)
                 ))
                     ->then(AST::block(
                         AST::nullCoalescingAssign($transportConfigIndexVar, AST::staticCall(
-                            $ctx->type((Type::fromName("Grpc\ChannelCredentials"))),
+                            $channelCredentialsType,
                             AST::method('createInsecure')
                         )()),
                     )),
                 AST::nullCoalescingAssign(
                     AST::index($optionsVar, 'credentials'),
-                    AST::new($ctx->type((Type::fromName("Google\ApiCore\InsecureCredentialsWrapper"))))()
+                    AST::new($insecureCredentialsType)()
                 ),
                 AST::return($optionsVar)
             ), AST::return(AST::array([])))
             ->withPhpDoc(PhpDoc::block(
                 PhpDoc::text('Configure the gapic configuration to use a service emulator.')
             ))
-            ->withReturnType($ctx->type(Type::array()));
+            ->withReturnType($optionsType);
     }
 
     public static function generateEmulatorOptions(ServiceDetails $serviceDetails, AST $options)

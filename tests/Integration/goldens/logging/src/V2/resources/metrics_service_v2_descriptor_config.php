@@ -20,6 +20,7 @@
  * This file was automatically generated - do not edit!
  */
 
+declare(strict_types=1);
 return [
     'interfaces' => [
         'google.logging.v2.MetricsServiceV2' => [

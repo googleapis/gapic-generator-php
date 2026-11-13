@@ -20,10 +20,12 @@
  * This file was automatically generated - do not edit!
  */
 
+declare(strict_types=1);
+
 namespace Testing\ResourceNames\Tests\Unit\Client;
 
 use Google\ApiCore\ApiException;
-use Google\ApiCore\CredentialsWrapper;
+use Google\ApiCore\InsecureCredentialsWrapper;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
 use Google\Rpc\Code;
@@ -53,10 +55,10 @@ class ResourceNamesClientTest extends GeneratedTest
         return new MockTransport($deserialize);
     }
 
-    /** @return CredentialsWrapper */
+    /** @return InsecureCredentialsWrapper */
     private function createCredentials()
     {
-        return $this->getMockBuilder(CredentialsWrapper::class)->disableOriginalConstructor()->getMock();
+        return new InsecureCredentialsWrapper();
     }
 
     /** @return ResourceNamesClient */

@@ -22,14 +22,17 @@
  * Updates to the above are reflected here through a refresh process.
  */
 
+declare(strict_types=1);
+
 namespace Testing\ResourceNames\Client;
 
 use Google\ApiCore\ApiException;
-use Google\ApiCore\CredentialsWrapper;
 use Google\ApiCore\GapicClientTrait;
+use Google\ApiCore\HeaderCredentialsInterface;
 use Google\ApiCore\Options\ClientOptions;
 use Google\ApiCore\ResourceHelperTrait;
 use Google\ApiCore\RetrySettings;
+use Google\ApiCore\ServiceInterface;
 use Google\ApiCore\Transport\TransportInterface;
 use Google\ApiCore\ValidationException;
 use Google\Auth\FetchAuthTokenInterface;
@@ -67,7 +70,7 @@ use Testing\ResourceNames\WildcardReferenceRequest;
  * @method PromiseInterface<PlaceholderResponse> wildcardMultiMethodAsync(WildcardMultiPatternRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<PlaceholderResponse> wildcardReferenceMethodAsync(WildcardReferenceRequest $request, array $optionalArgs = [])
  */
-final class ResourceNamesClient
+final class ResourceNamesClient implements ServiceInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;
@@ -91,14 +94,13 @@ final class ResourceNamesClient
      */
     public static $serviceScopes = [];
 
-    private static function getClientDefaults()
+    private static function getClientDefaults(): array
     {
         return [
             'serviceName' => self::SERVICE_NAME,
             'apiEndpoint' => self::SERVICE_ADDRESS . ':' . self::DEFAULT_SERVICE_PORT,
             'clientConfig' => __DIR__ . '/../resources/resource_names_client_config.json',
             'descriptorsConfigPath' => __DIR__ . '/../resources/resource_names_descriptor_config.php',
-            'gcpApiConfigPath' => __DIR__ . '/../resources/resource_names_grpc_config.json',
             'credentialsConfig' => [
                 'defaultScopes' => self::$serviceScopes,
             ],
@@ -448,11 +450,11 @@ final class ResourceNamesClient
      *     @type string $apiEndpoint
      *           The address of the API remote host. May optionally include the port, formatted
      *           as "<uri>:<port>". Default 'resourcenames.example.com:443'.
-     *     @type FetchAuthTokenInterface|CredentialsWrapper $credentials
+     *     @type FetchAuthTokenInterface|HeaderCredentialsInterface $credentials
      *           This option should only be used with a pre-constructed
-     *           {@see FetchAuthTokenInterface} or {@see CredentialsWrapper} object. Note that
-     *           when one of these objects are provided, any settings in $credentialsConfig will
-     *           be ignored.
+     *           {@see FetchAuthTokenInterface} or {@see HeaderCredentialsInterface} object. Note
+     *           that when one of these objects are provided, any settings in $credentialsConfig
+     *           will be ignored.
      *           **Important**: If you are providing a path to a credentials file, or a decoded
      *           credentials file as a PHP array, this usage is now DEPRECATED. Providing an
      *           unvalidated credential configuration to Google APIs can compromise the security
@@ -514,7 +516,7 @@ final class ResourceNamesClient
     }
 
     /** Handles execution of the async variants for each documented method. */
-    public function __call($method, $args)
+    public function __call(string $method, array $args)
     {
         if (substr($method, -5) !== 'Async') {
             trigger_error('Call to undefined method ' . __CLASS__ . "::$method()", E_USER_ERROR);

@@ -21,7 +21,7 @@ namespace Google\Generator\Generation;
 use Exception;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\BidiStream;
-use Google\ApiCore\CredentialsWrapper;
+use Google\ApiCore\InsecureCredentialsWrapper;
 use Google\ApiCore\ServerStream;
 use Google\ApiCore\Testing\GeneratedTest;
 use Google\ApiCore\Testing\MockTransport;
@@ -168,15 +168,11 @@ class UnitTestsGenerator
             ->withAccess(Access::PRIVATE)
             ->withBody(AST::block(
                 AST::return(
-                    AST::call(AST::THIS, AST::method('getMockBuilder'))(
-                        AST::access($this->ctx->type(Type::fromName(CredentialsWrapper::class)), AST::CLS)
-                    )
-                        ->instanceCall(AST::method('disableOriginalConstructor'))()
-                        ->instanceCall(AST::method('getMock'))()
+                    AST::new($this->ctx->type(Type::fromName(InsecureCredentialsWrapper::class)))()
                 )
             ))
             ->withPhpDoc(PhpDoc::block(
-                PhpDoc::return($this->ctx->type(Type::fromName(CredentialsWrapper::class)))
+                PhpDoc::return($this->ctx->type(Type::fromName(InsecureCredentialsWrapper::class)))
             ));
     }
 

@@ -20,6 +20,7 @@
  * This file was automatically generated - do not edit!
  */
 
+declare(strict_types=1);
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 // [START explicitpaginated_generated_BasicExplicitPaginated_MethodExplicitPaginated_sync]
