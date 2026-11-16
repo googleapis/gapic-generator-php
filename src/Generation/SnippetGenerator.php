@@ -212,11 +212,13 @@ class SnippetGenerator
                 ),
                 PHP_EOL,
                 '// Resuming across separate processes or restarts (where the original',
-                '// $uploader object in memory is lost): the session URL obtained via',
-                '// `$uploader->getUploadUrl()` can be persisted and loaded later.',
+                '// $uploader object in memory is lost): the session URL and actual chunk size',
+                '// obtained via `$uploader->getUploadUrl()` and `$uploader->getChunkSize()`',
+                '// can be persisted and loaded later.',
                 "// \$resumedUpload = \${$snippetDetails->serviceClientVar->name}->resumeUpload(\n" .
                 "    //     'https://upload.url/session123',\n" .
                 "    //     '{$snippetDetails->methodDetails->methodName}',\n" .
+                "    //     ['chunkSize' => 8 * 1024 * 1024]\n" .
                 "// );\n" .
                 '// $resumedUpload->startUpload($stream);'
             ]
