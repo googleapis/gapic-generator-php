@@ -36,7 +36,26 @@ filegroup(
 
     os_name = ctx.os.name
 
-    # First try using the prebuilt version
+    # First try using a pre-installed system php if it meets the minimum version and extension requirements
+    system_php = ctx.which("php")
+    if system_php != None:
+        res, _str = _execute_log_action(
+            ctx,
+            "system_php_test.log",
+            [
+                str(system_php),
+                "-n",
+                "-r",
+                "\"exit((!('%s' !== '' && version_compare(PHP_VERSION, '%s', '<')) && extension_loaded('libxml') && extension_loaded('curl') && extension_loaded('openssl') && extension_loaded('mbstring') && extension_loaded('bcmath')) ? 0:1);\"" % (ctx.attr.version, ctx.attr.version),
+            ],
+        )
+        if res.return_code == 0:
+            _execute_and_check_result(ctx, ["mkdir", "-p", "bin"])
+            _execute_and_check_result(ctx, ["cp", str(system_php), "bin/php"])
+            ctx.file("BUILD.bazel", build_bazel)
+            return
+
+    # Next try using the prebuilt version
     for prebuilt_php in ctx.attr.prebuilt_phps:
         if prebuilt_php.name.find(os_name) < 0:
             continue
@@ -110,6 +129,7 @@ filegroup(
 php = repository_rule(
     implementation = _php_impl,
     attrs = {
+        "version": attr.string(),
         "urls": attr.string_list(),
         "strip_prefix": attr.string(),
         "prebuilt_phps": attr.label_list(allow_files = True, mandatory = False),
