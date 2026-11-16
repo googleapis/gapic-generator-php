@@ -84,9 +84,12 @@ abstract class MethodDetails
             return null;
         }
 
+        $isMediaUpload = false;
         if (method_exists($httpRule, 'getMediaUpload')) {
             $isMediaUpload = (bool) $httpRule->getMediaUpload()?->getEnabled();
-        } else {
+        }
+
+        if (!$isMediaUpload) {
             // @TODO: Remove hardcoded RPC names once getMediaUpload annotation is available in common-protos
             $isMediaUpload = match ($desc->getName()) {
                 'CreateYouTubeVideoUpload' => str_starts_with($svc->package, 'google.ads.googleads.')
