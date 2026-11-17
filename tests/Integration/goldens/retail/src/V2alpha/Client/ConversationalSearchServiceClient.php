@@ -56,7 +56,7 @@ use Psr\Log\LoggerInterface;
  *
  * @experimental
  */
-final class ConversationalSearchServiceClient
+final class ConversationalSearchServiceClient implements ConversationalSearchServiceClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

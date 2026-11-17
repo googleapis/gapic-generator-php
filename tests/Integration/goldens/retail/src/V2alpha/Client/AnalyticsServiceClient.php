@@ -54,7 +54,7 @@ use Psr\Log\LoggerInterface;
  *
  * @method PromiseInterface<OperationResponse> exportAnalyticsMetricsAsync(ExportAnalyticsMetricsRequest $request, array $optionalArgs = [])
  */
-final class AnalyticsServiceClient
+final class AnalyticsServiceClient implements AnalyticsServiceClientInterface
 {
     use GapicClientTrait;
 

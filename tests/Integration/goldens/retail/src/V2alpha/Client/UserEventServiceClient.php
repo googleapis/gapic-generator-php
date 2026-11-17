@@ -75,7 +75,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<OperationResponse> rejoinUserEventsAsync(RejoinUserEventsRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<UserEvent> writeUserEventAsync(WriteUserEventRequest $request, array $optionalArgs = [])
  */
-final class UserEventServiceClient
+final class UserEventServiceClient implements UserEventServiceClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

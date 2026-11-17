@@ -45,7 +45,7 @@ use Testing\BasicOneof\Response;
  *
  * @method PromiseInterface<Response> aMethodAsync(Request $request, array $optionalArgs = [])
  */
-final class BasicOneofClient
+final class BasicOneofClient implements BasicOneofClientInterface
 {
     use GapicClientTrait;
 

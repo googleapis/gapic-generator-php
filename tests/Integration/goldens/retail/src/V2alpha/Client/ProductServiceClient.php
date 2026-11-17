@@ -92,7 +92,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<OperationResponse> setInventoryAsync(SetInventoryRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<Product> updateProductAsync(UpdateProductRequest $request, array $optionalArgs = [])
  */
-final class ProductServiceClient
+final class ProductServiceClient implements ProductServiceClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

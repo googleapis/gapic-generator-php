@@ -71,7 +71,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<CustomClass> updateCustomClassAsync(UpdateCustomClassRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<PhraseSet> updatePhraseSetAsync(UpdatePhraseSetRequest $request, array $optionalArgs = [])
  */
-final class AdaptationClient
+final class AdaptationClient implements AdaptationClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

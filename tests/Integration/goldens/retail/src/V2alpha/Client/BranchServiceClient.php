@@ -64,7 +64,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<Branch> getBranchAsync(GetBranchRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<ListBranchesResponse> listBranchesAsync(ListBranchesRequest $request, array $optionalArgs = [])
  */
-final class BranchServiceClient
+final class BranchServiceClient implements BranchServiceClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

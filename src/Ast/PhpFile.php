@@ -23,14 +23,14 @@ use Google\Generator\Collections\Vector;
 
 final class PhpFile extends AST
 {
-    public function __construct(?PhpClass $class)
+    public function __construct(PhpClass|PhpInterface|null $classOrInterface)
     {
-        $this->class = $class;
+        $this->class = $classOrInterface;
         $this->uses = Set::new();
         $this->headerLines = Vector::new();
     }
 
-    public ?PhpClass $class;
+    public PhpClass|PhpInterface|null $class;
     private ?AST $block;
     private Set $uses;
     private Vector $headerLines;

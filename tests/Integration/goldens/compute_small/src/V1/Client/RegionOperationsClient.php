@@ -45,7 +45,7 @@ use Psr\Log\LoggerInterface;
  *
  * @method PromiseInterface<Operation> getAsync(GetRegionOperationRequest $request, array $optionalArgs = [])
  */
-final class RegionOperationsClient
+final class RegionOperationsClient implements RegionOperationsClientInterface
 {
     use GapicClientTrait;
 

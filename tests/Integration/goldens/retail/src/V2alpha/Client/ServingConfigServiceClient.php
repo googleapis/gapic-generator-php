@@ -68,7 +68,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<ServingConfig> removeControlAsync(RemoveControlRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<ServingConfig> updateServingConfigAsync(UpdateServingConfigRequest $request, array $optionalArgs = [])
  */
-final class ServingConfigServiceClient
+final class ServingConfigServiceClient implements ServingConfigServiceClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

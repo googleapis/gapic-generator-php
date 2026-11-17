@@ -132,7 +132,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<Operation> updateMasterAsync(UpdateMasterRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<Operation> updateNodePoolAsync(UpdateNodePoolRequest $request, array $optionalArgs = [])
  */
-final class ClusterManagerClient
+final class ClusterManagerClient implements ClusterManagerClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

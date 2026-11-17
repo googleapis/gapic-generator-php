@@ -38,7 +38,7 @@ use Psr\Log\LoggerInterface;
  * This class provides the ability to make remote calls to the backing service through method
  * calls that map to API methods.
  */
-final class BasicGrpcOnlyClient
+final class BasicGrpcOnlyClient implements BasicGrpcOnlyClientInterface
 {
     use GapicClientTrait;
 

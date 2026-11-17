@@ -305,10 +305,12 @@ class CodeGenerator
             }
 
             $ctx = new SourceFileContext($service->gapicClientType->getNamespace(), $licenseYear);
-            $file = GapicClientGenerator::generate($ctx, $service);
-            $code = $file->toCode();
-            $code = Formatter::format($code);
-            yield ["src/{$version}Client/{$service->gapicClientType->name}.php", $code];
+            [$classFile, $interfaceFile] = GapicClientGenerator::generate($ctx, $service);
+            foreach ([$classFile, $interfaceFile] as $file) {
+                $code = $file->toCode();
+                $code = Formatter::format($code);
+                yield ["src/{$version}Client/{$file->class->type->name}.php", $code];
+            }
 
             // Unit tests.
             $ctx = new SourceFileContext($service->unitTestsType->getNamespace(), $licenseYear);

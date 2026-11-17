@@ -45,7 +45,7 @@ use Testing\BasicPaginated\Request;
  *
  * @method PromiseInterface<PagedListResponse> methodPaginatedAsync(Request $request, array $optionalArgs = [])
  */
-final class BasicPaginatedClient
+final class BasicPaginatedClient implements BasicPaginatedClientInterface
 {
     use GapicClientTrait;
 

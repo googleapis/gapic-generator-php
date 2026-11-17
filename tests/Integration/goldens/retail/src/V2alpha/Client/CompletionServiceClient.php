@@ -64,7 +64,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<CompleteQueryResponse> completeQueryAsync(CompleteQueryRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<OperationResponse> importCompletionDataAsync(ImportCompletionDataRequest $request, array $optionalArgs = [])
  */
-final class CompletionServiceClient
+final class CompletionServiceClient implements CompletionServiceClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

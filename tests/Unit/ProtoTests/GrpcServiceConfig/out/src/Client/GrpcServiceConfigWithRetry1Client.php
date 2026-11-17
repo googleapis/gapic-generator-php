@@ -54,7 +54,7 @@ use Testing\GrpcServiceConfig\Response1;
  * @method PromiseInterface<Response1> method1CServiceLevelRetryAsync(Request1 $request, array $optionalArgs = [])
  * @method PromiseInterface<Response1> method1DTimeoutOnlyRetryAsync(Request1 $request, array $optionalArgs = [])
  */
-final class GrpcServiceConfigWithRetry1Client
+final class GrpcServiceConfigWithRetry1Client implements GrpcServiceConfigWithRetry1ClientInterface
 {
     use GapicClientTrait;
 

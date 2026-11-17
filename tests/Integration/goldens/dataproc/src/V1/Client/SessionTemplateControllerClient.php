@@ -68,7 +68,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<Policy> setIamPolicyAsync(SetIamPolicyRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<TestIamPermissionsResponse> testIamPermissionsAsync(TestIamPermissionsRequest $request, array $optionalArgs = [])
  */
-final class SessionTemplateControllerClient
+final class SessionTemplateControllerClient implements SessionTemplateControllerClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;

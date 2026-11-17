@@ -128,7 +128,7 @@ use Psr\Log\LoggerInterface;
  * @method PromiseInterface<Location> getLocationAsync(GetLocationRequest $request, array $optionalArgs = [])
  * @method PromiseInterface<PagedListResponse> listLocationsAsync(ListLocationsRequest $request, array $optionalArgs = [])
  */
-final class KeyManagementServiceClient
+final class KeyManagementServiceClient implements KeyManagementServiceClientInterface
 {
     use GapicClientTrait;
     use ResourceHelperTrait;
