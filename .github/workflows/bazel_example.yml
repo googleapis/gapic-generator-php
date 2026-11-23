@@ -12,7 +12,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-26.04
-    container: gcr.io/gapic-images/googleapis@sha256:e38933fccb30e24bf8b6a3024a2125f27879fd68d0c0f7eb457c96036eb1b3de
+    container: gcr.io/gapic-images/googleapis@sha256:bb9fd3f04c5c9d5675f498316f430da1d82166bb8ddbfb4cf1119f534846cdea
 
     steps:
     - name: Checkout code
