@@ -191,6 +191,10 @@ final class GenerativeQuestionServiceClient
      *           ```
      *           {@see
      *           https://cloud.google.com/docs/authentication/external/externally-sourced-credentials}
+     *     @type string $apiKey
+     *           The API key to use for authentication. Note that not all APIs support API key
+     *           authentication; if the API does not support it, a "Not Implemented" error will
+     *           be returned.
      *     @type array $credentialsConfig
      *           Options used to configure credentials, including auth token caching, for the
      *           client. For a full list of supporting configuration options, see
