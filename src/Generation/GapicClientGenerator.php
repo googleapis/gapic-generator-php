@@ -710,6 +710,15 @@ class GapicClientGenerator
                         )
                     ),
                     PhpDoc::type(
+                        Vector::new([$ctx->type(Type::string())]),
+                        'apiKey',
+                        PhpDoc::text(
+                            'The API key to use for authentication. Note that not all APIs support',
+                            'API key authentication; if the API does not support it, a "Not Implemented"',
+                            'error will be returned.'
+                        )
+                    ),
+                    PhpDoc::type(
                         Vector::new([$ctx->type(Type::array())]),
                         'credentialsConfig',
                         PhpDoc::text(
